@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package proto;
+
+service UserManager {
+  rpc GetUser(User) returns (User) {};
+  rpc GetUserByUsername (User) returns (User) {};
+  rpc GetUserByEmail (User) returns (User) {};
+  rpc ListUsers (Empty) returns (UserList) {};
+  rpc UpdateUser (User) returns (User) {};
+  rpc DeleteUser (User) returns (User) {};
+}
+
+message Empty {}
+
+message User {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string firstName = 4;
+  string lastName = 5;
+}
+
+message UserList {
+  repeated User users = 1;
+}

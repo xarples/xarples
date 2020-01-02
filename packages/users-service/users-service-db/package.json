@@ -1,0 +1,28 @@
+{
+  "name": "@xarples-console/users-service-db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/models/index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "postinstall": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "sequelize-cli": "^5.5.1",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "@babel/register": "^7.7.7",
+    "@xarples-console/config": "^1.0.0",
+    "pg": "^7.17.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.3"
+  }
+}
