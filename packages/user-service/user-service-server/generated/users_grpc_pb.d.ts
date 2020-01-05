@@ -1,4 +1,4 @@
-// package: proto
+// package: users
 // file: users.proto
 
 /* tslint:disable */
@@ -17,7 +17,7 @@ interface IUserManagerService extends grpc.ServiceDefinition<grpc.UntypedService
 }
 
 interface IUserManagerService_IGetUser extends grpc.MethodDefinition<users_pb.User, users_pb.User> {
-    path: string; // "/proto.UserManager/GetUser"
+    path: string; // "/users.UserManager/GetUser"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<users_pb.User>;
@@ -26,7 +26,7 @@ interface IUserManagerService_IGetUser extends grpc.MethodDefinition<users_pb.Us
     responseDeserialize: grpc.deserialize<users_pb.User>;
 }
 interface IUserManagerService_IGetUserByUsername extends grpc.MethodDefinition<users_pb.User, users_pb.User> {
-    path: string; // "/proto.UserManager/GetUserByUsername"
+    path: string; // "/users.UserManager/GetUserByUsername"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<users_pb.User>;
@@ -35,7 +35,7 @@ interface IUserManagerService_IGetUserByUsername extends grpc.MethodDefinition<u
     responseDeserialize: grpc.deserialize<users_pb.User>;
 }
 interface IUserManagerService_IGetUserByEmail extends grpc.MethodDefinition<users_pb.User, users_pb.User> {
-    path: string; // "/proto.UserManager/GetUserByEmail"
+    path: string; // "/users.UserManager/GetUserByEmail"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<users_pb.User>;
@@ -44,7 +44,7 @@ interface IUserManagerService_IGetUserByEmail extends grpc.MethodDefinition<user
     responseDeserialize: grpc.deserialize<users_pb.User>;
 }
 interface IUserManagerService_IListUsers extends grpc.MethodDefinition<users_pb.Empty, users_pb.UserList> {
-    path: string; // "/proto.UserManager/ListUsers"
+    path: string; // "/users.UserManager/ListUsers"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<users_pb.Empty>;
@@ -53,7 +53,7 @@ interface IUserManagerService_IListUsers extends grpc.MethodDefinition<users_pb.
     responseDeserialize: grpc.deserialize<users_pb.UserList>;
 }
 interface IUserManagerService_IUpdateUser extends grpc.MethodDefinition<users_pb.User, users_pb.User> {
-    path: string; // "/proto.UserManager/UpdateUser"
+    path: string; // "/users.UserManager/UpdateUser"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<users_pb.User>;
@@ -62,7 +62,7 @@ interface IUserManagerService_IUpdateUser extends grpc.MethodDefinition<users_pb
     responseDeserialize: grpc.deserialize<users_pb.User>;
 }
 interface IUserManagerService_IDeleteUser extends grpc.MethodDefinition<users_pb.User, users_pb.User> {
-    path: string; // "/proto.UserManager/DeleteUser"
+    path: string; // "/users.UserManager/DeleteUser"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<users_pb.User>;

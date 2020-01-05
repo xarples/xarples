@@ -8,8 +8,8 @@
     "generate": "npm run generate:grpc && npm run generate:grpc-dts",
     "generate:grpc": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./generated/ --grpc_out=./generated --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin` users.proto",
     "generate:grpc-dts": "grpc_tools_node_protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=./generated users.proto",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix",
     "postinstall": "npm run build"
   },
   "keywords": [],

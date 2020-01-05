@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --ext .ts,.js",
-    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "generate": "prisma2 generate",
+    "lint": "eslint ./src --ext .ts,.js",
+    "lint:fix": "eslint ./src --ext .ts,.js --fix",
     "migration:run": "sequelize-cli db:migrate",
     "migration:generate": "sequelize-cli migration:generate",
     "introspect": "prisma2 introspect",

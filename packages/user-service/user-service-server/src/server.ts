@@ -77,25 +77,26 @@ async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callba
 }
 async function listUsers (call: grpc.ServerUnaryCall<messages.UserList>, callback: grpc.sendUnaryData<messages.UserList>) {
   call.request.toObject()
-  const users = await db.users.findAll()
+  const users = await db.users.findMany()
   const message = getUserListMessage(users)
 
   callback(null, message)
 }
 async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
-  const payload = call.request.toObject()
+  const data = call.request.toObject()
 
-  const [, users] = await db.users.update(payload, {
+  delete data.id
+
+  const user = await db.users.update({
+    data,
     where: { id }
   })
-
-  const user = users[0]
 
   if (!user) {
     const error: grpc.ServiceError = {
       name: '',
-      message: 'user not found',
+      message: 'User not found',
       code: grpc.status.NOT_FOUND
     }
 
@@ -110,7 +111,7 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 }
 async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
-  const user = await db.users.findByPk(id)
+  const user = await db.users.delete({ where: { id } })
 
   if (!user) {
     const error: grpc.ServiceError = {
@@ -126,24 +127,22 @@ async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 
   const message = getUserMessage(user)
 
-  await user.destroy()
-
   callback(null, message)
 }
 
-function getUserMessage (payload: db.users) {
+function getUserMessage (payload: messages.User.AsObject) {
   const message = new messages.User()
 
   message.setId(payload.id)
   message.setUsername(payload.username)
   message.setEmail(payload.email)
-  message.setFirstname(payload.firstName)
-  message.setLastname(payload.lastName)
+  message.setFirstName(payload.firstName)
+  message.setLastName(payload.lastName)
 
   return message
 }
 
-function getUserListMessage (payload: db.users[]) {
+function getUserListMessage (payload: messages.User.AsObject[]) {
   const message = new messages.UserList()
   const userMessages = payload.map(getUserMessage)
 

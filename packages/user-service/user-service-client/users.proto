@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package proto;
+package users;
 
 service UserManager {
   rpc GetUser(User) returns (User) {};
@@ -17,8 +17,8 @@ message User {
   string id = 1;
   string username = 2;
   string email = 3;
-  string firstName = 4;
-  string lastName = 5;
+  string first_name = 4;
+  string last_name = 5;
 }
 
 message UserList {

@@ -1,4 +1,4 @@
-// package: proto
+// package: users
 // file: users.proto
 
 /* tslint:disable */
@@ -33,11 +33,11 @@ export class User extends jspb.Message {
     getEmail(): string;
     setEmail(value: string): void;
 
-    getFirstname(): string;
-    setFirstname(value: string): void;
+    getFirstName(): string;
+    setFirstName(value: string): void;
 
-    getLastname(): string;
-    setLastname(value: string): void;
+    getLastName(): string;
+    setLastName(value: string): void;
 
 
     serializeBinary(): Uint8Array;
@@ -55,8 +55,8 @@ export namespace User {
         id: string,
         username: string,
         email: string,
-        firstname: string,
-        lastname: string,
+        firstName: string,
+        lastName: string,
     }
 }
 
