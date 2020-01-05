@@ -1,0 +1,33 @@
+generator photon {
+  provider = "photonjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://xarples_users:xarples_users@localhost/xarples_users?schema=public"
+}
+
+model Role {
+  createdAt   DateTime
+  description String
+  id          String   @id
+  name        String
+  updatedAt   DateTime
+  users       User[]   @relation(references: [roleId])
+}
+
+model SequelizeMeta {
+  name String @id
+}
+
+model User {
+  createdAt DateTime
+  email     String
+  firstName String
+  id        String   @id
+  lastName  String
+  password  String
+  roleId    Role
+  updatedAt DateTime
+  username  String
+}

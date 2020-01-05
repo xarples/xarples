@@ -2,11 +2,14 @@
   "name": "@xarples-console/users-service-db",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/models/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint . --ext .ts,.js --fix",
+    "migration:run": "sequelize-cli db:migrate",
+    "migration:generate": "sequelize-cli migration:generate",
+    "introspect": "prisma2 introspect",
     "postinstall": "npm run build"
   },
   "keywords": [],
@@ -20,9 +23,11 @@
   },
   "dependencies": {
     "@babel/register": "^7.7.7",
+    "@prisma/photon": "2.0.0-preview019",
     "@xarples-console/config": "^1.0.0",
     "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
+    "prisma2": "^2.0.0-preview019",
     "sequelize": "^5.21.3"
   }
 }

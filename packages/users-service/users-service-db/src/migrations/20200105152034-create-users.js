@@ -4,11 +4,22 @@ const { DataTypes } = require('sequelize')
 
 module.exports = {
   up: (queryInterface) => {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('User', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
+        allowNull: false
+      },
+      roleId: {
+        type: DataTypes.UUID,
+        references: {
+          model: {
+            tableName: 'Role',
+            schema: 'public'
+          },
+          key: 'id'
+        },
         allowNull: false
       },
       username: {
@@ -42,6 +53,6 @@ module.exports = {
     })
   },
   down: (queryInterface) => {
-    return queryInterface.dropTable('Users')
+    return queryInterface.dropTable('User')
   }
 }
