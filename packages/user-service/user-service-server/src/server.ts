@@ -1,16 +1,19 @@
 'use strict'
 
 import grpc from 'grpc'
-import * as models from '@xarples-console/users-service-db'
-import * as config from '@xarples-console/config'
+import userDB from '@xarples/user-service-db'
+import * as config from '@xarples/config'
 import services from '../generated/users_grpc_pb'
 import messages from '../generated/users_pb'
 
 const server = new grpc.Server()
+const db = userDB.setup()
 
 async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
-  const user = await models.user.findByPk(id)
+  const user = await db.users.findOne({
+    where: { id }
+  })
 
   if (!user) {
     const error: grpc.ServiceError = {
@@ -30,7 +33,7 @@ async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grp
 }
 async function getUserByUsername (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const username = call.request.getUsername()
-  const user = await models.user.findOne({
+  const user = await db.users.findOne({
     where: { username }
   })
 
@@ -52,7 +55,7 @@ async function getUserByUsername (call: grpc.ServerUnaryCall<messages.User>, cal
 }
 async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const email = call.request.getEmail()
-  const user = await models.user.findOne({
+  const user = await db.users.findOne({
     where: { email }
   })
 
@@ -74,7 +77,7 @@ async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callba
 }
 async function listUsers (call: grpc.ServerUnaryCall<messages.UserList>, callback: grpc.sendUnaryData<messages.UserList>) {
   call.request.toObject()
-  const users = await models.user.findAll()
+  const users = await db.users.findAll()
   const message = getUserListMessage(users)
 
   callback(null, message)
@@ -83,7 +86,7 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
   const id = call.request.getId()
   const payload = call.request.toObject()
 
-  const [, users] = await models.user.update(payload, {
+  const [, users] = await db.users.update(payload, {
     where: { id }
   })
 
@@ -107,7 +110,7 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 }
 async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
-  const user = await models.user.findByPk(id)
+  const user = await db.users.findByPk(id)
 
   if (!user) {
     const error: grpc.ServiceError = {
@@ -128,7 +131,7 @@ async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
   callback(null, message)
 }
 
-function getUserMessage (payload: models.user) {
+function getUserMessage (payload: db.users) {
   const message = new messages.User()
 
   message.setId(payload.id)
@@ -140,7 +143,7 @@ function getUserMessage (payload: models.user) {
   return message
 }
 
-function getUserListMessage (payload: models.user[]) {
+function getUserListMessage (payload: db.users[]) {
   const message = new messages.UserList()
   const userMessages = payload.map(getUserMessage)
 

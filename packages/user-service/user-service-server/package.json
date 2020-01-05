@@ -1,7 +1,7 @@
 {
-  "name": "@xarples-console/users-service-server",
+  "name": "@xarples/user-service-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend of xarples user service",
   "scripts": {
     "build": "tsc",
     "generate": "npm run generate:grpc && npm run generate:grpc-dts",
@@ -16,8 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.3",
-    "@xarples-console/users-service-db": "^1.0.0",
-    "@xarples-console/config": "^1.0.0",
+    "@xarples/user-service-db": "^1.0.0",
+    "@xarples/config": "^1.0.0",
     "google-protobuf": "^3.11.2",
     "grpc": "^1.24.2"
   },

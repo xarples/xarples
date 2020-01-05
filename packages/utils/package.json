@@ -1,7 +1,7 @@
 {
-  "name": "@xarples-console/utils",
+  "name": "@xarples/utils",
   "version": "1.0.0",
-  "description": "",
+  "description": "Xarples utilities",
   "main": "index.js",
   "scripts": {
     "build": "tsc",

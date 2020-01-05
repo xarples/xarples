@@ -1,7 +1,7 @@
 {
-  "name": "@xarples-console/auth-service-server",
+  "name": "@xarples/auth-service-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend of xarples auth service ",
   "main": "index.js",
   "scripts": {
     "build": "tsc",

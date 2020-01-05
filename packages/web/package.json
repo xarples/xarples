@@ -1,7 +1,7 @@
 {
-  "name": "@xarples-console/web",
+  "name": "@xarples/web",
   "version": "1.0.0",
-  "description": "",
+  "description": "Xarples landing page",
   "main": "index.js",
   "scripts": {
     "build": "tsc",

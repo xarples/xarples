@@ -1,12 +1,12 @@
-# @xarples-console/users-service-client
+# @xarples/user-service-client
 
-> Client api of user service.
+> Client API of xarples user service.
 
 ## Installation
 
 ```js
 
-npm install --save @xarples-console/users-service-client
+npm install --save @xarples/user-service-client
 
 ```
 
@@ -14,7 +14,7 @@ npm install --save @xarples-console/users-service-client
 
 ```js
 
-import userService from '@xarples-console/users-service-client'
+import userService from '@xarples/user-service-client'
 
 const client = userService.createClient()
 const message = new userService.messages.User()

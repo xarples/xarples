@@ -1,7 +1,7 @@
 {
-  "name": "@xarples-console/app",
+  "name": "@xarples/console",
   "version": "1.0.0",
-  "description": "",
+  "description": "Xarples core application",
   "main": "index.js",
   "scripts": {
     "build": "tsc",

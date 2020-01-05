@@ -1,7 +1,7 @@
 {
-  "name": "@xarples-console/users-service-db",
+  "name": "@xarples/user-service-db",
   "version": "1.0.0",
-  "description": "",
+  "description": "Database module of xarples user service",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -24,7 +24,7 @@
   "dependencies": {
     "@babel/register": "^7.7.7",
     "@prisma/photon": "2.0.0-preview019",
-    "@xarples-console/config": "^1.0.0",
+    "@xarples/config": "^1.0.0",
     "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
     "prisma2": "^2.0.0-preview019",
