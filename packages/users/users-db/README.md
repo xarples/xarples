@@ -1,4 +1,4 @@
-# @xarples/user-service-db
+# @xarples/users-db
 
 > Database module of xarples user service
 
@@ -6,7 +6,7 @@
 
 ```js
 
-npm install --save @xarples/user-service-db
+npm install --save @xarples/users-db
 
 ```
 
@@ -14,7 +14,7 @@ npm install --save @xarples/user-service-db
 
 ```js
 
-import userDB from '@xarples/user-service-db'
+import userDB from '@xarples/users-db'
 
 const db = userDB.setup()
 

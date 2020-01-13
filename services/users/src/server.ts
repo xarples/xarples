@@ -1,7 +1,7 @@
 'use strict'
 
 import grpc from 'grpc'
-import userDB from '@xarples/user-service-db'
+import userDB from '@xarples/users-db'
 import * as config from '@xarples/config'
 import services from '../generated/users_grpc_pb'
 import messages from '../generated/users_pb'

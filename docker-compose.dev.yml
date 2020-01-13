@@ -1,21 +1,21 @@
 version: "3"
 
 services:
-  user-service:
-    container_name: user-service
+  users:
+    container_name: xarples-users
     build:
       context: .
-      dockerfile: ./packages/user-service/user-service-server/development.Dockerfile
+      dockerfile: ./services/users/development.Dockerfile
     ports: 
       - 5000:5000
     volumes: 
       - ./packages/config:/usr/src/console/packages/config
-      - ./packages/user-service:/usr/src/console/packages/user-service
+      - ./services/users:/usr/src/console/services/users
       - /usr/src/console/node_modules
       - /usr/src/console/packages/config/node_modules
     
-  user-service-db:
-    container_name: user-service-db
+  users-db:
+    container_name: xarples-users-db
     image: postgres:10.3
     restart: always
     ports:
@@ -27,8 +27,8 @@ services:
     volumes:
       - ./data/user-db/postgres:/var/lib/postgresql/data
 
-  auth-service-db:
-    container_name: auth-service-db
+  auth-db:
+    container_name: auth-db
     image: postgres:10.3
     restart: always
     ports:

@@ -1,4 +1,4 @@
-# @xarples/auth-service-db
+# @xarples/auth-db
 
 > Database module of xarples auth service
 
@@ -6,7 +6,7 @@
 
 ```js
 
-npm i --save @xarples/auth-service-db
+npm i --save @xarples/auth-db
 
 ```
 
@@ -16,7 +16,7 @@ npm i --save @xarples/auth-service-db
 
 ```js
 
-import authDB from '@xarples/auth-service-db'
+import authDB from '@xarples/auth-db'
 
 const db = authDB.setup()
 
