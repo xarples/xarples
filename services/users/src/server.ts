@@ -169,3 +169,5 @@ function main () {
 if (!module.parent) {
   main()
 }
+
+export default server
