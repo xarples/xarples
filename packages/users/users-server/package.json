@@ -11,7 +11,7 @@
     "lint": "eslint ./src --ext .ts",
     "lint:fix": "eslint ./src --ext .ts --fix",
     "start": "node dist/server.js",
-    "test": "ava --config ava.config.js --color",
+    "test": "NODE_ENV=test ava --config ava.config.js --color",
     "test:coverage": "nyc --reporter=lcov --reporter=text-summary npm run test"
   },
   "keywords": [],

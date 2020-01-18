@@ -1,7 +1,7 @@
 'use strict'
 
 import grpc from 'grpc'
-import { config } from '@xarples/config'
+import config from '@xarples/config'
 import services from '../generated/users_grpc_pb'
 
 interface IOptions {

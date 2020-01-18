@@ -1,6 +1,7 @@
 import anyTest, { TestInterface } from 'ava'
 import grpc from 'grpc'
 import utils from '@xarples/utils'
+import * as db from '@xarples/users-db'
 
 import { IUserManagerClient } from '../generated/users_grpc_pb'
 
@@ -8,19 +9,18 @@ import users from '../src'
 
 const test = anyTest as TestInterface<{server: grpc.Server, client: IUserManagerClient}>
 
-test.before(t => {
+test.before(async t => {
   const options = {
     host: 'localhost',
     port: 20000
   }
 
+  await db.sequelize.sync({ force: true })
   const server = users.createServer()
   const client = users.createClient(options)
 
   server.bind(`${options.host}:${options.port}`, grpc.ServerCredentials.createInsecure())
   server.start()
-
-  console.log('Server running')
 
   t.context = {
     server,
@@ -28,7 +28,9 @@ test.before(t => {
   }
 })
 
-test.after(t => {
+test.after(async t => {
+  await db.sequelize.drop({ cascade: true })
+
   t.context.server.forceShutdown()
 })
 
@@ -44,8 +46,6 @@ test.cb('Should create an user', t => {
 
   client.createUser(message, (err, user) => {
     t.is(err, null)
-
-    console.log(err)
 
     const messageObject = message.toObject()
     const userObject = user.toObject()

@@ -1,3 +1,3 @@
-const { config } = require('@xarples/config')
+import config from '@xarples/config'
 
 module.exports = config.users.db

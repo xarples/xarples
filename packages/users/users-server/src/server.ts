@@ -3,7 +3,7 @@
 import grpc from 'grpc'
 import utils from '@xarples/utils'
 import { User } from '@xarples/users-db'
-import { config } from '@xarples/config'
+import config from '@xarples/config'
 import services from '../generated/users_grpc_pb'
 import messages from '../generated/users_pb'
 
