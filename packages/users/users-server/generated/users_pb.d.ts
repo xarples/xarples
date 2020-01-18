@@ -30,6 +30,9 @@ export class User extends jspb.Message {
     getUsername(): string;
     setUsername(value: string): void;
 
+    getPassword(): string;
+    setPassword(value: string): void;
+
     getEmail(): string;
     setEmail(value: string): void;
 
@@ -54,6 +57,7 @@ export namespace User {
     export type AsObject = {
         id: string,
         username: string,
+        password: string,
         email: string,
         firstName: string,
         lastName: string,

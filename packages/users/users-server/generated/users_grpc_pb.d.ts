@@ -8,6 +8,7 @@ import * as grpc from "grpc";
 import * as users_pb from "./users_pb";
 
 interface IUserManagerService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    createUser: IUserManagerService_ICreateUser;
     getUser: IUserManagerService_IGetUser;
     getUserByUsername: IUserManagerService_IGetUserByUsername;
     getUserByEmail: IUserManagerService_IGetUserByEmail;
@@ -16,6 +17,15 @@ interface IUserManagerService extends grpc.ServiceDefinition<grpc.UntypedService
     deleteUser: IUserManagerService_IDeleteUser;
 }
 
+interface IUserManagerService_ICreateUser extends grpc.MethodDefinition<users_pb.User, users_pb.User> {
+    path: string; // "/users.UserManager/CreateUser"
+    requestStream: boolean; // false
+    responseStream: boolean; // false
+    requestSerialize: grpc.serialize<users_pb.User>;
+    requestDeserialize: grpc.deserialize<users_pb.User>;
+    responseSerialize: grpc.serialize<users_pb.User>;
+    responseDeserialize: grpc.deserialize<users_pb.User>;
+}
 interface IUserManagerService_IGetUser extends grpc.MethodDefinition<users_pb.User, users_pb.User> {
     path: string; // "/users.UserManager/GetUser"
     requestStream: boolean; // false
@@ -74,6 +84,7 @@ interface IUserManagerService_IDeleteUser extends grpc.MethodDefinition<users_pb
 export const UserManagerService: IUserManagerService;
 
 export interface IUserManagerServer {
+    createUser: grpc.handleUnaryCall<users_pb.User, users_pb.User>;
     getUser: grpc.handleUnaryCall<users_pb.User, users_pb.User>;
     getUserByUsername: grpc.handleUnaryCall<users_pb.User, users_pb.User>;
     getUserByEmail: grpc.handleUnaryCall<users_pb.User, users_pb.User>;
@@ -83,6 +94,9 @@ export interface IUserManagerServer {
 }
 
 export interface IUserManagerClient {
+    createUser(request: users_pb.User, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
+    createUser(request: users_pb.User, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
+    createUser(request: users_pb.User, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
     getUser(request: users_pb.User, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
     getUser(request: users_pb.User, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
     getUser(request: users_pb.User, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
@@ -105,6 +119,9 @@ export interface IUserManagerClient {
 
 export class UserManagerClient extends grpc.Client implements IUserManagerClient {
     constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+    public createUser(request: users_pb.User, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
+    public createUser(request: users_pb.User, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
+    public createUser(request: users_pb.User, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
     public getUser(request: users_pb.User, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
     public getUser(request: users_pb.User, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;
     public getUser(request: users_pb.User, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: users_pb.User) => void): grpc.ClientUnaryCall;

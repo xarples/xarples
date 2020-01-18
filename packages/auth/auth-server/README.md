@@ -1,3 +1,3 @@
-# @xarples/auth-service-server
+# @xarples/auth-server
 
 > Backend of xarples auth service

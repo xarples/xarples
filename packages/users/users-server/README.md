@@ -1,27 +1,72 @@
-# @xarples/users-client
+# @xarples/users-server
 
-> Client API of xarples user service.
+> Backend of xarples users service
 
 ## Installation
 
 ```js
 
-npm install --save @xarples/users-client
+npm i --save @xarples/users-server
 
 ```
 
-## Usage
+## Run as a service
 
 ```js
 
-import userService from '@xarples/users-client'
+npm start
 
-const client = userService.createClient()
+```
+
+## Usage programmatically
+
+```js
+
+import users from '@xarples/users-server'
+
+const server = users.createServer()
+
+// do something with users gRPC server
+
+```
+
+## API
+
+### users
+
+#### `users.createServer(): grpc.Server`
+
+Create an instance of users service server
+
+```js
+
+import grpc from 'grpc'
+import users from '@xarples/users-server'
+
+const server = users.createServer()
+
+server.bind('localhost:5000', grpc.ServerCredentials.createInsecure())
+console.log(`Server running at http://localhost:5000`)
+server.start()
+
+```
+
+#### `users.createClient(options): grpc.UserManagerClient`
+
+Create an instance of users service client
+
+```js
+
+import grpc from 'grpc'
+import users from '@xarples/users-server'
+
+const options = { host: 'localhost', port: '5000' }
 const message = new userService.messages.User()
+const client = users.createClient(options)
 
-message.setUsername('some-username')
+message.setId('UUID')
 
-client.getUserByUsername(message, (err, user) => {
+client.getUser(message, (err, user) => {
   if (err) {
     // do something with the error
   }
@@ -30,8 +75,6 @@ client.getUserByUsername(message, (err, user) => {
 })
 
 ```
-
-## API
 
 ### client
 
@@ -134,3 +177,4 @@ Delete an user an user by id.
 
 ```js
 ```
+

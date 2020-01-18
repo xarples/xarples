@@ -1,6 +1,7 @@
 'use strict'
 
 import grpc from 'grpc'
+import utils from '@xarples/utils'
 import userDB from '@xarples/users-db'
 import * as config from '@xarples/config'
 import services from '../generated/users_grpc_pb'
@@ -8,6 +9,32 @@ import messages from '../generated/users_pb'
 
 const server = new grpc.Server()
 const db = userDB.setup()
+
+async function createUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
+  try {
+    const data = call.request.toObject()
+
+    const user = await db.users.create({
+      data: {
+        id: '',
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        username: data.username,
+        password: utils.encrypt(data.password),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+    })
+
+    const message = getUserMessage(user)
+
+    callback(null, message)
+  } catch (e) {
+    console.log('---------', e)
+    callback(e, null)
+  }
+}
 
 async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
@@ -152,6 +179,7 @@ function getUserListMessage (payload: messages.User.AsObject[]) {
 }
 
 server.addService(services.UserManagerService, {
+  createUser,
   getUser,
   getUserByUsername,
   getUserByEmail,
@@ -159,6 +187,10 @@ server.addService(services.UserManagerService, {
   updateUser,
   deleteUser
 })
+
+function createServer () {
+  return server
+}
 
 function main () {
   server.bind(`${config.userService.service.host}:${config.userService.service.port}`, grpc.ServerCredentials.createInsecure())
@@ -170,4 +202,4 @@ if (!module.parent) {
   main()
 }
 
-export default server
+export default createServer

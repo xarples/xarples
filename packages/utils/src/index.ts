@@ -1,3 +1,5 @@
-export function a (b: string) {
-  return b
+import encrypt from './lib/encrypt'
+
+export default {
+  encrypt
 }

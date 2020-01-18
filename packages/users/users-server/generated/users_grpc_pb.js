@@ -39,6 +39,17 @@ function deserialize_users_UserList(buffer_arg) {
 
 
 var UserManagerService = exports.UserManagerService = {
+  createUser: {
+    path: '/users.UserManager/CreateUser',
+    requestStream: false,
+    responseStream: false,
+    requestType: users_pb.User,
+    responseType: users_pb.User,
+    requestSerialize: serialize_users_User,
+    requestDeserialize: deserialize_users_User,
+    responseSerialize: serialize_users_User,
+    responseDeserialize: deserialize_users_User,
+  },
   getUser: {
     path: '/users.UserManager/GetUser',
     requestStream: false,

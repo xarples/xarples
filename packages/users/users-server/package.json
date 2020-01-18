@@ -1,5 +1,5 @@
 {
-  "name": "@xarples/users",
+  "name": "@xarples/users-server",
   "version": "1.0.0",
   "description": "Backend of xarples user service",
   "scripts": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "@xarples/users-db": "^1.0.0",
     "@xarples/config": "^1.0.0",
+    "@xarples/utils": "^1.0.0",
     "google-protobuf": "^3.11.2",
     "grpc": "^1.24.2"
   },

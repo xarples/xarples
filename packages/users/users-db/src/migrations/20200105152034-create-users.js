@@ -20,7 +20,7 @@ module.exports = {
           },
           key: 'id'
         },
-        allowNull: false
+        allowNull: true
       },
       username: {
         type: DataTypes.STRING,

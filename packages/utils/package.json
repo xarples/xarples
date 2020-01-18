@@ -2,11 +2,12 @@
   "name": "@xarples/utils",
   "version": "1.0.0",
   "description": "Xarples utilities",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "lint": "eslint ./src --ext .ts",
-    "lint:fix": "eslint ./src --ext .ts --fix"
+    "lint:fix": "eslint ./src --ext .ts --fix",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
