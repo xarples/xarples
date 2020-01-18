@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@xarples/types": "^1.0.0",
     "typescript": "^3.7.4"
   }
 }

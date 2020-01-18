@@ -1,13 +1,12 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "noImplicitAny": false,
     "outDir": "./dist",
-    "rootDir": "./src"   
+    "rootDir": "./src",
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    ".sequelizerc"
   ],
+  "exclude": ["./dist"]
 }

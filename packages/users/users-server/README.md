@@ -61,7 +61,7 @@ import grpc from 'grpc'
 import users from '@xarples/users-server'
 
 const options = { host: 'localhost', port: '5000' }
-const message = new userService.messages.User()
+const message = new users.messages.User()
 const client = users.createClient(options)
 
 message.setId('UUID')
@@ -83,10 +83,10 @@ client.getUser(message, (err, user) => {
 Get an user by id.
 
 ```js
-import userService from '@xarples-console/users-service-client'
+import users from '@xarples-console/users-server'
 
-const client = userService.createClient()
-const message = new userService.messages.User()
+const client = users.createClient()
+const message = new users.messages.User()
 
 message.setId('UUID')
 
@@ -105,10 +105,10 @@ client.getUser(message, (err, user) => {
 Get an user by username.
 
 ```js
-import userService from '@xarples-console/users-service-client'
+import users from '@xarples-console/users-server'
 
-const client = userService.createClient()
-const message = new userService.messages.User()
+const client = users.createClient()
+const message = new users.messages.User()
 
 message.setUsername('some-username')
 
@@ -127,10 +127,10 @@ client.getUserByUsername(message, (err, user) => {
 Get an user by email.
 
 ```js
-import userService from '@xarples-console/users-service-client'
+import users from '@xarples-console/users-server'
 
-const client = userService.createClient()
-const message = new userService.messages.User()
+const client = users.createClient()
+const message = new users.messages.User()
 
 message.setEmail('some-email@test.com')
 
@@ -149,10 +149,10 @@ client.getUserByEmail(message, (err, user) => {
 Get a list of users.
 
 ```js
-import userService from '@xarples-console/users-service-client'
+import users from '@xarples-console/users-server'
 
-const client = userService.createClient()
-const message = new userService.messages.Empty()
+const client = users.createClient()
+const message = new users.messages.Empty()
 
 client.getUserByEmail(message, (err, user) => {
   if (err) {

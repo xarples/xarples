@@ -2,10 +2,9 @@
   "name": "@xarples/users-db",
   "version": "1.0.0",
   "description": "Database module of xarples user service",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "generate": "prisma2 generate",
     "lint": "eslint ./src --ext .ts,.js",
     "lint:fix": "eslint ./src --ext .ts,.js --fix",
     "migration:run": "sequelize-cli db:migrate",

@@ -1,10 +1,14 @@
 'use strict'
 
-const { DataTypes } = require('sequelize')
+import { DataTypes } from 'sequelize'
+
+import sequelize from '../lib/sequelize'
+
+const queryInterface = sequelize.getQueryInterface()
 
 module.exports = {
-  up: (queryInterface) => {
-    return queryInterface.createTable('Role', {
+  up: () => {
+    return queryInterface.createTable('roles', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -30,7 +34,7 @@ module.exports = {
       }
     }, {})
   },
-  down: (queryInterface) => {
-    return queryInterface.dropTable('Role')
+  down: () => {
+    return queryInterface.dropTable('roles')
   }
 }

@@ -1,21 +1,26 @@
 'use strict'
 
-const { DataTypes } = require('sequelize')
+import { DataTypes } from 'sequelize'
 
-module.exports = {
-  up: (queryInterface) => {
-    return queryInterface.createTable('User', {
+import sequelize from '../lib/sequelize'
+
+const queryInterface = sequelize.getQueryInterface()
+
+export default {
+  up: () => {
+    return queryInterface.createTable('users', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false
       },
+      // @ts-ignore
       roleId: {
         type: DataTypes.UUID,
         references: {
           model: {
-            tableName: 'Role',
+            tableName: 'roles',
             schema: 'public'
           },
           key: 'id'
@@ -54,7 +59,7 @@ module.exports = {
       }
     })
   },
-  down: (queryInterface) => {
-    return queryInterface.dropTable('User')
+  down: () => {
+    return queryInterface.dropTable('users')
   }
 }

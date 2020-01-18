@@ -2,32 +2,24 @@
 
 import grpc from 'grpc'
 import utils from '@xarples/utils'
-import userDB from '@xarples/users-db'
-import * as config from '@xarples/config'
+import { User } from '@xarples/users-db'
+import { config } from '@xarples/config'
 import services from '../generated/users_grpc_pb'
 import messages from '../generated/users_pb'
 
 const server = new grpc.Server()
-const db = userDB.setup()
 
 async function createUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   try {
     const data = call.request.toObject()
 
-    const user = await db.users.create({
-      data: {
-        id: '',
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        username: data.username,
-        password: utils.encrypt(data.password),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
-    })
+    delete data.id
 
-    const message = getUserMessage(user)
+    data.password = utils.encrypt(data.password)
+
+    const user = await User.create(data)
+    const useObject = user.toJSON() as messages.User.AsObject
+    const message = getUserMessage(useObject)
 
     callback(null, message)
   } catch (e) {
@@ -38,9 +30,8 @@ async function createUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 
 async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
-  const user = await db.users.findOne({
-    where: { id }
-  })
+
+  const user = await User.findByPk(id)
 
   if (!user) {
     const error: grpc.ServiceError = {
@@ -54,13 +45,15 @@ async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grp
     return
   }
 
-  const message = getUserMessage(user)
+  const userObject = user.toJSON() as messages.User.AsObject
+  const message = getUserMessage(userObject)
 
   callback(null, message)
 }
 async function getUserByUsername (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const username = call.request.getUsername()
-  const user = await db.users.findOne({
+
+  const user = await User.findOne({
     where: { username }
   })
 
@@ -76,13 +69,14 @@ async function getUserByUsername (call: grpc.ServerUnaryCall<messages.User>, cal
     return
   }
 
-  const message = getUserMessage(user)
+  const userObject = user.toJSON() as messages.User.AsObject
+  const message = getUserMessage(userObject)
 
   callback(null, message)
 }
 async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const email = call.request.getEmail()
-  const user = await db.users.findOne({
+  const user = await User.findOne({
     where: { email }
   })
 
@@ -98,14 +92,16 @@ async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callba
     return
   }
 
-  const message = getUserMessage(user)
+  const userObject = user.toJSON() as messages.User.AsObject
+  const message = getUserMessage(userObject)
 
   callback(null, message)
 }
 async function listUsers (call: grpc.ServerUnaryCall<messages.UserList>, callback: grpc.sendUnaryData<messages.UserList>) {
   call.request.toObject()
-  const users = await db.users.findMany()
-  const message = getUserListMessage(users)
+  const users = await User.findAll({ raw: true })
+  const usersJSON = JSON.parse(JSON.stringify(users)) as messages.User.AsObject[]
+  const message = getUserListMessage(usersJSON)
 
   callback(null, message)
 }
@@ -115,12 +111,11 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 
   delete data.id
 
-  const user = await db.users.update({
-    data,
+  const [, users] = await User.update(data, {
     where: { id }
   })
 
-  if (!user) {
+  if (!users.length) {
     const error: grpc.ServiceError = {
       name: '',
       message: 'User not found',
@@ -132,15 +127,18 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
     return
   }
 
-  const message = getUserMessage(user)
+  const user = users[0]
+  const userObject = user.toJSON() as messages.User.AsObject
+  const message = getUserMessage(userObject)
 
   callback(null, message)
 }
 async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
-  const user = await db.users.delete({ where: { id } })
 
-  if (!user) {
+  const rowsDeleted = await User.destroy({ where: { id } })
+
+  if (!rowsDeleted) {
     const error: grpc.ServiceError = {
       name: '',
       message: 'user not found',
@@ -152,7 +150,7 @@ async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
     return
   }
 
-  const message = getUserMessage(user)
+  const message = getUserMessage(call.request.toObject())
 
   callback(null, message)
 }
@@ -162,6 +160,7 @@ function getUserMessage (payload: messages.User.AsObject) {
 
   message.setId(payload.id)
   message.setUsername(payload.username)
+  message.setPassword(payload.password)
   message.setEmail(payload.email)
   message.setFirstName(payload.firstName)
   message.setLastName(payload.lastName)
@@ -193,8 +192,8 @@ function createServer () {
 }
 
 function main () {
-  server.bind(`${config.userService.service.host}:${config.userService.service.port}`, grpc.ServerCredentials.createInsecure())
-  console.log(`Server running at ${config.userService.service.host}:${config.userService.service.port}`)
+  server.bind(`${config.users.service.host}:${config.users.service.port}`, grpc.ServerCredentials.createInsecure())
+  console.log(`Server running at ${config.users.service.host}:${config.users.service.port}`)
   server.start()
 }
 

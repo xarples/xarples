@@ -36,7 +36,6 @@ test.cb('Should create an user', t => {
   const client = t.context.client
   const message = new users.messages.User()
 
-  message.setId('')
   message.setFirstName('Guillermo')
   message.setLastName('Lopez')
   message.setEmail('guillermolopez2529@gmail.com')
