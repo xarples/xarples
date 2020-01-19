@@ -52,8 +52,40 @@ test.serial('Should be find an user by id', async t => {
   t.is(found.password, user.password)
 })
 
-test.todo('Should be find an user by username')
-test.todo('Should be find an user by email')
+test.serial('Should be find an user by username', async t => {
+  const user = await createUser()
+  const found = await User.findOne({ where: { username: user.username } })
+
+  if (!found) {
+    return t.fail('Invalid user username')
+  }
+
+  t.not(found, null)
+  t.is(found.id, user.id)
+  t.is(found.firstName, user.firstName)
+  t.is(found.lastName, user.lastName)
+  t.is(found.username, user.username)
+  t.is(found.email, user.email)
+  t.is(found.password, user.password)
+})
+
+test.serial('Should be find an user by email', async t => {
+  const user = await createUser()
+  const found = await User.findOne({ where: { email: user.email } })
+
+  if (!found) {
+    return t.fail('Invalid user email')
+  }
+
+  t.not(found, null)
+  t.is(found.id, user.id)
+  t.is(found.firstName, user.firstName)
+  t.is(found.lastName, user.lastName)
+  t.is(found.username, user.username)
+  t.is(found.email, user.email)
+  t.is(found.password, user.password)
+})
+
 test.todo('Should be update an user')
 test.todo('Should be delete an user')
 
