@@ -8,6 +8,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-lerna-scopes": "^8.3.4",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/bluebird": "^3.5.29",
     "@types/faker": "^4.1.9",
@@ -29,12 +32,14 @@
     "lerna": "^3.20.1",
     "lint-staged": "^9.5.0",
     "nyc": "^15.0.0",
+    "prettier": "1.19.1",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.4"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
