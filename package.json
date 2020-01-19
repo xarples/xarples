@@ -12,6 +12,7 @@
     "@types/bluebird": "^3.5.29",
     "@types/google-protobuf": "^3.7.2",
     "@types/node": "^13.1.2",
+    "@types/proxyquire": "^1.3.28",
     "@types/validator": "^12.0.1",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",

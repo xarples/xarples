@@ -1,11 +1,18 @@
 import anyTest, { TestInterface } from 'ava'
+import { noCallThru } from 'proxyquire'
 import grpc from 'grpc'
 import utils from '@xarples/utils'
-import * as db from '@xarples/users-db'
+import dbStub from '../src/lib/stubs/db'
 
 import { IUserManagerClient } from '../generated/users_grpc_pb'
 
 import users from '../src'
+
+const proxyquire = noCallThru()
+
+const { default: createServer } = proxyquire('../src/server', {
+  '@xarples/users-db': dbStub
+})
 
 const test = anyTest as TestInterface<{server: grpc.Server, client: IUserManagerClient}>
 
@@ -15,8 +22,8 @@ test.before(async t => {
     port: 20000
   }
 
-  await db.sequelize.sync({ force: true })
-  const server = users.createServer()
+  // await sequelize.sync({ force: true })
+  const server = createServer()
   const client = users.createClient(options)
 
   server.bind(`${options.host}:${options.port}`, grpc.ServerCredentials.createInsecure())
@@ -29,8 +36,6 @@ test.before(async t => {
 })
 
 test.after(async t => {
-  await db.sequelize.drop({ cascade: true })
-
   t.context.server.forceShutdown()
 })
 

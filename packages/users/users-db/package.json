@@ -10,7 +10,9 @@
     "migration:run": "sequelize-cli db:migrate",
     "migration:generate": "sequelize-cli migration:generate",
     "introspect": "prisma2 introspect",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "test": "NODE_ENV=test ava --config ava.config.js --color",
+    "test:coverage": "nyc --reporter=lcov --reporter=text-summary npm run test"
   },
   "keywords": [],
   "author": "",
