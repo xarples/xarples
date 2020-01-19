@@ -23,7 +23,6 @@ async function createUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 
     callback(null, message)
   } catch (e) {
-    console.log('---------', e)
     callback(e, null)
   }
 }
@@ -109,13 +108,11 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
   const id = call.request.getId()
   const data = call.request.toObject()
 
+  const user = await User.findByPk(id)
+
   delete data.id
 
-  const [, users] = await User.update(data, {
-    where: { id }
-  })
-
-  if (!users.length) {
+  if (!user) {
     const error: grpc.ServiceError = {
       name: '',
       message: 'User not found',
@@ -127,8 +124,11 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
     return
   }
 
-  const user = users[0]
-  const userObject = user.toJSON() as messages.User.AsObject
+  const updated = await user.update(data, {
+    where: { id }
+  })
+
+  const userObject = updated.toJSON() as messages.User.AsObject
   const message = getUserMessage(userObject)
 
   callback(null, message)
@@ -136,9 +136,9 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
   const id = call.request.getId()
 
-  const rowsDeleted = await User.destroy({ where: { id } })
+  const user = await User.findByPk(id)
 
-  if (!rowsDeleted) {
+  if (!user) {
     const error: grpc.ServiceError = {
       name: '',
       message: 'user not found',
@@ -149,6 +149,8 @@ async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 
     return
   }
+
+  await user.destroy()
 
   const message = getUserMessage(call.request.toObject())
 

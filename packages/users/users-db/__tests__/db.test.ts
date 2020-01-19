@@ -44,11 +44,6 @@ test.serial('Should be find an user by id', async t => {
   }
 
   t.is(found.id, user.id)
-  t.is(found.firstName, user.firstName)
-  t.is(found.lastName, user.lastName)
-  t.is(found.username, user.username)
-  t.is(found.email, user.email)
-  t.is(found.password, user.password)
 })
 
 test.serial('Should be find an user by username', async t => {
@@ -59,12 +54,7 @@ test.serial('Should be find an user by username', async t => {
     return t.fail('Invalid user username')
   }
 
-  t.is(found.id, user.id)
-  t.is(found.firstName, user.firstName)
-  t.is(found.lastName, user.lastName)
   t.is(found.username, user.username)
-  t.is(found.email, user.email)
-  t.is(found.password, user.password)
 })
 
 test.serial('Should be find an user by email', async t => {
@@ -75,12 +65,7 @@ test.serial('Should be find an user by email', async t => {
     return t.fail('Invalid user email')
   }
 
-  t.is(found.id, user.id)
-  t.is(found.firstName, user.firstName)
-  t.is(found.lastName, user.lastName)
-  t.is(found.username, user.username)
   t.is(found.email, user.email)
-  t.is(found.password, user.password)
 })
 
 test.serial('Should be update an user', async t => {
@@ -108,7 +93,15 @@ test.serial('Should be update an user', async t => {
   t.is(updated.password, newData.password)
 })
 
-test.todo('Should be delete an user')
+test.serial('Should be delete an user', async t => {
+  const user = await createUser()
+
+  await user.destroy()
+
+  const found = await User.findByPk(user.id)
+
+  t.is(found, null)
+})
 
 async function createUser () {
   const data = {
