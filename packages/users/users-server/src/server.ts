@@ -18,8 +18,7 @@ async function createUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
     data.password = utils.encrypt(data.password)
 
     const user = await User.create(data)
-    const useObject = user.toJSON() as messages.User.AsObject
-    const message = getUserMessage(useObject)
+    const message = getUserMessage(user)
 
     callback(null, message)
   } catch (e) {
@@ -44,8 +43,7 @@ async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grp
     return
   }
 
-  const userObject = user.toJSON() as messages.User.AsObject
-  const message = getUserMessage(userObject)
+  const message = getUserMessage(user)
 
   callback(null, message)
 }
@@ -68,8 +66,7 @@ async function getUserByUsername (call: grpc.ServerUnaryCall<messages.User>, cal
     return
   }
 
-  const userObject = user.toJSON() as messages.User.AsObject
-  const message = getUserMessage(userObject)
+  const message = getUserMessage(user)
 
   callback(null, message)
 }
@@ -91,16 +88,14 @@ async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callba
     return
   }
 
-  const userObject = user.toJSON() as messages.User.AsObject
-  const message = getUserMessage(userObject)
+  const message = getUserMessage(user)
 
   callback(null, message)
 }
 async function listUsers (call: grpc.ServerUnaryCall<messages.UserList>, callback: grpc.sendUnaryData<messages.UserList>) {
   call.request.toObject()
   const users = await User.findAll({ raw: true })
-  const usersJSON = JSON.parse(JSON.stringify(users)) as messages.User.AsObject[]
-  const message = getUserListMessage(usersJSON)
+  const message = getUserListMessage(users)
 
   callback(null, message)
 }
@@ -124,12 +119,13 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
     return
   }
 
-  const updated = await user.update(data, {
-    where: { id }
-  })
+  if (data.password) {
+    data.password = utils.encrypt(data.password)
+  }
 
-  const userObject = updated.toJSON() as messages.User.AsObject
-  const message = getUserMessage(userObject)
+  const updated = await user.update(data)
+
+  const message = getUserMessage(updated)
 
   callback(null, message)
 }
@@ -137,6 +133,7 @@ async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
   const id = call.request.getId()
 
   const user = await User.findByPk(id)
+  const clone = JSON.parse(JSON.stringify(user)) as User
 
   if (!user) {
     const error: grpc.ServiceError = {
@@ -152,12 +149,12 @@ async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
 
   await user.destroy()
 
-  const message = getUserMessage(call.request.toObject())
+  const message = getUserMessage(clone)
 
   callback(null, message)
 }
 
-function getUserMessage (payload: messages.User.AsObject) {
+function getUserMessage (payload: User) {
   const message = new messages.User()
 
   message.setId(payload.id)
@@ -170,7 +167,7 @@ function getUserMessage (payload: messages.User.AsObject) {
   return message
 }
 
-function getUserListMessage (payload: messages.User.AsObject[]) {
+function getUserListMessage (payload: User[]) {
   const message = new messages.UserList()
   const userMessages = payload.map(getUserMessage)
 
