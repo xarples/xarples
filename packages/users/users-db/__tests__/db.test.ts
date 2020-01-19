@@ -43,7 +43,6 @@ test.serial('Should be find an user by id', async t => {
     return t.fail('Invalid user id')
   }
 
-  t.not(found, null)
   t.is(found.id, user.id)
   t.is(found.firstName, user.firstName)
   t.is(found.lastName, user.lastName)
@@ -60,7 +59,6 @@ test.serial('Should be find an user by username', async t => {
     return t.fail('Invalid user username')
   }
 
-  t.not(found, null)
   t.is(found.id, user.id)
   t.is(found.firstName, user.firstName)
   t.is(found.lastName, user.lastName)
@@ -77,7 +75,6 @@ test.serial('Should be find an user by email', async t => {
     return t.fail('Invalid user email')
   }
 
-  t.not(found, null)
   t.is(found.id, user.id)
   t.is(found.firstName, user.firstName)
   t.is(found.lastName, user.lastName)
@@ -86,7 +83,31 @@ test.serial('Should be find an user by email', async t => {
   t.is(found.password, user.password)
 })
 
-test.todo('Should be update an user')
+test.serial('Should be update an user', async t => {
+  const user = await createUser()
+
+  const newData = {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    password: utils.encrypt(faker.internet.password())
+  }
+
+  const updated = await user.update(newData)
+
+  if (!updated) {
+    return t.fail('Invalid user id')
+  }
+
+  t.is(updated.id, user.id)
+  t.is(updated.firstName, newData.firstName)
+  t.is(updated.lastName, newData.lastName)
+  t.is(updated.username, newData.username)
+  t.is(updated.email, newData.email)
+  t.is(updated.password, newData.password)
+})
+
 test.todo('Should be delete an user')
 
 async function createUser () {
