@@ -26,6 +26,7 @@
   "dependencies": {
     "@prisma/photon": "2.0.0-preview019",
     "@xarples/config": "^1.0.0",
+    "@xarples/utils": "^1.0.0",
     "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
     "prisma2": "^2.0.0-preview019",

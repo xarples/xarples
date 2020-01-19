@@ -4,7 +4,16 @@ import sequelize from '../lib/sequelize'
 
 import Role from './role'
 
-class User extends Model {}
+class User extends Model {
+  id!: string
+  username!: string
+  password!: string
+  email!: string
+  firstName!: string
+  lastName!: string
+  readonly createdAt!: Date;
+  readonly updatedAt!: Date;
+}
 
 User.init({
   id: {
