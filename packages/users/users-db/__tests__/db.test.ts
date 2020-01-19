@@ -68,6 +68,17 @@ test.serial('Should be find an user by email', async t => {
   t.is(found.email, user.email)
 })
 
+test.serial('Should be find all users', async t => {
+  const users = [
+    await createUser(),
+    await createUser()
+  ]
+
+  const result = await User.findAll()
+
+  t.is(result.length, users.length)
+})
+
 test.serial('Should be update an user', async t => {
   const user = await createUser()
 
