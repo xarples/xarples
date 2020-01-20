@@ -10,11 +10,21 @@ const users = [
 
 const User = {
   async create(user: any) {
+    const values = Object.values(user)
+
+    if (!values.every(value => !!value)) {
+      return null
+    }
+
     user.password = utils.encrypt(user.password)
 
     return user
   },
   async findByPk(id: string) {
+    if (!id) {
+      return null
+    }
+
     return users.find(u => u.id === id)
   },
   async findOne(options: any) {

@@ -3,8 +3,8 @@ import { noCallThru } from 'proxyquire'
 import grpc from 'grpc'
 import utils from '@xarples/utils'
 
-import dbStub from '../src/lib/stubs/db'
-import fixtures from '../src/lib/fixtures'
+import dbStub from '../lib/stubs/db'
+import fixtures from '../lib/fixtures'
 import { IUserManagerClient } from '../generated/users_grpc_pb'
 import users from '../src'
 
@@ -20,7 +20,7 @@ const { default: createServer } = proxyquire('../src/server', {
 test.before(async t => {
   const options = {
     host: 'localhost',
-    port: 20000
+    port: 2000
   }
 
   // await sequelize.sync({ force: true })
@@ -62,6 +62,17 @@ test.cb('Create User', t => {
   })
 })
 
+test.cb('Invalid Create User', t => {
+  const client = t.context.client
+  const message = new users.messages.User()
+
+  client.createUser(message, err => {
+    t.truthy(err)
+
+    t.end()
+  })
+})
+
 test.cb('Get User', t => {
   const client = t.context.client
   const data = fixtures.user.fixed
@@ -73,6 +84,17 @@ test.cb('Get User', t => {
     const userObject = user.toObject()
 
     t.is(userObject.id, data.id)
+    t.end()
+  })
+})
+
+test.cb('Invalid Get User', t => {
+  const client = t.context.client
+  const message = new users.messages.User()
+
+  client.getUser(message, err => {
+    t.truthy(err)
+
     t.end()
   })
 })
@@ -92,6 +114,19 @@ test.cb('Get User By Username', t => {
   })
 })
 
+test.cb('Invalid Get User By Username', t => {
+  const client = t.context.client
+  const message = new users.messages.User()
+
+  message.setUsername('invalid-username')
+
+  client.getUserByUsername(message, err => {
+    t.truthy(err)
+
+    t.end()
+  })
+})
+
 test.cb('Get User By Email', t => {
   const client = t.context.client
   const data = fixtures.user.fixed
@@ -103,6 +138,19 @@ test.cb('Get User By Email', t => {
     const userObject = user.toObject()
 
     t.is(userObject.email, data.email)
+    t.end()
+  })
+})
+
+test.cb('Invalid Get User By Email', t => {
+  const client = t.context.client
+  const message = new users.messages.User()
+
+  message.setEmail('invalid-email')
+
+  client.getUserByEmail(message, err => {
+    t.truthy(err)
+
     t.end()
   })
 })
@@ -144,6 +192,19 @@ test.cb('Update User', t => {
   })
 })
 
+test.cb('Invalid Update User', t => {
+  const client = t.context.client
+  const message = new users.messages.User()
+
+  message.setId('invalid-id')
+
+  client.updateUser(message, err => {
+    t.truthy(err)
+
+    t.end()
+  })
+})
+
 test.cb('Delete User', t => {
   const client = t.context.client
   const data = fixtures.user.fixed
@@ -155,6 +216,17 @@ test.cb('Delete User', t => {
     const userObject = user.toObject()
 
     t.is(userObject.id, data.id)
+    t.end()
+  })
+})
+
+test.cb('Invalid Delete User', t => {
+  const client = t.context.client
+  const message = new users.messages.User()
+
+  client.deleteUser(message, err => {
+    t.truthy(err)
+
     t.end()
   })
 })

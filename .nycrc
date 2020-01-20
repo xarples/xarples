@@ -3,5 +3,6 @@
   "all": true,
   "check-coverage": true,
   "extension": [".ts"],
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/migrations", "src/seeders"]
 }

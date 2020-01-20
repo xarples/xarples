@@ -5,15 +5,17 @@ import config from '@xarples/config'
 import services from '../generated/users_grpc_pb'
 
 interface IOptions {
-  host: string,
+  host: string
   port: number
 }
 
-function createClient (options: IOptions) {
-  const { host: _host, port: _port } = config.users.service
-  const host = options.host || _host
-  const port = options.port || _port
-  const client = new services.UserManagerClient(`${host}:${port}`, grpc.credentials.createInsecure())
+function createClient(options?: IOptions) {
+  const host = options?.host || config.users.service.host
+  const port = options?.port || config.users.service.port
+  const client = new services.UserManagerClient(
+    `${host}:${port}`,
+    grpc.credentials.createInsecure()
+  )
 
   return client
 }
