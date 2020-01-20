@@ -1,11 +1,22 @@
 language: node_js
 
 node_js:
-  - "10"
+  - '10'
 
-before_script:
-  - npx lerna run bootstrap
-  - npx lerna run build
+cache: npm
 
-script:
-  - npx lerna run test
+git:
+  depth: 3
+
+jobs:
+  include:
+    - stage: lint
+      name: Lint code
+      script:
+        - npx lerna run lint
+        - commitlint-travis
+
+    - stage: test
+      name: Test code
+      script:
+        - npx lerna run test
