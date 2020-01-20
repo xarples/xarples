@@ -8,6 +8,9 @@ cache: npm
 git:
   depth: 3
 
+install:
+  - npx lerna bootstrap
+
 jobs:
   include:
     - stage: lint
