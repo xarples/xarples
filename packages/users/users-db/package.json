@@ -1,6 +1,6 @@
 {
   "name": "@xarples/users-db",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Database module of xarples user service",
   "main": "./dist/index.js",
   "scripts": {
@@ -17,19 +17,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "sequelize-cli": "^5.5.1",
-    "typescript": "^3.7.4"
-  },
   "dependencies": {
-    "@prisma/photon": "2.0.0-preview019",
-    "@xarples/config": "^1.0.0",
-    "@xarples/utils": "^1.0.0",
+    "@xarples/config": "file:../../config",
+    "@xarples/utils": "file:../../utils",
     "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
-    "prisma2": "^2.0.0-preview019",
     "sequelize": "^5.21.3",
     "sqlite3": "^4.1.1"
   }

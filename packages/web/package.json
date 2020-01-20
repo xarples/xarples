@@ -1,6 +1,6 @@
 {
   "name": "@xarples/web",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Xarples landing page",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "typescript": "^3.7.4"
-  },
   "dependencies": {
     "nuxt": "^2.11.0"
   }

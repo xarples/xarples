@@ -1,6 +1,6 @@
 {
   "name": "@xarples/utils",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Xarples utilities",
   "main": "./dist/index.js",
   "scripts": {
@@ -11,8 +11,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "typescript": "^3.7.4"
-  }
+  "license": "ISC"
 }

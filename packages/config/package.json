@@ -1,6 +1,6 @@
 {
   "name": "@xarples/config",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@xarples/types": "^1.0.0",
-    "typescript": "^3.7.4"
+    "@xarples/types": "file:../types"
   }
 }

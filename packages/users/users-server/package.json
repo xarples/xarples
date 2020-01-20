@@ -1,6 +1,6 @@
 {
   "name": "@xarples/users-server",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Backend of xarples user service",
   "scripts": {
     "build": "tsc",
@@ -18,18 +18,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@xarples/users-db": "^1.0.0",
-    "@xarples/config": "^1.0.0",
-    "@xarples/utils": "^1.0.0",
+    "@xarples/config": "file:../../config",
+    "@xarples/users-db": "file:../users-db",
+    "@xarples/utils": "file:../../utils",
     "google-protobuf": "^3.11.2",
     "grpc": "^1.24.2"
-  },
-  "devDependencies": {
-    "grpc-tools": "^1.8.0",
-    "grpc_tools_node_protoc_ts": "^2.5.9",
-    "nodemon": "^2.0.2",
-    "proxyquire": "^2.1.3",
-    "ts-node": "^8.6.2",
-    "typescript": "^3.7.4"
   }
 }
