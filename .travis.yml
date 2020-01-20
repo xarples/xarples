@@ -11,13 +11,15 @@ git:
 install:
   - npx lerna bootstrap --no-ci
 
+before_script:
+  - npx lerna run build
+
 jobs:
   include:
     - stage: lint
       name: Lint code
       script:
         - npx lerna run lint
-        - commitlint-travis
 
     - stage: test
       name: Test code
