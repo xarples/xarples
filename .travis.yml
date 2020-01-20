@@ -9,7 +9,7 @@ git:
   depth: 3
 
 install:
-  - npx lerna bootstrap
+  - npx lerna bootstrap --no-ci
 
 jobs:
   include:
