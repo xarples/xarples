@@ -2,14 +2,16 @@ import anyTest, { TestInterface } from 'ava'
 import { noCallThru } from 'proxyquire'
 import grpc from 'grpc'
 import utils from '@xarples/utils'
-import { User } from '@xarples/users-db'
 
 import dbStub from '../src/lib/stubs/db'
 import fixtures from '../src/lib/fixtures'
 import { IUserManagerClient } from '../generated/users_grpc_pb'
 import users from '../src'
 
-const test = anyTest as TestInterface<{server: grpc.Server, client: IUserManagerClient}>
+const test = anyTest as TestInterface<{
+  server: grpc.Server
+  client: IUserManagerClient
+}>
 const proxyquire = noCallThru()
 const { default: createServer } = proxyquire('../src/server', {
   '@xarples/users-db': dbStub
@@ -25,7 +27,10 @@ test.before(async t => {
   const server = createServer()
   const client = users.createClient(options)
 
-  server.bind(`${options.host}:${options.port}`, grpc.ServerCredentials.createInsecure())
+  server.bind(
+    `${options.host}:${options.port}`,
+    grpc.ServerCredentials.createInsecure()
+  )
   server.start()
 
   t.context = {
@@ -154,7 +159,7 @@ test.cb('Delete User', t => {
   })
 })
 
-function getUserMessage (payload: any) {
+function getUserMessage(payload: any) {
   const message = new users.messages.User()
 
   message.setId(payload.id)
@@ -163,15 +168,6 @@ function getUserMessage (payload: any) {
   message.setEmail(payload.email)
   message.setFirstName(payload.firstName)
   message.setLastName(payload.lastName)
-
-  return message
-}
-
-function getUserListMessage (payload: any[]) {
-  const message = new users.messages.UserList()
-  const userMessages = payload.map(getUserMessage)
-
-  message.setUsersList(userMessages)
 
   return message
 }

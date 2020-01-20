@@ -1,7 +1,6 @@
 'use strict'
 
 import grpc from 'grpc'
-import utils from '@xarples/utils'
 import { User } from '@xarples/users-db'
 import config from '@xarples/config'
 import services from '../generated/users_grpc_pb'
@@ -9,13 +8,14 @@ import messages from '../generated/users_pb'
 
 const server = new grpc.Server()
 
-async function createUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
+async function createUser(
+  call: grpc.ServerUnaryCall<messages.User>,
+  callback: grpc.sendUnaryData<messages.User>
+) {
   try {
     const data = call.request.toObject()
 
     delete data.id
-
-    data.password = utils.encrypt(data.password)
 
     const user = await User.create(data)
     const message = getUserMessage(user)
@@ -26,7 +26,10 @@ async function createUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
   }
 }
 
-async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
+async function getUser(
+  call: grpc.ServerUnaryCall<messages.User>,
+  callback: grpc.sendUnaryData<messages.User>
+) {
   const id = call.request.getId()
 
   const user = await User.findByPk(id)
@@ -47,7 +50,10 @@ async function getUser (call: grpc.ServerUnaryCall<messages.User>, callback: grp
 
   callback(null, message)
 }
-async function getUserByUsername (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
+async function getUserByUsername(
+  call: grpc.ServerUnaryCall<messages.User>,
+  callback: grpc.sendUnaryData<messages.User>
+) {
   const username = call.request.getUsername()
 
   const user = await User.findOne({
@@ -70,7 +76,10 @@ async function getUserByUsername (call: grpc.ServerUnaryCall<messages.User>, cal
 
   callback(null, message)
 }
-async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
+async function getUserByEmail(
+  call: grpc.ServerUnaryCall<messages.User>,
+  callback: grpc.sendUnaryData<messages.User>
+) {
   const email = call.request.getEmail()
   const user = await User.findOne({
     where: { email }
@@ -92,14 +101,20 @@ async function getUserByEmail (call: grpc.ServerUnaryCall<messages.User>, callba
 
   callback(null, message)
 }
-async function listUsers (call: grpc.ServerUnaryCall<messages.UserList>, callback: grpc.sendUnaryData<messages.UserList>) {
+async function listUsers(
+  call: grpc.ServerUnaryCall<messages.UserList>,
+  callback: grpc.sendUnaryData<messages.UserList>
+) {
   call.request.toObject()
   const users = await User.findAll({ raw: true })
   const message = getUserListMessage(users)
 
   callback(null, message)
 }
-async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
+async function updateUser(
+  call: grpc.ServerUnaryCall<messages.User>,
+  callback: grpc.sendUnaryData<messages.User>
+) {
   const id = call.request.getId()
   const data = call.request.toObject()
 
@@ -119,17 +134,15 @@ async function updateUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
     return
   }
 
-  if (data.password) {
-    data.password = utils.encrypt(data.password)
-  }
-
   const updated = await user.update(data)
-
   const message = getUserMessage(updated)
 
   callback(null, message)
 }
-async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: grpc.sendUnaryData<messages.User>) {
+async function deleteUser(
+  call: grpc.ServerUnaryCall<messages.User>,
+  callback: grpc.sendUnaryData<messages.User>
+) {
   const id = call.request.getId()
 
   const user = await User.findByPk(id)
@@ -154,7 +167,7 @@ async function deleteUser (call: grpc.ServerUnaryCall<messages.User>, callback: 
   callback(null, message)
 }
 
-function getUserMessage (payload: User) {
+function getUserMessage(payload: User) {
   const message = new messages.User()
 
   message.setId(payload.id)
@@ -167,7 +180,7 @@ function getUserMessage (payload: User) {
   return message
 }
 
-function getUserListMessage (payload: User[]) {
+function getUserListMessage(payload: User[]) {
   const message = new messages.UserList()
   const userMessages = payload.map(getUserMessage)
 
@@ -186,13 +199,18 @@ server.addService(services.UserManagerService, {
   deleteUser
 })
 
-function createServer () {
+function createServer() {
   return server
 }
 
-function main () {
-  server.bind(`${config.users.service.host}:${config.users.service.port}`, grpc.ServerCredentials.createInsecure())
-  console.log(`Server running at ${config.users.service.host}:${config.users.service.port}`)
+function main() {
+  server.bind(
+    `${config.users.service.host}:${config.users.service.port}`,
+    grpc.ServerCredentials.createInsecure()
+  )
+  console.log(
+    `Server running at ${config.users.service.host}:${config.users.service.port}`
+  )
   server.start()
 }
 

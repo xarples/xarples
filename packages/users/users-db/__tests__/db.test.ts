@@ -4,13 +4,13 @@ import utils from '@xarples/utils'
 
 import { User, sequelize } from '../src'
 
-const test = anyTest as TestInterface<{User: User}>
+const test = anyTest as TestInterface<{ User: User }>
 
-test.serial.beforeEach(async t => {
+test.serial.beforeEach(async () => {
   await sequelize.sync({ force: true })
 })
 
-test.serial.afterEach(async t => {
+test.serial.afterEach(async () => {
   await sequelize.drop()
 })
 
@@ -20,7 +20,7 @@ test.serial('Should be create an user', async t => {
     lastName: faker.name.lastName(),
     username: faker.internet.userName(),
     email: faker.internet.email(),
-    password: utils.encrypt(faker.internet.password())
+    password: faker.internet.password()
   }
 
   const user = await User.create(data)
@@ -32,7 +32,7 @@ test.serial('Should be create an user', async t => {
   t.is(user.lastName, data.lastName)
   t.is(user.username, data.username)
   t.is(user.email, data.email)
-  t.is(user.password, data.password)
+  t.is(user.password, utils.encrypt(data.password))
 })
 
 test.serial('Should be find an user by id', async t => {
@@ -69,10 +69,7 @@ test.serial('Should be find an user by email', async t => {
 })
 
 test.serial('Should be find all users', async t => {
-  const users = [
-    await createUser(),
-    await createUser()
-  ]
+  const users = [await createUser(), await createUser()]
 
   const result = await User.findAll()
 
@@ -87,7 +84,7 @@ test.serial('Should be update an user', async t => {
     lastName: faker.name.lastName(),
     username: faker.internet.userName(),
     email: faker.internet.email(),
-    password: utils.encrypt(faker.internet.password())
+    password: faker.internet.password()
   }
 
   const updated = await user.update(newData)
@@ -101,7 +98,7 @@ test.serial('Should be update an user', async t => {
   t.is(updated.lastName, newData.lastName)
   t.is(updated.username, newData.username)
   t.is(updated.email, newData.email)
-  t.is(updated.password, newData.password)
+  t.is(updated.password, utils.encrypt(newData.password))
 })
 
 test.serial('Should be delete an user', async t => {
@@ -114,7 +111,7 @@ test.serial('Should be delete an user', async t => {
   t.is(found, null)
 })
 
-async function createUser () {
+async function createUser() {
   const data = {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
