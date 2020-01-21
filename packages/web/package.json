@@ -4,14 +4,21 @@
   "description": "Xarples landing page",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint ./src --ext .ts",
-    "lint:fix": "eslint ./src --ext .ts --fix"
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "generate": "nuxt-ts generate",
+    "start": "nuxt-ts start",
+    "lint": "eslint --ext .ts,.js,.vue .",
+    "lint:fix": "eslint --ext .ts,.js,.vue . --fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@nuxt/typescript-runtime": "^0.3.8",
     "nuxt": "^2.11.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config-typescript": "^1.0.0"
   }
 }

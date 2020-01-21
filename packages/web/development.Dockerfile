@@ -10,6 +10,6 @@ RUN npx lerna bootstrap
 
 RUN npx lerna run build
 
-EXPOSE 5000
+EXPOSE 3000
 
-CMD [ "npx", "lerna", "run", "dev", "--stream", "--scope=@xarples/users-server" ]
+CMD [ "npx", "lerna", "run", "dev", "--stream", "--scope=@xarples/web" ]

@@ -1,19 +1,31 @@
 version: "3"
 
 services:
+  web:
+    container_name: xarples-web
+    build:
+      context: .
+      dockerfile: ./packages/web/development.Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./packages/config:/usr/src/console/packages/config
+      - ./packages/users:/usr/src/console/packages/users
+      - ./packages/web:/usr/src/console/packages/web
+      - /usr/src/console/packages/config/node_modules
+
   users:
     container_name: xarples-users
     build:
       context: .
       dockerfile: ./packages/users/users-server/development.Dockerfile
-    ports: 
+    ports:
       - 5000:5000
-    volumes: 
+    volumes:
       - ./packages/config:/usr/src/console/packages/config
       - ./packages/users:/usr/src/console/packages/users
-      - /usr/src/console/node_modules
       - /usr/src/console/packages/config/node_modules
-    
+
   users-db:
     container_name: xarples-users-db
     image: postgres:10.3
