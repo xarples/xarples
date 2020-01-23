@@ -8,10 +8,12 @@ const config: Configuration = {
       eslint: true
     }
   },
+  modules: [['nuxt-buefy', {}]],
   build: {
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
+        // eslint-disable-next-line
         ;(config?.module?.rules || []).push({
           enforce: 'pre',
           test: /\.(ts|js|vue)$/,
