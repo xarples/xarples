@@ -1,3 +1,10 @@
-**/node_modules
+node_modules
 dist
+coverage
+.nyc_output
+tsconfig.tsbuildinfo
+.DS_STORE
 .nuxt
+__tests__
+README.md
+ava.config.js

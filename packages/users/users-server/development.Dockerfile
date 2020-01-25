@@ -1,10 +1,15 @@
-FROM node:12
+FROM node:10
 
 WORKDIR /usr/src/console
 
 COPY ./package.json ./lerna.json ./tsconfig.json ./
 
-COPY ./packages ./packages
+RUN npm install
+
+COPY ./packages/types ./packages/types
+COPY ./packages/config ./packages/config
+COPY ./packages/utils ./packages/utils
+COPY ./packages/users ./packages/users
 
 RUN npx lerna bootstrap
 

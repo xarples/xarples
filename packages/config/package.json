@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@xarples/types": "file:../types"
+    "@xarples/types": "*"
   }
 }

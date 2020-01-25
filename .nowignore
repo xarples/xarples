@@ -1,0 +1,12 @@
+.nuxt
+node_modules
+*.log
+README.md
+data
+docker
+packages/auth
+packages/config
+packages/console
+packages/types
+packages/users
+packages/utils

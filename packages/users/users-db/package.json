@@ -17,11 +17,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@xarples/config": "file:../../config",
-    "@xarples/utils": "file:../../utils",
+    "@xarples/config": "*",
+    "@xarples/utils": "*",
     "pg": "^7.17.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.3",
     "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^5.5.1"
   }
 }

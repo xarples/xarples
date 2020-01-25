@@ -25,3 +25,8 @@ jobs:
       name: Test code
       script:
         - npx lerna run test
+
+    - stage: web-deploy
+      name: Web deployment
+      script:
+        - npm run deploy:now

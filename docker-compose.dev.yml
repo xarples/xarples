@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   web:
@@ -6,13 +6,12 @@ services:
     build:
       context: .
       dockerfile: ./packages/web/development.Dockerfile
+    environment:
+      - HOST=0.0.0.0
     ports:
       - 3000:3000
     volumes:
-      - ./packages/config:/usr/src/console/packages/config
-      - ./packages/users:/usr/src/console/packages/users
       - ./packages/web:/usr/src/console/packages/web
-      - /usr/src/console/packages/config/node_modules
 
   users:
     container_name: xarples-users
@@ -22,9 +21,8 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ./packages/config:/usr/src/console/packages/config
-      - ./packages/users:/usr/src/console/packages/users
-      - /usr/src/console/packages/config/node_modules
+      - ./packages/users/users-server/src:/usr/src/console/packages/users/users-server/src
+      - ./packages/users/users-db/src:/usr/src/console/packages/users/users-db/src
 
   users-db:
     container_name: xarples-users-db

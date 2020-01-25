@@ -1,8 +1,8 @@
 <template>
   <section class="section">
     <div class="columns is-centered">
-      <div class="column is-half is-1 is-narrow">
-        <b-tag type="is-primary" size="is-medium" rounded>
+      <div class="column is-half is-1 is-narrow has-text-centered">
+        <b-tag type="is-primary" size="is-small" rounded>
           NEW
         </b-tag>
       </div>
@@ -11,9 +11,7 @@
       <div class="column">
         <p class="is-size-2 has-text-centered">
           <span class="has-text-weight-bold">Food</span>
-          <span>
-            - A new era for the restaurants
-          </span>
+          <span>- A new era for the restaurants</span>
         </p>
         <p class="is-size-5 has-text-centered">
           Food is the best restaurant platform that allows manage your entire
