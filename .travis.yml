@@ -9,9 +9,10 @@ git:
   depth: 3
 
 install:
-  - npx lerna bootstrap --no-ci
+  - npm install --no-ci
 
 before_script:
+  - npx lerna bootstrap --no-ci
   - npx lerna run build
 
 jobs:
