@@ -1,7 +1,7 @@
 <template>
   <section class="hero is-medium">
     <div class="hero-body">
-      <div class="columns is-mobile is-multiline is-centered">
+      <div class="columns is-mobile is-multiline is-centered is-valign">
         <div class="column">
           <h1 class="title">
             A new way to use Software

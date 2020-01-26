@@ -4,12 +4,16 @@ module.exports = {
     browser: true,
     node: true
   },
+  globals: {
+    $nuxt: true,
+    'jest/globals': true
+  },
   extends: [
     '@nuxtjs/eslint-config-typescript',
     'plugin:vue/recommended'
     // 'plugin:prettier/recommended'
   ],
-  // plugins: ['vue'],
+  plugins: ['vue'],
   rules: {
     semi: [2, 'never'],
     'vue/html-self-closing': 'off',
