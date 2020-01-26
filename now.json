@@ -1,4 +1,6 @@
 {
+  "name": "xarples",
+  "alias": "xarples",
   "version": 2,
   "builds": [
     { "src": "packages/web/nuxt.config.ts", "use": "@nuxtjs/now-builder" }
