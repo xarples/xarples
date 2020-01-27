@@ -7,10 +7,9 @@
       <h1 class="title is-3">
         Polaris
       </h1>
-      <h2
-        class="subtitle is-5"
-      >
-        All our products are available in the console, activate those you need and optimize your workflow.
+      <h2 class="subtitle is-5">
+        All our products are available in the console, activate those you need
+        and optimize your workflow.
       </h2>
       <b-button type="is-text">
         Learn more

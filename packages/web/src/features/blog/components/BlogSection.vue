@@ -4,10 +4,9 @@
       <h1 class="title is-2 has-text-centered">
         The latest Xarples news, articles, tips and more
       </h1>
-      <h2
-        class="subtitle is-4 has-text-centered"
-      >
-        Keep updated, we are always doing new things so that all businesses continue to grow successfully.
+      <h2 class="subtitle is-4 has-text-centered">
+        Keep updated, we are always doing new things so that all businesses
+        continue to grow successfully.
       </h2>
       <post-list />
     </div>

@@ -1,14 +1,27 @@
 {
   "name": "@xarples/console",
-  "version": "0.0.0",
-  "description": "Xarples core application",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "My sweet Nuxt.js project",
+  "author": "xarples",
+  "private": true,
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint ./src --ext .ts",
-    "lint:fix": "eslint ./src --ext .ts --fix"
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "generate": "nuxt-ts generate",
+    "start": "nuxt-ts start",
+    "lint": "eslint --ext .ts,.js,.vue ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "@nuxt/typescript-runtime": "^0.3.8",
+    "cross-env": "^5.2.0",
+    "express": "^4.16.4",
+    "nuxt": "^2.0.0",
+    "nuxt-buefy": "^0.3.2"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^0.6.1",
+    "@nuxt/typescript-build": "^0.5.6",
+    "@nuxtjs/eslint-config-typescript": "^1.0.0",
+    "nodemon": "^1.18.9"
+  }
 }

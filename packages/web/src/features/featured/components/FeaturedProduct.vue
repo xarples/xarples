@@ -16,7 +16,9 @@ export default Vue.extend({
         </div>
         <h1 class="title is-2 has-text-centered">
           <span>Food</span>
-          <span class="has-text-weight-light">- A new era for the restaurants</span>
+          <span class="has-text-weight-light">
+            - A new era for the restaurants
+          </span>
         </h1>
         <h2 class="subtitle is-size-4 has-text-centered">
           Food is the best restaurant platform that allows manage your entire

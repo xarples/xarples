@@ -4,7 +4,7 @@
     "es6": true,
     "node": true
   },
-  "extends": [],
+  "extends": ["plugin:prettier/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -14,6 +14,6 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {}
 }

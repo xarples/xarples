@@ -1,3 +1,3 @@
-export function a (b: string) {
+export function a(b: string) {
   return b
 }
