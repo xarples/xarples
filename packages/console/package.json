@@ -5,15 +5,16 @@
   "author": "xarples",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts build",
+    "dev": "nodemon",
+    "build": "nuxt-ts build; tsc --project server/tsconfig.json",
     "generate": "nuxt-ts generate",
-    "start": "nuxt-ts start",
+    "start": "NODE_ENV=production node ./dist/server/index.js",
     "lint": "eslint --ext .ts,.js,.vue ."
   },
   "dependencies": {
+    "@xarples/config": "*",
+    "@xarples/utils": "*",
     "@nuxt/typescript-runtime": "^0.3.8",
-    "cross-env": "^5.2.0",
     "express": "^4.16.4",
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.2"
@@ -21,7 +22,6 @@
   "devDependencies": {
     "@nuxt/types": "^0.6.1",
     "@nuxt/typescript-build": "^0.5.6",
-    "@nuxtjs/eslint-config-typescript": "^1.0.0",
-    "nodemon": "^1.18.9"
+    "@nuxtjs/eslint-config-typescript": "^1.0.0"
   }
 }

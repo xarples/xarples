@@ -1,3 +1,7 @@
 import users from './modules/users'
 
-export default { users }
+export { users }
+
+export default {
+  users
+}

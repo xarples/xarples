@@ -1,4 +1,5 @@
 import { Server } from 'http'
+import logger from './logger'
 
 interface IOptions {
   coredump: boolean
@@ -11,15 +12,19 @@ export default function terminate(
 ) {
   const exit = () => (options.coredump ? process.abort() : process.exit())
 
-  return (code: number, reason: string) => (err?: Error) => {
-    console.log(`Process exiting with code: ${code} and reason: ${reason}`) // use logger module here
+  return (code: number, reason: string) => (
+    err?: any,
+    promise?: Promise<any>
+  ) => {
+    logger.info(`Process exiting with code: ${code} and reason: ${reason}`)
 
-    if (err) {
-      console.error(err.message) // use logger module here
-      console.debug(err.stack) // use logger module here
+    if (err instanceof Error) {
+      logger.error(err.message)
+      logger.debug({ msg: err.stack })
+      logger.debug({ msg: promise })
     }
 
-    server.close()
+    server.close(exit)
     setTimeout(exit, options.timeout).unref()
   }
 }

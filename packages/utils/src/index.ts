@@ -1,14 +1,5 @@
-import encrypt from './lib/encrypt'
-import terminate from './lib/encrypt'
-import fixtures from './lib/fixtures'
-import stubs from './lib/stubs'
+import * as utils from './lib'
 
-export { default as encrypt } from './lib/encrypt'
-export { default as terminate } from './lib/encrypt'
+export * from './lib'
 
-export default {
-  encrypt,
-  terminate,
-  fixtures,
-  stubs
-}
+export default utils
