@@ -1,7 +1,5 @@
 import { Configuration } from '@nuxt/types'
 
-console.log(__dirname)
-
 const config: Configuration = {
   buildModules: ['@nuxt/typescript-build'],
   dev: process.env.NODE_ENV !== 'production',

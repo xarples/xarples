@@ -5,9 +5,9 @@ import { Nuxt, Builder } from 'nuxt'
 import { logger, terminate } from '@xarples/utils'
 import config from '../nuxt.config'
 
+const nuxt = new Nuxt(config)
 const app = express()
 const server = http.createServer(app)
-const nuxt = new Nuxt(config)
 const exitHandler = terminate(server)
 
 async function main() {

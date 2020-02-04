@@ -1,20 +1,19 @@
-
 export interface IConfigModuleDB {
-  username: string,
-  password: string,
-  database: string,
-  host: string,
+  username: string
+  password: string
+  database: string
+  host: string
   dialect: 'postgres' | 'sqlite'
 }
 
 export interface IConfigModuleService {
-  host: string,
+  host: string
   port: number
 }
 
 export interface IConfigModule {
-  service: IConfigModuleService,
-  db: IConfigModuleDB
+  service: IConfigModuleService
+  db?: IConfigModuleDB
 }
 
 export interface IConfig {

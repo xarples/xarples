@@ -1,11 +1,12 @@
 <template>
   <section class="section">
-    Home1
+    <p>Home</p>
   </section>
 </template>
 
-<script>
-export default {
-  name: 'HomePage'
-}
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+  name: 'Home'
+})
 </script>

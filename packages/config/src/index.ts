@@ -1,7 +1,5 @@
-import users from './modules/users'
+import * as modules from './modules'
 
-export { users }
+export * from './modules'
 
-export default {
-  users
-}
+export default modules

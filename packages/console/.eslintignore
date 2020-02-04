@@ -1,0 +1,10 @@
+node_modules
+dist
+coverage
+.nyc_output
+.nuxt
+data
+tsconfig.tsbuildinfo
+.DS_STORE
+generated
+**/**/*.d.ts
