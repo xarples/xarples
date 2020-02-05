@@ -4,9 +4,9 @@
   "description": "Description",
   "main": "index.js",
   "scripts": {
-    "build:dev": "docker-compose -f docker-compose.dev.yml build",
-    "start:dev": "docker-compose -f docker-compose.dev.yml up",
-    "down:dev": "docker-compose -f docker-compose.dev.yml down",
+    "dev:build": "docker-compose -f docker-compose.dev.yml build",
+    "dev:start": "docker-compose -f docker-compose.dev.yml up",
+    "dev:down": "docker-compose -f docker-compose.dev.yml down",
     "deploy:now": "now --token=$NOW_TOKEN"
   },
   "keywords": [],
