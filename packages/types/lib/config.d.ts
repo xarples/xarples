@@ -3,6 +3,7 @@ export interface IConfigModuleDB {
   password: string
   database: string
   host: string
+  port: number
   dialect: 'postgres' | 'sqlite'
 }
 

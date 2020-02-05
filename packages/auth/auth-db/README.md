@@ -1,27 +1,25 @@
-# @xarples/auth-db
+# @xarples/users-db
 
-> Database module of xarples auth service
+> Database module of xarples user service
 
 ## Installation
 
 ```js
 
-npm i --save @xarples/auth-db
+npm install --save @xarples/users-db
 
 ```
 
-
-## Usage
-
+## Usage 
 
 ```js
 
-import authDB from '@xarples/auth-db'
+import userDB from '@xarples/users-db'
 
-const db = authDB.setup()
+const db = userDB.setup()
 
-db.clients.findMany(clients => {
-  // do something with the clients
+db.users.findMany().then(users => {
+  // do something with the user list
 })
 
 ```

@@ -1,3 +1,5 @@
 export { default as logger } from './logger'
 export { default as encrypt } from './encrypt'
 export { default as terminate } from './terminate'
+export { default as randomBytes } from './randomBytes'
+export { default as cache } from './cache'

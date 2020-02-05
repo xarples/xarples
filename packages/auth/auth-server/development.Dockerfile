@@ -9,12 +9,12 @@ RUN npm install
 COPY ./packages/types ./packages/types
 COPY ./packages/config ./packages/config
 COPY ./packages/utils ./packages/utils
-COPY ./packages/users ./packages/users
+COPY ./packages/auth ./packages/auth
 
 RUN npx lerna bootstrap
 
 RUN npx lerna run build
 
-EXPOSE 5000
+EXPOSE 5001
 
-CMD [ "npx", "lerna", "run", "dev", "--stream", "--scope=@xarples/users-server" ]
+CMD [ "npx", "lerna", "run", "dev", "--stream", "--scope=@xarples/auth-server" ]

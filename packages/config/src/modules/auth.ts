@@ -3,15 +3,15 @@ import { IConfigModule } from '@xarples/types'
 let config: IConfigModule = {
   service: {
     host: 'https://api.xarples.com/users',
-    port: 5000
+    port: 5001
   },
   db: {
-    username: 'xarples_users',
-    password: 'xarples_users',
-    database: 'xarples_users',
+    username: 'xarples_auth',
+    password: 'xarples_auth',
+    database: 'xarples_auth',
     host: 'localhost',
     dialect: 'postgres',
-    port: 5433
+    port: 5432
   }
 }
 
@@ -19,15 +19,15 @@ if (process.env.NODE_ENV !== 'production') {
   config = {
     service: {
       host: 'localhost',
-      port: 5000
+      port: 5001
     },
     db: {
-      username: 'xarples_users',
-      password: 'xarples_users',
-      database: 'xarples_users',
+      username: 'xarples_auth',
+      password: 'xarples_auth',
+      database: 'xarples_auth',
       host: 'localhost',
       dialect: 'postgres',
-      port: 5433
+      port: 5432
     }
   }
 }

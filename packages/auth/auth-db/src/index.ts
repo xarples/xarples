@@ -1,3 +1,2 @@
-export function a(b: string) {
-  return b
-}
+export { default as sequelize } from './lib/sequelize'
+export { default as User } from './models/client'

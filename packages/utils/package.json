@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lru-cache": "^5.1.1",
     "pino": "^5.16.0"
   },
   "devDependencies": {

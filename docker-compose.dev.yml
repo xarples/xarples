@@ -9,9 +9,21 @@ services:
     environment:
       - HOST=0.0.0.0
     ports:
-      - 3000:3000
+      - 8000:8000
     volumes:
       - ./packages/web:/usr/src/console/packages/web
+
+  console:
+    container_name: xarples-console
+    build:
+      context: .
+      dockerfile: ./packages/console/development.Dockerfile
+    environment:
+      - HOST=0.0.0.0
+    ports:
+      - 8001:8001
+    volumes:
+      - ./packages/console:/usr/src/console/packages/console
 
   users:
     container_name: xarples-users
@@ -23,6 +35,17 @@ services:
     volumes:
       - ./packages/users/users-server/src:/usr/src/console/packages/users/users-server/src
       - ./packages/users/users-db/src:/usr/src/console/packages/users/users-db/src
+
+  auth:
+    container_name: xarples-auth
+    build:
+      context: .
+      dockerfile: ./packages/auth/auth-server/development.Dockerfile
+    ports:
+      - 5001:5001
+    volumes:
+      - ./packages/auth/auth-server/src:/usr/src/console/packages/auth/auth-server/src
+      - ./packages/auth/auth-db/src:/usr/src/console/packages/auth/auth-db/src
 
   users-db:
     container_name: xarples-users-db

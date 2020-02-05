@@ -3,12 +3,14 @@
 import grpc from 'grpc'
 import { User } from '@xarples/users-db'
 import config from '@xarples/config'
-import utils from '@xarples/utils'
+import { logger, cache as getCache } from '@xarples/utils'
 import services from '../generated/users_grpc_pb'
 import messages from '../generated/users_pb'
 
 const server = new grpc.Server()
-const { logger } = utils
+const cache = getCache<string, User | User[]>({
+  maxAge: 1000 * 60 * 60 // 1 hour
+})
 
 async function createUser(
   call: grpc.ServerUnaryCall<messages.User>,
@@ -19,11 +21,17 @@ async function createUser(
 
     delete data.id
 
-    logger.info('Creating user')
+    logger.info('Creating user in the database')
     logger.debug('data', data)
 
     const user = await User.create(data)
     const message = getUserMessage(user)
+
+    logger.info(`Creating user with id ${user.id} in the cache`)
+
+    cache.set(user.id, user)
+    cache.set(user.username, user)
+    cache.set(user.email, user)
 
     callback(null, message)
   } catch (e) {
@@ -39,24 +47,36 @@ async function getUser(
 ) {
   try {
     const id = call.request.getId()
-    const user = await User.findByPk(id)
 
-    logger.info(`Fetching user with id ${id}`)
+    if (!cache.has(id)) {
+      const user = await User.findByPk(id)
 
-    if (!user) {
-      const error: grpc.ServiceError = {
-        name: '',
-        message: 'user not found',
-        code: grpc.status.NOT_FOUND
+      logger.info(`Fetching user with id ${id} from database`)
+
+      if (!user) {
+        const error: grpc.ServiceError = {
+          name: '',
+          message: 'user not found',
+          code: grpc.status.NOT_FOUND
+        }
+
+        logger.error(`Can't find user with id ${id} from the database`)
+
+        callback(error, null)
+
+        return
       }
 
-      logger.error(`Can't find user with id ${id}`)
+      logger.info(`Creating user with id ${id} in the database`)
 
-      callback(error, null)
-
-      return
+      cache.set(user.id, user)
+      cache.set(user.username, user)
+      cache.set(user.email, user)
     }
 
+    logger.info(`Fetching user with id ${id} from the cache`)
+
+    const user = cache.get(id) as User
     const message = getUserMessage(user)
 
     callback(null, message)
@@ -73,26 +93,39 @@ async function getUserByUsername(
   try {
     const username = call.request.getUsername()
 
-    logger.info(`Fetching user with username: ${username}`)
+    if (!cache.has(username)) {
+      logger.info(`Fetching user with username: ${username} from the database`)
 
-    const user = await User.findOne({
-      where: { username }
-    })
+      const user = await User.findOne({
+        where: { username }
+      })
 
-    if (!user) {
-      const error: grpc.ServiceError = {
-        name: '',
-        message: 'user not found',
-        code: grpc.status.NOT_FOUND
+      if (!user) {
+        const error: grpc.ServiceError = {
+          name: '',
+          message: 'user not found',
+          code: grpc.status.NOT_FOUND
+        }
+
+        logger.error(
+          `Can't find user with username ${username} from the database`
+        )
+
+        callback(error, null)
+
+        return
       }
 
-      logger.error(`Can't find user with username ${username}`)
+      logger.info(`Creating user with username ${username} in the cache`)
 
-      callback(error, null)
-
-      return
+      cache.set(user.id, user)
+      cache.set(user.username, user)
+      cache.set(user.email, user)
     }
 
+    logger.info(`Fetching user with username ${username} from the cache`)
+
+    const user = cache.get(username) as User
     const message = getUserMessage(user)
 
     callback(null, message)
@@ -109,26 +142,37 @@ async function getUserByEmail(
   try {
     const email = call.request.getEmail()
 
-    logger.info(`Fetching user with email ${email}`)
+    if (!cache.has(email)) {
+      logger.info(`Fetching user with email ${email} from the database`)
 
-    const user = await User.findOne({
-      where: { email }
-    })
+      const user = await User.findOne({
+        where: { email }
+      })
 
-    if (!user) {
-      const error: grpc.ServiceError = {
-        name: '',
-        message: 'user not found',
-        code: grpc.status.NOT_FOUND
+      if (!user) {
+        const error: grpc.ServiceError = {
+          name: '',
+          message: 'user not found',
+          code: grpc.status.NOT_FOUND
+        }
+
+        logger.error(`Can't find user with email ${email} from the database`)
+
+        callback(error, null)
+
+        return
       }
 
-      logger.error(`Can't find user with email ${email}`)
+      logger.info(`Creating user with username ${email} in the cache`)
 
-      callback(error, null)
-
-      return
+      cache.set(user.id, user)
+      cache.set(user.username, user)
+      cache.set(user.email, user)
     }
 
+    logger.info(`Fetching user with username ${email} from the cache`)
+
+    const user = cache.get(email) as User
     const message = getUserMessage(user)
 
     callback(null, message)
@@ -143,10 +187,21 @@ async function listUsers(
   callback: grpc.sendUnaryData<messages.UserList>
 ) {
   try {
-    logger.info('Fetching users')
-
     call.request.toObject()
-    const users = await User.findAll({ raw: true })
+
+    if (!cache.has('users')) {
+      logger.info('Fetching users from the database')
+
+      const users = await User.findAll({ raw: true })
+
+      logger.info('Creating users in the cache')
+
+      cache.set('users', users)
+    }
+
+    logger.info('Fetching users from the cache')
+
+    const users = cache.get('users') as User[]
     const message = getUserListMessage(users)
 
     callback(null, message)
@@ -163,7 +218,7 @@ async function updateUser(
   try {
     const id = call.request.getId()
 
-    logger.info(`Fetching user with id ${id}`)
+    logger.info(`Fetching user with id ${id} from the database`)
 
     const data = call.request.toObject()
     const user = await User.findByPk(id)
@@ -177,18 +232,28 @@ async function updateUser(
         code: grpc.status.NOT_FOUND
       }
 
-      logger.error(`Can't find user with id ${id}`)
+      logger.error(`Can't find user with id ${id} from the database`)
 
       callback(error, null)
 
       return
     }
 
-    logger.info(`Updating user with id: ${id}`)
+    logger.info(`Updating user with id ${id} from the database`)
     logger.debug('data', data)
 
     const updated = await user.update(data)
     const message = getUserMessage(updated)
+
+    logger.info(`Updating user with id ${id} from the cache`)
+
+    cache.set(user.id, user)
+    cache.set(user.username, user)
+    cache.set(user.email, user)
+
+    logger.info('Invalidating the user list of the cache')
+
+    cache.del('users')
 
     callback(null, message)
   } catch (e) {
@@ -204,7 +269,7 @@ async function deleteUser(
   try {
     const id = call.request.getId()
 
-    logger.info(`Fetching user with id ${id}`)
+    logger.info(`Fetching user with id ${id} from the database`)
 
     const user = await User.findByPk(id)
     const clone = JSON.parse(JSON.stringify(user)) as User
@@ -216,16 +281,26 @@ async function deleteUser(
         code: grpc.status.NOT_FOUND
       }
 
-      logger.error(`Can't find user with id ${id}`)
+      logger.error(`Can't find user with id ${id} from the database`)
 
       callback(error, null)
 
       return
     }
 
-    logger.info(`Deleting user with id ${id}`)
+    logger.info(`Deleting user with id ${id} from the database`)
 
     await user.destroy()
+
+    logger.info(`Deleting user with id ${id} from the cache`)
+
+    cache.del(clone.id)
+    cache.del(clone.username)
+    cache.del(clone.email)
+
+    logger.info('Invalidating the user list of the cache')
+
+    cache.del('users')
 
     const message = getUserMessage(clone)
 
