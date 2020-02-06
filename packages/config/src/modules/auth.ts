@@ -6,29 +6,21 @@ let config: IConfigModule = {
     port: 5001
   },
   db: {
-    username: 'xarples_auth',
-    password: 'xarples_auth',
-    database: 'xarples_auth',
-    host: 'localhost',
+    username: process.env.DB_USERNAME || 'xarples',
+    password: process.env.DB_PASSWORD || 'xarples',
+    database: process.env.DB_NAME || 'xarples_auth',
+    host: process.env.DB_HOST || 'localhost',
     dialect: 'postgres',
     port: 5432
   }
 }
 
 if (process.env.NODE_ENV !== 'production') {
-  config = {
-    service: {
-      host: 'localhost',
-      port: 5001
-    },
-    db: {
-      username: 'xarples_auth',
-      password: 'xarples_auth',
-      database: 'xarples_auth',
-      host: 'localhost',
-      dialect: 'postgres',
-      port: 5432
-    }
+  config!.db!.host = process.env.DB_HOST || 'localhost'
+
+  config.service = {
+    host: 'localhost',
+    port: 5001
   }
 }
 

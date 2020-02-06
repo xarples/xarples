@@ -2,7 +2,7 @@ FROM node:10
 
 WORKDIR /usr/src/console
 
-COPY ./package.json ./lerna.json ./tsconfig.json .prettierrc ./
+COPY ./package.json ./lerna.json ./tsconfig.json .prettierrc ./docker/wait-for-it/wait-for-it.sh ./
 
 RUN npm install
 
@@ -17,4 +17,4 @@ RUN npx lerna run build
 
 EXPOSE 5001
 
-CMD [ "npx", "lerna", "run", "dev", "--stream", "--scope=@xarples/auth-server" ]
+CMD [ "./wait-for-it.sh", "--timeout=15", "postgres:5432", "--", "bash", "./packages/auth/auth-server/init.sh" ]

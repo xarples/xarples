@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   web:
@@ -30,6 +30,10 @@ services:
       dockerfile: ./packages/users/users-server/development.Dockerfile
     ports:
       - 5000:5000
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
     volumes:
       - ./packages/users/users-server/src:/usr/src/console/packages/users/users-server/src
       - ./packages/users/users-db/src:/usr/src/console/packages/users/users-db/src
@@ -41,32 +45,24 @@ services:
       dockerfile: ./packages/auth/auth-server/development.Dockerfile
     ports:
       - 5001:5001
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
     volumes:
       - ./packages/auth/auth-server/src:/usr/src/console/packages/auth/auth-server/src
       - ./packages/auth/auth-db/src:/usr/src/console/packages/auth/auth-db/src
 
-  users-db:
-    container_name: xarples-users-db
+  postgres:
+    container_name: postgres
     image: postgres:10.3
     restart: always
     ports:
       - 5432:5432
     environment:
-      POSTGRES_DB: xarples_users
-      POSTGRES_USER: xarples_users
-      POSTGRES_PASSWORD: xarples_users
+      POSTGRES_USER: xarples
+      POSTGRES_PASSWORD: xarples
+      POSTGRES_MULTIPLE_DATABASES: xarples_users,xarples_auth
     volumes:
-      - ./data/user-db/postgres:/var/lib/postgresql/data
-
-  auth-db:
-    container_name: auth-db
-    image: postgres:10.3
-    restart: always
-    ports:
-      - 5433:5432
-    environment:
-      POSTGRES_DB: xarples_auth
-      POSTGRES_USER: xarples_auth
-      POSTGRES_PASSWORD: xarples_auth
-    volumes:
-      - ./data/auth-db/postgres:/var/lib/postgresql/data
+      - ./docker/docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
+      - ./data/postgres:/var/lib/postgresql/data

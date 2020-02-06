@@ -2,7 +2,7 @@ FROM node:10
 
 WORKDIR /usr/src/console
 
-COPY ./package.json ./lerna.json ./tsconfig.json .prettierrc ./
+COPY ./package.json ./lerna.json ./tsconfig.json .prettierrc ./docker/wait-for-it/wait-for-it.sh ./
 
 RUN npm install
 
@@ -17,4 +17,4 @@ RUN npx lerna run build
 
 EXPOSE 5000
 
-CMD [ "npx", "lerna", "run", "dev", "--stream", "--scope=@xarples/users-server" ]
+CMD [ "./wait-for-it.sh", "--timeout=15", "postgres:5432", "--", "bash", "./packages/users/users-server/init.sh" ]

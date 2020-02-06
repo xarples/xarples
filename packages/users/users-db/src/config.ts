@@ -1,3 +1,3 @@
 import config from '@xarples/config'
 
-export default config.users.db
+export = config.users.db
