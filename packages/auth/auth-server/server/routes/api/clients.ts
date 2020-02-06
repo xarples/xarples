@@ -1,8 +1,10 @@
 import { Router } from 'express'
-import { default as clients } from './clients'
 
 const router = Router()
 
-router.use('/clients', clients)
+router.post('/clients', (req, res) => {
+  console.log(req)
+  res.send('ok')
+})
 
 export default router

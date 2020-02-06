@@ -1,15 +1,20 @@
 import http from 'http'
 import express from 'express'
-import { logger, terminate } from '@xarples/utils'
 import config from '@xarples/config'
+// @ts-ignore
+import { Nuxt, Builder } from 'nuxt'
+import { logger, terminate } from '@xarples/utils'
+import nuxtConfig from '../nuxt.config'
 import routes from './routes'
 
+const nuxt = new Nuxt(nuxtConfig)
 const app = express()
 const server = http.createServer(app)
 const exitHandler = terminate(server)
 
 app.use('/api', routes.api)
-app.use('/', routes.root)
+// app.use('/', routes.root)
+app.use(nuxt.render)
 
 // app.get('/authorize', ensureAuth, (req, res, next) => {})
 // app.post('/authorize/:action', ensureAuth, (req, res, next) => {})
@@ -21,6 +26,13 @@ app.use('/', routes.root)
 async function main() {
   const { host, port } = config.auth.service
 
+  if (nuxtConfig.dev) {
+    const builder = new Builder(nuxt)
+    await builder.build()
+  } else {
+    await nuxt.ready()
+  }
+
   server.listen(port, () => {
     logger.info(`Server listening on http://${host}:${port}`)
   })
@@ -31,8 +43,4 @@ async function main() {
   process.on('unhandledRejection', exitHandler(1, 'Unhandled Promise'))
 }
 
-if (!module.parent) {
-  main()
-}
-
-export default app
+main()
