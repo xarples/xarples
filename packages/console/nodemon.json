@@ -1,5 +1,5 @@
 {
-  "watch": ["nuxt.config.ts", "src/server/index.ts"],
+  "watch": ["nuxt.config.ts", "server/index.ts"],
   "ext": "ts",
   "exec": "ts-node --project server/tsconfig.json server/index.ts"
 }

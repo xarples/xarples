@@ -4,7 +4,7 @@ const router = Router()
 
 router.get('/authorize', (req, res) => {
   console.log(req)
-  res.send('ok')
+  res.json({})
 })
 
 export default router
