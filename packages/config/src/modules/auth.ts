@@ -12,6 +12,9 @@ let config: IConfigModule = {
     host: process.env.DB_HOST || 'localhost',
     dialect: 'postgres',
     port: 5432
+  },
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost'
   }
 }
 

@@ -3,6 +3,12 @@
   "semi": false,
   "singleQuote": true,
   "bracketSpacing": true,
-  "jsx": false,
-  "printWidth": 80
+  "overrides": [
+    {
+      "files": ["*.vue"],
+      "options": {
+        "parser": "vue"
+      }
+    }
+  ]
 }

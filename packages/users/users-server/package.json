@@ -2,6 +2,7 @@
   "name": "@xarples/users-server",
   "version": "0.0.0",
   "description": "Backend of xarples user service",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",

@@ -11,7 +11,8 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./packages/web:/usr/src/console/packages/web
+      - ./packages/web:/usr/src/console/packages/web/
+      - /usr/src/console/packages/web/node_modules
 
   console:
     container_name: xarples-console
@@ -21,7 +22,8 @@ services:
     ports:
       - 8001:8001
     volumes:
-      - ./packages/console:/usr/src/console/packages/console
+      - ./packages/console:/usr/src/console/packages/console/
+      - /usr/src/console/packages/console/node_modules
 
   users:
     container_name: xarples-users
@@ -35,8 +37,9 @@ services:
     environment:
       DB_HOST: postgres
     volumes:
-      - ./packages/users/users-server/src:/usr/src/console/packages/users/users-server/src
-      - ./packages/users/users-db/src:/usr/src/console/packages/users/users-db/src
+      - users_server_node_modules:/usr/src/console/packages/users/users-server/node_modules
+      - ./packages/users:/usr/src/console/packages/users/
+      - /usr/src/console/packages/users/users-db/node_modules
 
   auth:
     container_name: xarples-auth
@@ -49,9 +52,11 @@ services:
       - postgres
     environment:
       DB_HOST: postgres
+      REDIS_HOST: redis
     volumes:
-      - ./packages/auth/auth-server/src:/usr/src/console/packages/auth/auth-server/src
-      - ./packages/auth/auth-db/src:/usr/src/console/packages/auth/auth-db/src
+      - ./packages/auth:/usr/src/console/packages/auth/
+      - /usr/src/console/packages/auth/auth-server/node_modules
+      - /usr/src/console/packages/auth/auth-db/node_modules
 
   postgres:
     container_name: postgres
@@ -68,7 +73,13 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
 
   redis:
-    image: redis
     container_name: redis
-    expose:
+    image: redis
+    restart: always
+    volumes:
+      - ./data/redis:/data
+    ports:
       - 6379:6379
+
+volumes:
+  users_server_node_modules:

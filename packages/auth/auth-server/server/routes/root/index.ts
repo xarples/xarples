@@ -1,10 +1,14 @@
 import { Router } from 'express'
+import passport from 'passport'
 
 const router = Router()
 
-router.get('/authorize', (req, res) => {
-  console.log(req)
-  res.json({})
-})
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/signin'
+  })
+)
 
 export default router

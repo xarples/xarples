@@ -1,19 +1,46 @@
 import http from 'http'
+import redis from 'redis'
+import connectRedis from 'connect-redis'
 import express from 'express'
+import expressSession from 'express-session'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import passport from 'passport'
 import config from '@xarples/config'
+import { logger, terminate } from '@xarples/utils'
 // @ts-ignore
 import { Nuxt, Builder } from 'nuxt'
-import { logger, terminate } from '@xarples/utils'
 import nuxtConfig from '../nuxt.config'
 import routes from './routes'
+import auth from './auth'
 
+const RedisStore = connectRedis(expressSession)
 const nuxt = new Nuxt(nuxtConfig)
 const app = express()
 const server = http.createServer(app)
 const exitHandler = terminate(server)
+const redisClient = redis.createClient({ host: config.auth.redis!.host })
+const session = expressSession({
+  store: new RedisStore({ client: redisClient }),
+  secret: 'secret',
+  saveUninitialized: false,
+  resave: false
+})
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(session)
+app.use(passport.initialize())
+app.use(passport.session())
+
+passport.use(auth.localStrategy)
+passport.deserializeUser(auth.deserializeUser)
+passport.serializeUser(auth.serializeUser)
 
 app.use('/api', routes.api)
-// app.use('/', routes.root)
+app.use('/', routes.root)
+
 app.use(nuxt.render)
 
 // app.get('/authorize', ensureAuth, (req, res, next) => {})

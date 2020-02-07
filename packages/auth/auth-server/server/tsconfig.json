@@ -9,7 +9,7 @@
     "sourceMap": true,
     "noEmit": false,
     "baseUrl": ".",
-    "outDir": "../dist",
+    "outDir": "../../dist",
     "types": ["@types/node", "@nuxt/types"]
   },
   "include": ["./**/*.ts"]

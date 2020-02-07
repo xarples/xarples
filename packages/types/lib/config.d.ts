@@ -7,6 +7,10 @@ export interface IConfigModuleDB {
   dialect: 'postgres' | 'sqlite'
 }
 
+export interface IConfigModuleRedis {
+  host: string
+}
+
 export interface IConfigModuleService {
   host: string
   port: number
@@ -15,6 +19,7 @@ export interface IConfigModuleService {
 export interface IConfigModule {
   service: IConfigModuleService
   db?: IConfigModuleDB
+  redis?: IConfigModuleRedis
 }
 
 export interface IConfig {
