@@ -1,27 +1,66 @@
 import http from 'http'
 import express from 'express'
-import xarplesConfig from '@xarples/config'
+import redis from 'redis'
+import connectRedis from 'connect-redis'
+import expressSession from 'express-session'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import config from '@xarples/config'
+import { logger, terminate } from '@xarples/utils'
 // @ts-ignore
 import { Nuxt, Builder } from 'nuxt'
-import { logger, terminate } from '@xarples/utils'
-import config from '../nuxt.config'
+import nuxtConfig from '../nuxt.config'
 
-const nuxt = new Nuxt(config)
+const RedisStore = connectRedis(expressSession)
+const nuxt = new Nuxt(nuxtConfig)
 const app = express()
 const server = http.createServer(app)
 const exitHandler = terminate(server)
+const redisClient = redis.createClient({ host: config.auth.redis!.host })
+const session = expressSession({
+  store: new RedisStore({ client: redisClient }),
+  secret: 'secret',
+  saveUninitialized: false,
+  resave: false
+})
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(session)
+
+app.get('/api/auth/tokeninfo', (req, res) => {
+  res.send(req.session)
+})
+
+app.get('/api/auth/logout', (req, res) => {
+  res.send(
+    req!.session!.destroy(err => {
+      if (err) {
+        return res.status(500).send({ error: err })
+      }
+
+      res.status(200).send({ success: true })
+    })
+  )
+})
+
+app.get('/login', (_, res) => {
+  const { host, port } = config.auth.service
+  res.redirect(`http://${host}:${port}/login`)
+})
+
+app.use(nuxt.render)
 
 async function main() {
-  const { host, port } = xarplesConfig.console.service
+  const { host, port } = config.console.service
 
-  if (config.dev) {
+  if (nuxtConfig.dev) {
     const builder = new Builder(nuxt)
     await builder.build()
   } else {
     await nuxt.ready()
   }
-
-  app.use(nuxt.render)
 
   server.listen(port, () => {
     logger.info(`Server listening on http://${host}:${port}`)

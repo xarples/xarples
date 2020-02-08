@@ -3,8 +3,6 @@ import utils from '@xarples/utils'
 
 import sequelize from '../lib/sequelize'
 
-import Role from './role'
-
 class User extends Model {
   id!: string
   username!: string
@@ -61,7 +59,5 @@ User.init(
     }
   }
 )
-
-User.belongsTo(Role)
 
 export default User

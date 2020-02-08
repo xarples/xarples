@@ -21,6 +21,10 @@ services:
       dockerfile: ./packages/console/development.Dockerfile
     ports:
       - 8001:8001
+    environment:
+      DB_HOST: postgres
+      REDIS_HOST: redis
+      USERS_SERVICE_HOST: users
     volumes:
       - ./packages/console:/usr/src/console/packages/console/
       - /usr/src/console/packages/console/node_modules
@@ -35,6 +39,7 @@ services:
     depends_on:
       - postgres
     environment:
+      USERS_SERVICE_HOST: 0.0.0.0
       DB_HOST: postgres
     volumes:
       - users_server_node_modules:/usr/src/console/packages/users/users-server/node_modules
@@ -53,6 +58,7 @@ services:
     environment:
       DB_HOST: postgres
       REDIS_HOST: redis
+      USERS_SERVICE_HOST: users
     volumes:
       - ./packages/auth:/usr/src/console/packages/auth/
       - /usr/src/console/packages/auth/auth-server/node_modules

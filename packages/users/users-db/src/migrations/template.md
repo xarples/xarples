@@ -1,5 +1,4 @@
-'use strict'
-
+```js
 import { DataTypes } from 'sequelize'
 
 import sequelize from '../lib/sequelize'
@@ -51,3 +50,4 @@ export default {
     return queryInterface.dropTable('users')
   }
 }
+```

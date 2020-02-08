@@ -18,4 +18,4 @@ RUN npx lerna run build
 
 EXPOSE 5001
 
-CMD [ "./wait-for-it.sh", "--timeout=15", "postgres:5432", "--", "bash", "./packages/auth/auth-server/init.sh" ]
+CMD [ "./wait-for-it.sh", "--timeout=20", "postgres:5432", "--", "bash", "./packages/auth/auth-server/init.sh" ]

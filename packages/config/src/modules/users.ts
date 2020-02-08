@@ -2,8 +2,8 @@ import { IConfigModule } from '@xarples/types'
 
 let config: IConfigModule = {
   service: {
-    host: 'https://api.xarples.com/users',
-    port: 5000
+    host: process.env.USERS_SERVICE_HOST || 'https://api.xarples.com/users',
+    port: +process.env.PORT! || 5000
   },
   db: {
     username: process.env.DB_USERNAME || 'xarples',
@@ -18,10 +18,7 @@ let config: IConfigModule = {
 if (process.env.NODE_ENV !== 'production') {
   config!.db!.host = process.env.DB_HOST || 'localhost'
 
-  config.service = {
-    host: 'localhost',
-    port: 5000
-  }
+  config.service.host = process.env.USERS_SERVICE_HOST || 'localhost'
 }
 
 if (process.env.NODE_ENV === 'test') {

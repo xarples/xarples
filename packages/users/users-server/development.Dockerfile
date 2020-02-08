@@ -17,4 +17,4 @@ RUN npx lerna run build
 
 EXPOSE 5000
 
-CMD [ "./wait-for-it.sh", "--timeout=15", "postgres:5432", "--", "bash", "./packages/users/users-server/init.sh" ]
+CMD [ "./wait-for-it.sh", "--timeout=20", "postgres:5432", "--", "bash", "./packages/users/users-server/init.sh" ]

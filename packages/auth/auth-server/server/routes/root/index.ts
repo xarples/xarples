@@ -7,7 +7,7 @@ router.post(
   '/login',
   passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/signin'
+    failureRedirect: '/login'
   })
 )
 

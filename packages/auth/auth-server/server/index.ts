@@ -39,7 +39,6 @@ passport.deserializeUser(auth.deserializeUser)
 passport.serializeUser(auth.serializeUser)
 
 app.use('/api', routes.api)
-app.use('/', routes.root)
 
 app.use(nuxt.render)
 

@@ -2,13 +2,5 @@
   "tabWidth": 2,
   "semi": false,
   "singleQuote": true,
-  "bracketSpacing": true,
-  "overrides": [
-    {
-      "files": ["*.vue"],
-      "options": {
-        "parser": "vue"
-      }
-    }
-  ]
+  "bracketSpacing": true
 }

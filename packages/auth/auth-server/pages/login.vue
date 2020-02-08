@@ -1,16 +1,18 @@
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
-  name: 'Login',
-  asyncData() {
+import { createComponent, watch } from '@vue/composition-api'
+import useLogin from '../features/login/use/login'
+
+export default createComponent({
+  setup() {
+    const { state, handleLogin } = useLogin()
+
+    watch(() => {
+      console.log(state.username)
+    })
+
     return {
-      username: '',
-      password: ''
-    }
-  },
-  methods: {
-    handleClick() {
-      debugger
+      state,
+      handleLogin
     }
   }
 })
@@ -18,32 +20,16 @@ export default Vue.extend({
 
 <template>
   <main class="main is-flex">
-    <b-navbar shadow wrapper-class="container" is-active>
-      <template>
-        <template slot="brand">
-          <b-navbar-item tag="router-link" :to="{ path: '/' }">
-            <img
-              src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-              alt="Lightweight UI components for Vue.js based on Bulma"
-            />
-          </b-navbar-item>
-        </template>
-
-        <template slot="end">
-          <b-navbar-item>Sign up</b-navbar-item>
-        </template>
-      </template>
-    </b-navbar>
-
     <section class="section has-background has-flex-1">
       <div class="container has-full-height">
         <div class="columns is-vcentered has-full-height">
           <div class="column"></div>
           <div class="column">
+            <img src="/static/logo.png" alt="" srcset="" />
             <form action>
               <b-field label="Username">
                 <b-input
-                  v-model="username"
+                  v-model="state.username"
                   name="username"
                   size="is-medium"
                   maxlength="30"
@@ -51,7 +37,7 @@ export default Vue.extend({
               </b-field>
               <b-field label="Password">
                 <b-input
-                  v-model="password"
+                  v-model="state.password"
                   name="password"
                   size="is-medium"
                   type="password"
@@ -62,10 +48,13 @@ export default Vue.extend({
                 type="is-primary"
                 size="is-medium"
                 expanded
-                rounded
-                @click="handleClick"
-                >Sign in</b-button
+                class="has-margin"
+                @click="handleLogin"
               >
+                <span class="has-text-bold">
+                  Sign in
+                </span>
+              </b-button>
             </form>
           </div>
           <div class="column"></div>
@@ -91,5 +80,9 @@ export default Vue.extend({
 
 .has-full-height {
   height: 100%;
+}
+
+.has-margin {
+  margin-top: 1.5em;
 }
 </style>
