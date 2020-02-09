@@ -199,6 +199,23 @@ router.post('/token', async (req, res) => {
   })
 })
 
+router.get('/.well-known/oauth-authorization-server', (_, res) => {
+  const meta = {
+    issuer: 'http://localhost:5000',
+    authorization_endpoint: 'http://localhost:5000/authorize',
+    token_endpoint: 'http://localhost:5000/token',
+    token_endpoint_auth_methods_supported: ['client_secret_basic'],
+    userinfo_endpoint: 'http://localhost:5000/userinfo',
+    registration_endpoint: 'http://localhost:5000/register',
+    scopes_supported: [''],
+    response_types_supported: ['code'],
+    service_documentation: 'http://localhost:5000/docs',
+    ui_locales_supported: ['en-US']
+  }
+
+  res.status(200).send(meta)
+})
+
 export default router
 
 function validateRequest(params: object, requiredParams: string[]) {
