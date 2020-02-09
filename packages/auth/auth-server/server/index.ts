@@ -40,15 +40,7 @@ passport.serializeUser(auth.serializeUser)
 
 app.use('/api', routes.api)
 app.use('/', routes.root)
-
 app.use(nuxt.render)
-
-// app.get('/authorize', ensureAuth, (req, res, next) => {})
-// app.post('/authorize/:action', ensureAuth, (req, res, next) => {})
-// app.post('/token', (req, res, next) => {})
-// app.post('/userinfo', (req, res, next) => {})
-// app.post('/docs', (req, res, next) => {})
-// app.post('/.well-known/oauth-authorization-server', (req, res, next) => {})
 
 async function main() {
   const { host, port } = config.auth.service

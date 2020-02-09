@@ -216,6 +216,14 @@ router.get('/.well-known/oauth-authorization-server', (_, res) => {
   res.status(200).send(meta)
 })
 
+router.get('/userinfo', (_, res) => {
+  res.status(200).send('TODO')
+})
+
+router.get('/docs', (_, res) => {
+  res.status(200).send('TODO')
+})
+
 export default router
 
 function validateRequest(params: object, requiredParams: string[]) {
