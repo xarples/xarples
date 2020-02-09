@@ -1,2 +1,5 @@
 export { default as sequelize } from './lib/sequelize'
-export { default as User } from './models/client'
+export { default as Client } from './models/client'
+export { default as AuthorizationCode } from './models/authorizationCode'
+export { default as AccessToken } from './models/accessToken'
+export { default as RefreshToken } from './models/refreshToken'

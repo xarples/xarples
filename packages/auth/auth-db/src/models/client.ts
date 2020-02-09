@@ -5,14 +5,14 @@ import sequelize from '../lib/sequelize'
 
 class Client extends Model {
   id!: string
-  client_id!: string
-  client_secret!: string
-  redirect_uri!: string
+  clientId!: string
+  clientSecret!: string
+  redirectUri!: string
   type!: 'confidential' | 'public'
   name!: string
   description!: string
-  homepage_url?: string
-  logo_url?: string
+  homepageUrl?: string
+  logoUrl?: string
   readonly createdAt!: Date
   readonly updatedAt!: Date
 }
@@ -25,15 +25,19 @@ Client.init(
       primaryKey: true,
       allowNull: false
     },
-    client_id: {
+    clientId: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: () => utils.randomBytes(32)
     },
-    client_secret: {
+    clientSecret: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: () => utils.randomBytes(256)
+    },
+    redirectUri: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
     name: {
       type: DataTypes.STRING,
@@ -47,11 +51,11 @@ Client.init(
       type: DataTypes.ENUM('confidential', 'public'),
       allowNull: false
     },
-    homepage_url: {
+    homepageUrl: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    logo_url: {
+    logoUrl: {
       type: DataTypes.STRING,
       allowNull: false
     }
@@ -59,7 +63,7 @@ Client.init(
   {
     sequelize,
     tableName: 'clients',
-    modelName: 'Client'
+    underscored: true
   }
 )
 

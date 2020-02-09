@@ -1,7 +1,5 @@
-'use strict'
-
+```js
 import { DataTypes } from 'sequelize'
-import utils from '@xarples/utils'
 
 import sequelize from '../lib/sequelize'
 
@@ -9,58 +7,47 @@ const queryInterface = sequelize.getQueryInterface()
 
 export default {
   up: () => {
-    return queryInterface.createTable('clients', {
+    return queryInterface.createTable('users', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false
       },
-      client_id: {
+      username: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: () => utils.randomBytes(32)
+        unique: true
       },
-      client_secret: {
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      email: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: () => utils.randomBytes(256)
+        unique: true
       },
-      redirect_uri: {
+      firstName: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      name: {
+      lastName: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      type: {
-        type: DataTypes.ENUM('confidential', 'public'),
-        allowNull: false
-      },
-      homepage_url: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      logo_url: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: DataTypes.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: DataTypes.DATE
       }
     })
   },
   down: () => {
-    return queryInterface.dropTable('clients')
+    return queryInterface.dropTable('users')
   }
 }
+```
