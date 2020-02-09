@@ -69,12 +69,12 @@ export default Vue.extend({
                   <input type="hidden" name="consent" value="deny" />
                   <input
                     type="hidden"
-                    name="clientId"
+                    name="client_id"
                     :value="client.clientId"
                   />
                   <input
                     type="hidden"
-                    name="redirectUri"
+                    name="redirect_uri"
                     :value="client.redirectUri"
                   />
                   <input type="hidden" name="state" :value="state" />
@@ -84,12 +84,12 @@ export default Vue.extend({
                   <input type="hidden" name="consent" value="allow" />
                   <input
                     type="hidden"
-                    name="clientId"
+                    name="client_id"
                     :value="client.clientId"
                   />
                   <input
                     type="hidden"
-                    name="redirectUri"
+                    name="redirect_uri"
                     :value="client.redirectUri"
                   />
                   <input type="hidden" name="scope" :value="scope" />

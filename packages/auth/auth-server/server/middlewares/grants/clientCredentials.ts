@@ -1,17 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
-import {
-  Client,
-  AuthorizationCode,
-  AccessToken,
-  RefreshToken
-} from '@xarples/auth-db'
+import { Client, AccessToken } from '@xarples/auth-db'
 
 export default async function authorizationCode(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  if (req.body.grant_type !== 'authorization_code') {
+  if (req.body.grant_type !== 'client_credentials') {
     return next()
   }
 
@@ -22,7 +17,7 @@ export default async function authorizationCode(
     'client_credentials',
     'refresh_token'
   ]
-  const { grant_type: grantType, redirect_uri: redirectUri, code } = req.body
+  const { grant_type: grantType, scope } = req.body
 
   if (errors.length) {
     return res.status(400).send({
@@ -75,45 +70,17 @@ export default async function authorizationCode(
     })
   }
 
-  const authorizationCode = await AuthorizationCode.findOne({
-    where: { code, clientId: client.id }
-  })
-
-  if (!authorizationCode || authorizationCode.code !== code) {
-    return res.status(400).send({
-      error: 'invalid_grant',
-      error_description: 'invalid authorization code'
-    })
-  }
-
-  if (client.redirectUri !== redirectUri) {
-    return res.status(400).send({
-      error: 'invalid_grant',
-      error_description: 'redirection_uri does not match'
-    })
-  }
-
   const accessToken = await AccessToken.create({
     // @ts-ignore
     userId: req.user.id,
     clientId: client.id,
-    scope: authorizationCode.scope
+    scope: scope || ''
   })
-
-  const refreshToken = await RefreshToken.create({
-    // @ts-ignore
-    userId: req.user.id,
-    clientId: client.id,
-    scope: authorizationCode.scope
-  })
-
-  await authorizationCode.destroy()
 
   res.status(200).send({
     access_token: accessToken.token,
     token_type: 'Bearer',
-    expires_in: 3600,
-    refresh_token: refreshToken.token
+    expires_in: 3600
   })
 }
 
@@ -131,7 +98,7 @@ function validateRequest(params: object, requiredParams: string[]) {
 }
 
 function validateTokenRequest(params: object) {
-  const requiredParams = ['grant_type', 'code', 'client_id', 'client_id']
+  const requiredParams = ['grant_type']
 
   return validateRequest(params, requiredParams)
 }

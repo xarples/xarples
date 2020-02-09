@@ -2,7 +2,12 @@ import querystring from 'querystring'
 import { Router } from 'express'
 import { Client, AuthorizationCode } from '@xarples/auth-db'
 
-import { defaultHandler, authorizationCode } from '../../middlewares'
+import {
+  defaultHandler,
+  authorizationCode,
+  refreshToken,
+  clientCredentials
+} from '../../middlewares'
 
 const router = Router()
 
@@ -93,7 +98,13 @@ router.post('/authorize', async (req, res) => {
   res.redirect(`${redirectUri}?${queryParams}`)
 })
 
-router.post('/token', authorizationCode, defaultHandler)
+router.post(
+  '/token',
+  authorizationCode,
+  refreshToken,
+  clientCredentials,
+  defaultHandler
+)
 
 router.get('/.well-known/oauth-authorization-server', (_, res) => {
   const meta = {

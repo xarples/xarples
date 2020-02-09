@@ -1,17 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
-import {
-  Client,
-  AuthorizationCode,
-  AccessToken,
-  RefreshToken
-} from '@xarples/auth-db'
+import { Client, AccessToken, RefreshToken } from '@xarples/auth-db'
 
-export default async function authorizationCode(
+export default async function refreshToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  if (req.body.grant_type !== 'authorization_code') {
+  if (req.body.grant_type !== 'refresh_token') {
     return next()
   }
 
@@ -22,7 +17,7 @@ export default async function authorizationCode(
     'client_credentials',
     'refresh_token'
   ]
-  const { grant_type: grantType, redirect_uri: redirectUri, code } = req.body
+  const { grant_type: grantType, token } = req.body
 
   if (errors.length) {
     return res.status(400).send({
@@ -75,21 +70,14 @@ export default async function authorizationCode(
     })
   }
 
-  const authorizationCode = await AuthorizationCode.findOne({
-    where: { code, clientId: client.id }
+  const refreshToken = await RefreshToken.findOne({
+    where: { token, clientId: client.id }
   })
 
-  if (!authorizationCode || authorizationCode.code !== code) {
+  if (!refreshToken || refreshToken.token !== token) {
     return res.status(400).send({
       error: 'invalid_grant',
-      error_description: 'invalid authorization code'
-    })
-  }
-
-  if (client.redirectUri !== redirectUri) {
-    return res.status(400).send({
-      error: 'invalid_grant',
-      error_description: 'redirection_uri does not match'
+      error_description: 'invalid refresh token'
     })
   }
 
@@ -97,17 +85,8 @@ export default async function authorizationCode(
     // @ts-ignore
     userId: req.user.id,
     clientId: client.id,
-    scope: authorizationCode.scope
+    scope: refreshToken.scope
   })
-
-  const refreshToken = await RefreshToken.create({
-    // @ts-ignore
-    userId: req.user.id,
-    clientId: client.id,
-    scope: authorizationCode.scope
-  })
-
-  await authorizationCode.destroy()
 
   res.status(200).send({
     access_token: accessToken.token,
@@ -131,7 +110,7 @@ function validateRequest(params: object, requiredParams: string[]) {
 }
 
 function validateTokenRequest(params: object) {
-  const requiredParams = ['grant_type', 'code', 'client_id', 'client_id']
+  const requiredParams = ['grant_type', 'refresh_token']
 
   return validateRequest(params, requiredParams)
 }
