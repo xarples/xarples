@@ -1,15 +1,15 @@
 import { Router } from 'express'
 import passport from 'passport'
+import config from '@xarples/config'
 
 const router = Router()
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
   req!.session!.user = req.user
-  res.send({ success: true })
-})
 
-router.get('/tokeninfo', (req, res) => {
-  res.status(200).send(req.session)
+  res.redirect(
+    `http://${config.console.service.host}:${config.console.service.host}`
+  )
 })
 
 export default router
