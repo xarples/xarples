@@ -82,9 +82,7 @@ router.post('/authorize', async (req, res) => {
 
   if (!client) {
     query.error = 'invalid_request'
-    query.error_description = `The request is missing a required parameter, includes an
-      invalid parameter value, includes a parameter more than
-      once, or is otherwise malformed.`
+    query.error_description = 'Invalid client'
 
     const queryParams = querystring.stringify(query)
 
@@ -159,41 +157,11 @@ router.post('/introspect', async (req, res) => {
     })
   }
 
-  let refreshOrAccessToken: AccessToken | RefreshToken | null
-
-  const tokenTypes = {
-    access_token: AccessToken,
-    refresh_token: RefreshToken
-  }
-  const token: string = req.body.token
-  const tokenTypeHint: 'access_token' | 'refresh_token' =
-    req.body.token_type_hint
-
-  if (tokenTypeHint && !Object.keys(tokenTypes).includes(tokenTypeHint)) {
-    return res.status(400).send({
-      error: 'unsupported_token_type',
-      error_description:
-        'The authorization server does not support the revocation of the presented token type.'
-    })
-  }
-
-  if (tokenTypeHint) {
-    const Model = tokenTypes[tokenTypeHint]
-
-    refreshOrAccessToken = await Model.findOne({ where: { token } })
-  }
-
   const accessToken = await AccessToken.findOne({
-    where: { token }
+    where: { token: req.body.token }
   })
 
-  const refreshToken = await RefreshToken.findOne({
-    where: { token }
-  })
-
-  refreshOrAccessToken = accessToken || refreshToken
-
-  if (!refreshOrAccessToken) {
+  if (!accessToken) {
     return res.status(200).send({
       active: false
     })
@@ -201,14 +169,14 @@ router.post('/introspect', async (req, res) => {
 
   res.status(200).send({
     active: true,
-    scope: refreshOrAccessToken.scope,
-    client_id: refreshOrAccessToken.clientId,
+    scope: accessToken.scope,
+    client_id: accessToken.clientId,
     // @ts-ignore
     username: req.user.username,
     token_type: 'Bearer',
-    exp: getUnixTime(add(refreshOrAccessToken.createdAt, { seconds: 3600 })),
-    iat: getUnixTime(refreshOrAccessToken.createdAt),
-    nbf: getUnixTime(refreshOrAccessToken.createdAt),
+    exp: getUnixTime(add(accessToken.createdAt, { seconds: 3600 })),
+    iat: getUnixTime(accessToken.createdAt),
+    nbf: getUnixTime(accessToken.createdAt),
     // @ts-ignore
     sub: req.user.id,
     aud: client.homepageUrl,
