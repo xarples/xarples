@@ -2,7 +2,7 @@ FROM node:10
 
 WORKDIR /usr/src/console
 
-COPY ./package.json ./lerna.json ./tsconfig.json .prettierrc ./docker/wait-for-it.sh ./
+COPY ./package.json ./lerna.json ./tsconfig.json .prettierrc ./docker/wait-for-it/wait-for-it.sh ./
 
 RUN npm install
 
