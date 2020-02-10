@@ -1,6 +1,11 @@
 import querystring from 'querystring'
 import { Router } from 'express'
-import { Client, AuthorizationCode, AccessToken } from '@xarples/auth-db'
+import {
+  Client,
+  AuthorizationCode,
+  AccessToken,
+  RefreshToken
+} from '@xarples/auth-db'
 import { getUnixTime, add } from 'date-fns'
 import config from '@xarples/config'
 
@@ -154,11 +159,41 @@ router.post('/introspect', async (req, res) => {
     })
   }
 
+  let refreshOrAccessToken: AccessToken | RefreshToken | null
+
+  const tokenTypes = {
+    access_token: AccessToken,
+    refresh_token: RefreshToken
+  }
+  const token: string = req.body.token
+  const tokenTypeHint: 'access_token' | 'refresh_token' =
+    req.body.token_type_hint
+
+  if (tokenTypeHint && !Object.keys(tokenTypes).includes(tokenTypeHint)) {
+    return res.status(400).send({
+      error: 'unsupported_token_type',
+      error_description:
+        'The authorization server does not support the revocation of the presented token type.'
+    })
+  }
+
+  if (tokenTypeHint) {
+    const Model = tokenTypes[tokenTypeHint]
+
+    refreshOrAccessToken = await Model.findOne({ where: { token } })
+  }
+
   const accessToken = await AccessToken.findOne({
-    where: { token: req.body.token }
+    where: { token }
   })
 
-  if (!accessToken) {
+  const refreshToken = await RefreshToken.findOne({
+    where: { token }
+  })
+
+  refreshOrAccessToken = accessToken || refreshToken
+
+  if (!refreshOrAccessToken) {
     return res.status(200).send({
       active: false
     })
@@ -166,20 +201,107 @@ router.post('/introspect', async (req, res) => {
 
   res.status(200).send({
     active: true,
-    scope: accessToken.scope,
-    client_id: accessToken.clientId,
+    scope: refreshOrAccessToken.scope,
+    client_id: refreshOrAccessToken.clientId,
     // @ts-ignore
     username: req.user.username,
     token_type: 'Bearer',
-    exp: getUnixTime(add(accessToken.createdAt, { seconds: 3600 })),
-    iat: getUnixTime(accessToken.createdAt),
-    nbf: getUnixTime(accessToken.createdAt),
+    exp: getUnixTime(add(refreshOrAccessToken.createdAt, { seconds: 3600 })),
+    iat: getUnixTime(refreshOrAccessToken.createdAt),
+    nbf: getUnixTime(refreshOrAccessToken.createdAt),
     // @ts-ignore
     sub: req.user.id,
     aud: client.homepageUrl,
     iss: `http://${config.auth.service.host}${config.auth.service.port}`
     // jti: accessToken.id
   })
+})
+
+router.post('/revoke', async (req, res) => {
+  const errors = validateIntrospectionRequest(req.body)
+  const authorizationHeader = req.headers.authorization
+
+  if (errors.length) {
+    return res.status(400).send({
+      error: '',
+      error_description: errors[0]
+    })
+  }
+
+  if (!authorizationHeader || !authorizationHeader.includes('Basic')) {
+    return res
+      .status(401)
+      .send({
+        error: 'invalid_request',
+        error_description: 'Missing required Authorization Header'
+      })
+      .setHeader('WWW-Authenticate', 'Basic')
+  }
+
+  const base64Credentials = authorizationHeader.split(' ')[1]
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii')
+  const [clientId, clientSecret] = credentials.split(':')
+
+  const client = await Client.findOne({
+    where: { clientId }
+  })
+
+  if (!client) {
+    return res
+      .status(401)
+      .send({
+        error: 'invalid_client',
+        error_description: 'Invalid client credentials'
+      })
+      .setHeader('WWW-Authenticate', 'Basic')
+  }
+
+  if (client.clientSecret !== clientSecret) {
+    return res.status(401).send({
+      error: 'invalid_client',
+      error_description: 'Invalid client credentials'
+    })
+  }
+
+  let refreshOrAccessToken: AccessToken | RefreshToken | null
+
+  const tokenTypes = {
+    access_token: AccessToken,
+    refresh_token: RefreshToken
+  }
+  const token: string = req.body.token
+  const tokenTypeHint: 'access_token' | 'refresh_token' =
+    req.body.token_type_hint
+
+  if (tokenTypeHint && !Object.keys(tokenTypes).includes(tokenTypeHint)) {
+    return res.status(400).send({
+      error: 'unsupported_token_type',
+      error_description:
+        'The authorization server does not support the revocation of the presented token type.'
+    })
+  }
+
+  if (tokenTypeHint) {
+    const Model = tokenTypes[tokenTypeHint]
+
+    refreshOrAccessToken = await Model.findOne({ where: { token } })
+  }
+
+  const accessToken = await AccessToken.findOne({
+    where: { token }
+  })
+
+  const refreshToken = await RefreshToken.findOne({
+    where: { token }
+  })
+
+  refreshOrAccessToken = accessToken || refreshToken
+
+  if (refreshOrAccessToken) {
+    await refreshOrAccessToken.destroy()
+  }
+
+  res.status(200).end()
 })
 
 router.get('/.well-known/oauth-authorization-server', (_, res) => {

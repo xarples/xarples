@@ -40,7 +40,14 @@ AccessToken.init(
   {
     sequelize,
     tableName: 'access_tokens',
-    underscored: true
+    underscored: true,
+    hooks: {
+      afterCreate(instance) {
+        setTimeout(async () => {
+          await instance.destroy()
+        }, 1000 * 60 * 60) // 1h
+      }
+    }
   }
 )
 
