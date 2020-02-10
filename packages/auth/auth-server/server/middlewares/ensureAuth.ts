@@ -5,7 +5,7 @@ export default function ensureAuth(
   res: Response,
   next: NextFunction
 ) {
-  if (!req?.isAuthenticated()) {
+  if (!req!.isAuthenticated()) {
     return res.redirect('/login')
   }
 

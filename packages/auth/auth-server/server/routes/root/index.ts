@@ -1,6 +1,8 @@
 import querystring from 'querystring'
 import { Router } from 'express'
-import { Client, AuthorizationCode } from '@xarples/auth-db'
+import { Client, AuthorizationCode, AccessToken } from '@xarples/auth-db'
+import { getUnixTime, add } from 'date-fns'
+import config from '@xarples/config'
 
 import {
   defaultHandler,
@@ -106,6 +108,80 @@ router.post(
   defaultHandler
 )
 
+router.post('/introspect', async (req, res) => {
+  const errors = validateIntrospectionRequest(req.body)
+  const authorizationHeader = req.headers.authorization
+
+  if (errors.length) {
+    return res.status(400).send({
+      error: '',
+      error_description: errors[0]
+    })
+  }
+
+  if (!authorizationHeader || !authorizationHeader.includes('Basic')) {
+    return res
+      .status(401)
+      .send({
+        error: 'invalid_request',
+        error_description: 'Missing required Authorization Header'
+      })
+      .setHeader('WWW-Authenticate', 'Basic')
+  }
+
+  const base64Credentials = authorizationHeader.split(' ')[1]
+  const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii')
+  const [clientId, clientSecret] = credentials.split(':')
+
+  const client = await Client.findOne({
+    where: { clientId }
+  })
+
+  if (!client) {
+    return res
+      .status(401)
+      .send({
+        error: 'invalid_client',
+        error_description: 'Invalid client credentials'
+      })
+      .setHeader('WWW-Authenticate', 'Basic')
+  }
+
+  if (client.clientSecret !== clientSecret) {
+    return res.status(401).send({
+      error: 'invalid_client',
+      error_description: 'Invalid client credentials'
+    })
+  }
+
+  const accessToken = await AccessToken.findOne({
+    where: { token: req.body.token }
+  })
+
+  if (!accessToken) {
+    return res.status(200).send({
+      active: false
+    })
+  }
+
+  res.status(200).send({
+    active: true,
+    scope: accessToken.scope,
+    client_id: accessToken.clientId,
+    // @ts-ignore
+    username: req.user.username,
+    token_type: 'Bearer',
+    exp: getUnixTime(add(accessToken.createdAt, { seconds: 3600 })),
+    iat: getUnixTime(accessToken.createdAt),
+    nbf: getUnixTime(accessToken.createdAt),
+    // @ts-ignore
+    sub: req.user.id,
+    aud: client.homepageUrl,
+    iss: `http://${config.auth.service.host}${config.auth.service.port}`
+    // jti: accessToken.id
+  })
+})
+
 router.get('/.well-known/oauth-authorization-server', (_, res) => {
   const meta = {
     issuer: 'http://localhost:5000',
@@ -133,7 +209,7 @@ router.get('/docs', (_, res) => {
 
 export default router
 
-function validateRequest(params: object, requiredParams: string[]) {
+function validateParams(params: object, requiredParams: string[]) {
   const _params = Object.keys(params)
   const errors: string[] = []
 
@@ -149,5 +225,11 @@ function validateRequest(params: object, requiredParams: string[]) {
 function validateAuthorizationRequest(params: object) {
   const requiredParams = ['redirect_uri', 'response_type', 'client_id']
 
-  return validateRequest(params, requiredParams)
+  return validateParams(params, requiredParams)
+}
+
+function validateIntrospectionRequest(params: object) {
+  const requiredParams = ['token']
+
+  return validateParams(params, requiredParams)
 }

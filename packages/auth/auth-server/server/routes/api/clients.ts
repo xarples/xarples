@@ -2,8 +2,7 @@ import { Router } from 'express'
 
 const router = Router()
 
-router.post('/clients', (req, res) => {
-  console.log(req)
+router.post('/clients', (_, res) => {
   res.send('ok')
 })
 
