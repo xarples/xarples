@@ -2,7 +2,7 @@ import { IConfigModule } from '@xarples/types'
 
 let config: IConfigModule = {
   service: {
-    host: 'https://api.xarples.com/users',
+    host: 'https://accounts.xarples.com',
     port: 5001
   },
   db: {
