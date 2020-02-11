@@ -6,7 +6,7 @@
   "scripts": {
     "build": "nuxt-ts build; tsc --project server/tsconfig.json",
     "dev": "nodemon",
-    "lint": "eslint ./src --ext .ts",
+    "lint": "eslint . --ext .ts",
     "lint:fix": "eslint ./src --ext .ts --fix"
   },
   "keywords": [],
