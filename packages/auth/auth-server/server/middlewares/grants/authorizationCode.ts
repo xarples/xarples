@@ -77,10 +77,19 @@ export default async function authorizationCode(
   }
 
   const authorizationCode = await AuthorizationCode.findOne({
-    where: { code, clientId: client.id }
+    where: { code }
   })
 
-  if (!authorizationCode || authorizationCode.code !== code) {
+  if (!authorizationCode) {
+    return res.status(400).send({
+      error: 'invalid_grant',
+      error_description: 'invalid authorization code'
+    })
+  }
+
+  if (authorizationCode.clientId !== client.id) {
+    await authorizationCode.destroy()
+
     return res.status(400).send({
       error: 'invalid_grant',
       error_description: 'invalid authorization code'

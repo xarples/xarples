@@ -167,6 +167,14 @@ router.post('/introspect', async (req, res) => {
     })
   }
 
+  if (accessToken.clientId !== client.id) {
+    await accessToken.destroy()
+
+    return res.status(200).send({
+      active: false
+    })
+  }
+
   const currentTime = getUnixTime(new Date())
   const expirationTime = getUnixTime(add(accessToken.createdAt, { hours: 1 }))
 
@@ -264,17 +272,24 @@ router.post('/revoke', async (req, res) => {
     const Model = tokenTypes[tokenTypeHint]
 
     refreshOrAccessToken = await Model.findOne({ where: { token } })
+  } else {
+    const accessToken = await AccessToken.findOne({
+      where: { token }
+    })
+
+    const refreshToken = await RefreshToken.findOne({
+      where: { token }
+    })
+
+    refreshOrAccessToken = accessToken || refreshToken
   }
 
-  const accessToken = await AccessToken.findOne({
-    where: { token }
-  })
-
-  const refreshToken = await RefreshToken.findOne({
-    where: { token }
-  })
-
-  refreshOrAccessToken = accessToken || refreshToken
+  if (refreshOrAccessToken && refreshOrAccessToken.clientId !== client.id) {
+    return res.status(400).send({
+      error: 'invalid_client',
+      error_description: 'Client does not match with the token'
+    })
+  }
 
   if (refreshOrAccessToken) {
     await refreshOrAccessToken.destroy()

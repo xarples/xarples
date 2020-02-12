@@ -71,10 +71,19 @@ export default async function refreshToken(
   }
 
   const refreshToken = await RefreshToken.findOne({
-    where: { token, clientId: client.id }
+    where: { token }
   })
 
-  if (!refreshToken || refreshToken.token !== token) {
+  if (!refreshToken) {
+    return res.status(400).send({
+      error: 'invalid_grant',
+      error_description: 'invalid refresh token'
+    })
+  }
+
+  if (refreshToken.clientId !== client.id) {
+    await refreshToken.destroy()
+
     return res.status(400).send({
       error: 'invalid_grant',
       error_description: 'invalid refresh token'
