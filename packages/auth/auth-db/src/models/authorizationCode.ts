@@ -41,14 +41,7 @@ AuthorizationCode.init(
     sequelize,
     tableName: 'authorization_codes',
     schema: 'public',
-    underscored: true,
-    hooks: {
-      afterCreate(instance) {
-        setTimeout(async () => {
-          await instance.destroy()
-        }, 1000 * 10) // 10 seconds
-      }
-    }
+    underscored: true
   }
 )
 

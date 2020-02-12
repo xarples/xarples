@@ -167,6 +167,17 @@ router.post('/introspect', async (req, res) => {
     })
   }
 
+  const currentTime = getUnixTime(new Date())
+  const expirationTime = getUnixTime(add(accessToken.createdAt, { hours: 1 }))
+
+  if (currentTime > expirationTime) {
+    await accessToken.destroy()
+
+    return res.status(200).send({
+      active: false
+    })
+  }
+
   res.status(200).send({
     active: true,
     scope: accessToken.scope,

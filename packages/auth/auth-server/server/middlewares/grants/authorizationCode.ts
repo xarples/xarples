@@ -5,6 +5,7 @@ import {
   AccessToken,
   RefreshToken
 } from '@xarples/auth-db'
+import { getUnixTime, add } from 'date-fns'
 
 export default async function authorizationCode(
   req: Request,
@@ -83,6 +84,20 @@ export default async function authorizationCode(
     return res.status(400).send({
       error: 'invalid_grant',
       error_description: 'invalid authorization code'
+    })
+  }
+
+  const currentTime = getUnixTime(new Date())
+  const expirationTime = getUnixTime(
+    add(authorizationCode.createdAt, { minutes: 1 })
+  )
+
+  if (currentTime > expirationTime) {
+    await authorizationCode.destroy()
+
+    return res.status(400).send({
+      error: 'invalid_grant',
+      error_description: 'Authorization code expired'
     })
   }
 
