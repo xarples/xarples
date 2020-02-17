@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package client;
+
+service Client {
+  rpc Create (ClientRequest) returns (ClientRequest) {};
+  rpc FindOne(ClientRequest) returns (ClientRequest) {};
+  rpc FindAll (common.Empty) returns (ClientListRequest) {};
+  rpc Update (ClientRequest) returns (ClientRequest) {};
+  rpc Destroy (ClientRequest) returns (ClientRequest) {};
+}
+
+message ClientRequest {
+  string id = 1;
+  string name = 2;
+  string password = 3;
+  string email = 4;
+  string first_name = 5;
+  string last_name = 6;
+}
+
+message ClientListRequest {
+  repeated ClientRequest clients = 1;
+}

@@ -29,11 +29,11 @@ services:
       - ./packages/console:/usr/src/console/packages/console/
       - /usr/src/console/packages/console/node_modules
 
-  users:
-    container_name: xarples-users
+  accounts-api:
+    container_name: xarples-accounts
     build:
       context: .
-      dockerfile: ./packages/users/users-server/development.Dockerfile
+      dockerfile: ./packages/accounts/accounts-api/development.Dockerfile
     ports:
       - 5000:5000
     depends_on:
@@ -42,27 +42,9 @@ services:
       USERS_SERVICE_HOST: 0.0.0.0
       DB_HOST: postgres
     volumes:
-      - users_server_node_modules:/usr/src/console/packages/users/users-server/node_modules
-      - ./packages/users:/usr/src/console/packages/users/
-      - /usr/src/console/packages/users/users-db/node_modules
-
-  auth:
-    container_name: xarples-auth
-    build:
-      context: .
-      dockerfile: ./packages/auth/auth-server/development.Dockerfile
-    ports:
-      - 5001:5001
-    depends_on:
-      - postgres
-    environment:
-      DB_HOST: postgres
-      REDIS_HOST: redis
-      USERS_SERVICE_HOST: users
-    volumes:
-      - ./packages/auth:/usr/src/console/packages/auth/
-      - /usr/src/console/packages/auth/auth-server/node_modules
-      - /usr/src/console/packages/auth/auth-db/node_modules
+      - accounts_api_node_modules:/usr/src/console/packages/accounts/accounts-api/node_modules
+      - ./packages/accounts/accounts-api:/usr/src/console/packages/accounts/accounts-api
+      - /usr/src/console/packages/accounts/accounts-db/node_modules
 
   postgres:
     container_name: postgres
@@ -73,7 +55,7 @@ services:
     environment:
       POSTGRES_USER: xarples
       POSTGRES_PASSWORD: xarples
-      POSTGRES_MULTIPLE_DATABASES: xarples_users,xarples_auth
+      POSTGRES_MULTIPLE_DATABASES: xarples_accounts
     volumes:
       - ./docker/docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
       - ./data/postgres:/var/lib/postgresql/data
@@ -88,4 +70,4 @@ services:
       - 6379:6379
 
 volumes:
-  users_server_node_modules:
+  accounts_api_node_modules:

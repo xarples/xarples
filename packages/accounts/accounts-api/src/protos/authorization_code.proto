@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package authorization_code;
+
+service AuthorizationCode {
+  rpc Create (AuthorizationCodeRequest) returns (AuthorizationCodeRequest) {};
+  rpc FindOne(AuthorizationCodeRequest) returns (AuthorizationCodeRequest) {};
+  rpc FindAll (common.Empty) returns (AuthorizationCodeListRequest) {};
+  rpc Update (AuthorizationCodeRequest) returns (AuthorizationCodeRequest) {};
+  rpc Destroy (AuthorizationCodeRequest) returns (AuthorizationCodeRequest) {};
+}
+
+message AuthorizationCodeRequest {
+  string id = 1;
+  string name = 2;
+  string password = 3;
+  string email = 4;
+  string first_name = 5;
+  string last_name = 6;
+}
+
+message AuthorizationCodeListRequest {
+  repeated AuthorizationCodeRequest authorization_codes = 1;
+}

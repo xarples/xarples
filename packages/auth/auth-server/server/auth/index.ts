@@ -2,7 +2,7 @@ import { Strategy as LocalStrategy } from 'passport-local'
 import users from '@xarples/users-server'
 import { encrypt, logger } from '@xarples/utils'
 
-const client = users.createClient()
+const usersServiceClient = users.createClient()
 
 const localStrategy = new LocalStrategy((username, password, done) => {
   const message = new users.messages.User()
@@ -10,7 +10,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
   message.setUsername(username)
 
   logger.info(`Fetching user with username ${username} from the users service`)
-  client.getUserByUsername(message, (err, response) => {
+  usersServiceClient.getUserByUsername(message, (err, response) => {
     if (err) {
       logger.error(err.message)
       return done(err, false, { message: 'incorrect username or password' })
@@ -42,7 +42,7 @@ function deserializeUser(user: any, done: any) {
     `Fetching user with username ${user.username} from the users service`
   )
 
-  client.getUserByUsername(message, (err, response) => {
+  usersServiceClient.getUserByUsername(message, (err, response) => {
     if (err) {
       logger.error(err.message)
       return done(err)

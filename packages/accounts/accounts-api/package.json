@@ -1,0 +1,31 @@
+{
+  "name": "@xarples/accounts-api",
+  "version": "1.0.0",
+  "description": "My sweet Nuxt.js project",
+  "author": "xarples",
+  "private": true,
+  "main": "dist/lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon",
+    "generate": "npm run generate:grpc && npm run generate:grpc-dts",
+    "generate:grpc": "grpc_tools_node_protoc --proto_path=./src/protos --js_out=import_style=commonjs,binary:./generated/ --grpc_out=./generated --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin` ./src/protos/*.proto",
+    "generate:grpc-dts": "grpc_tools_node_protoc --proto_path=./src/protos --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --ts_out=./generated ./src/protos/*.proto",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix",
+    "start": "node dist/server.js",
+    "test": "NODE_ENV=test ava --config ava.config.js --color",
+    "test:coverage": "nyc --reporter=lcov --reporter=text-summary npm run test"
+  },
+  "dependencies": {
+    "@xarples/accounts-db": "*",
+    "@xarples/config": "*",
+    "@xarples/utils": "*",
+    "google-protobuf": "^3.11.2",
+    "grpc": "^1.24.2"
+  },
+  "devDependencies": {
+    "grpc-tools": "^1.8.0",
+    "grpc_tools_node_protoc_ts": "^2.5.9"
+  }
+}

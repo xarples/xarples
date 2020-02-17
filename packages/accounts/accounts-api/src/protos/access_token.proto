@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package access_token;
+
+service AccessToken {
+  rpc Create (AccessTokenRequest) returns (AccessTokenRequest) {};
+  rpc FindOne(AccessTokenRequest) returns (AccessTokenRequest) {};
+  rpc FindAll (common.Empty) returns (AccessTokenListRequest) {};
+  rpc Update (AccessTokenRequest) returns (AccessTokenRequest) {};
+  rpc Destroy (AccessTokenRequest) returns (AccessTokenRequest) {};
+}
+
+message AccessTokenRequest {
+  string id = 1;
+  string name = 2;
+  string password = 3;
+  string email = 4;
+  string first_name = 5;
+  string last_name = 6;
+}
+
+message AccessTokenListRequest {
+  repeated AccessTokenRequest access_tokens = 1;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@xarples/accounts",
+  "version": "1.0.0",
+  "description": "My sweet Nuxt.js project",
+  "author": "xarples",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon",
+    "build": "nuxt-ts build; tsc --project server/tsconfig.json",
+    "generate": "nuxt-ts generate",
+    "start": "NODE_ENV=production node ./dist/server/index.js",
+    "lint": "eslint --ext .ts,.js,.vue ."
+  },
+  "dependencies": {
+    "@xarples/config": "*",
+    "@xarples/utils": "*",
+    "@nuxt/typescript-runtime": "^0.3.8",
+    "nuxt": "^2.0.0",
+    "nuxt-buefy": "^0.3.2"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^0.6.1",
+    "@nuxt/typescript-build": "^0.5.6",
+    "@nuxtjs/eslint-config-typescript": "^1.0.0"
+  }
+}

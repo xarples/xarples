@@ -1,0 +1,14 @@
+const path = require('path')
+
+let _path = path.join(__dirname, 'dist')
+
+if (process.env.NODE_ENV === 'development') {
+  _path = path.join(__dirname, 'src')
+}
+
+module.exports = {
+  'config': path.resolve(_path, 'config.js'),
+  'models-path': path.resolve(_path, 'dist', 'models'),
+  'seeders-path': path.resolve(_path, 'seeders'),
+  'migrations-path': path.resolve(_path, 'migrations')
+}

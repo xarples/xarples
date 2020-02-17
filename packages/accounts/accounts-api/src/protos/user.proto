@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package user;
+
+service User {
+  rpc Create (UserRequest) returns (UserRequest) {};
+  rpc FindOne(UserRequest) returns (UserRequest) {};
+  rpc FindAll (common.Empty) returns (UserListRequest) {};
+  rpc Update (UserRequest) returns (UserRequest) {};
+  rpc Destroy (UserRequest) returns (UserRequest) {};
+}
+
+message UserRequest {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
+  string first_name = 5;
+  string last_name = 6;
+}
+
+message UserListRequest {
+  repeated UserRequest users = 1;
+}
