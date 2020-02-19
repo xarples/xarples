@@ -37,7 +37,7 @@ function deserializeUser(user: any, done: any) {
 
   message.setUsername(user.username)
 
-  userClient.findOne(message, (err, response) => {
+  userClient.findByUsername(message, (err, response) => {
     if (err) {
       logger.error(err.message)
       return done(err)

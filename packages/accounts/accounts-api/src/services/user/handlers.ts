@@ -252,6 +252,13 @@ function getMessage(payload: User) {
   const message = new messages.UserRequest()
 
   message.setId(payload.id)
+  message.setUsername(payload.username)
+  message.setPassword(payload.password)
+  message.setEmail(payload.email)
+  message.setFirstName(payload.firstName)
+  message.setLastName(payload.lastName)
+  message.setCreatedAt(payload.createdAt.toString())
+  message.setUpdatedAt(payload.updatedAt.toString())
 
   return message
 }

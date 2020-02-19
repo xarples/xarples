@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
 import "common.proto";
 
 package client;
@@ -22,8 +21,8 @@ message ClientRequest {
   string type = 6;
   string homepage_url = 7;
   string logo_url = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
+  string created_at = 9;
+  string updated_at = 10;
 }
 
 message ClientListRequest {

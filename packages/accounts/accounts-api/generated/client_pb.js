@@ -11,8 +11,6 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
-goog.object.extend(proto, google_protobuf_timestamp_pb);
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
 goog.exportSymbol('proto.client.ClientListRequest', null, global);
@@ -72,8 +70,8 @@ proto.client.ClientRequest.toObject = function(includeInstance, msg) {
     type: jspb.Message.getFieldWithDefault(msg, 6, ""),
     homepageUrl: jspb.Message.getFieldWithDefault(msg, 7, ""),
     logoUrl: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
-    updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    createdAt: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 10, "")
   };
 
   if (includeInstance) {
@@ -143,13 +141,11 @@ proto.client.ClientRequest.deserializeBinaryFromReader = function(msg, reader) {
       msg.setLogoUrl(value);
       break;
     case 9:
-      var value = new google_protobuf_timestamp_pb.Timestamp;
-      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      var value = /** @type {string} */ (reader.readString());
       msg.setCreatedAt(value);
       break;
     case 10:
-      var value = new google_protobuf_timestamp_pb.Timestamp;
-      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      var value = /** @type {string} */ (reader.readString());
       msg.setUpdatedAt(value);
       break;
     default:
@@ -238,19 +234,17 @@ proto.client.ClientRequest.serializeBinaryToWriter = function(message, writer) {
     );
   }
   f = message.getCreatedAt();
-  if (f != null) {
-    writer.writeMessage(
+  if (f.length > 0) {
+    writer.writeString(
       9,
-      f,
-      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+      f
     );
   }
   f = message.getUpdatedAt();
-  if (f != null) {
-    writer.writeMessage(
+  if (f.length > 0) {
+    writer.writeString(
       10,
-      f,
-      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+      f
     );
   }
 };
@@ -377,62 +371,32 @@ proto.client.ClientRequest.prototype.setLogoUrl = function(value) {
 
 
 /**
- * optional google.protobuf.Timestamp created_at = 9;
- * @return {?proto.google.protobuf.Timestamp}
+ * optional string created_at = 9;
+ * @return {string}
  */
 proto.client.ClientRequest.prototype.getCreatedAt = function() {
-  return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 9));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
 
-/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+/** @param {string} value */
 proto.client.ClientRequest.prototype.setCreatedAt = function(value) {
-  jspb.Message.setWrapperField(this, 9, value);
-};
-
-
-proto.client.ClientRequest.prototype.clearCreatedAt = function() {
-  this.setCreatedAt(undefined);
+  jspb.Message.setProto3StringField(this, 9, value);
 };
 
 
 /**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.client.ClientRequest.prototype.hasCreatedAt = function() {
-  return jspb.Message.getField(this, 9) != null;
-};
-
-
-/**
- * optional google.protobuf.Timestamp updated_at = 10;
- * @return {?proto.google.protobuf.Timestamp}
+ * optional string updated_at = 10;
+ * @return {string}
  */
 proto.client.ClientRequest.prototype.getUpdatedAt = function() {
-  return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 10));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
 };
 
 
-/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+/** @param {string} value */
 proto.client.ClientRequest.prototype.setUpdatedAt = function(value) {
-  jspb.Message.setWrapperField(this, 10, value);
-};
-
-
-proto.client.ClientRequest.prototype.clearUpdatedAt = function() {
-  this.setUpdatedAt(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.client.ClientRequest.prototype.hasUpdatedAt = function() {
-  return jspb.Message.getField(this, 10) != null;
+  jspb.Message.setProto3StringField(this, 10, value);
 };
 
 

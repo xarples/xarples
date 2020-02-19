@@ -1,8 +1,7 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
-import "common.proto";
 
+import "common.proto";
 
 package access_token;
 
@@ -20,8 +19,8 @@ message AccessTokenRequest {
   string user_id = 3;
   string token = 4;
   string scope = 5;
-  google.protobuf.Timestamp created_at = 6;
-  google.protobuf.Timestamp updated_at = 7;
+  string created_at = 6;
+  string updated_at = 7;
 }
 
 message AccessTokenListRequest {

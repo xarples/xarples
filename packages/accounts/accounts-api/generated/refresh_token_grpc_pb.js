@@ -3,7 +3,6 @@
 'use strict';
 var grpc = require('grpc');
 var refresh_token_pb = require('./refresh_token_pb.js');
-var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 var common_pb = require('./common_pb.js');
 
 function serialize_common_Empty(arg) {

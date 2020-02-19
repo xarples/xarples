@@ -6,7 +6,6 @@
 
 import * as grpc from "grpc";
 import * as authorization_code_pb from "./authorization_code_pb";
-import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as common_pb from "./common_pb";
 
 interface IAuthorizationCodeService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {

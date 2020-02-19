@@ -210,6 +210,12 @@ function getMessage(payload: AccessToken) {
   const message = new messages.AccessTokenRequest()
 
   message.setId(payload.id)
+  message.setClientId(payload.clientId)
+  message.setUserId(payload.userId)
+  message.setToken(payload.token!)
+  message.setScope(payload.scope!)
+  message.setCreatedAt(payload.createdAt.toString())
+  message.setUpdatedAt(payload.updatedAt.toString())
 
   return message
 }

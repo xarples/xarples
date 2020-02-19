@@ -11,8 +11,6 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
-goog.object.extend(proto, google_protobuf_timestamp_pb);
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
 goog.exportSymbol('proto.access_token.AccessTokenListRequest', null, global);
@@ -69,8 +67,8 @@ proto.access_token.AccessTokenRequest.toObject = function(includeInstance, msg) 
     userId: jspb.Message.getFieldWithDefault(msg, 3, ""),
     token: jspb.Message.getFieldWithDefault(msg, 4, ""),
     scope: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
-    updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    createdAt: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -128,13 +126,11 @@ proto.access_token.AccessTokenRequest.deserializeBinaryFromReader = function(msg
       msg.setScope(value);
       break;
     case 6:
-      var value = new google_protobuf_timestamp_pb.Timestamp;
-      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      var value = /** @type {string} */ (reader.readString());
       msg.setCreatedAt(value);
       break;
     case 7:
-      var value = new google_protobuf_timestamp_pb.Timestamp;
-      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      var value = /** @type {string} */ (reader.readString());
       msg.setUpdatedAt(value);
       break;
     default:
@@ -202,19 +198,17 @@ proto.access_token.AccessTokenRequest.serializeBinaryToWriter = function(message
     );
   }
   f = message.getCreatedAt();
-  if (f != null) {
-    writer.writeMessage(
+  if (f.length > 0) {
+    writer.writeString(
       6,
-      f,
-      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+      f
     );
   }
   f = message.getUpdatedAt();
-  if (f != null) {
-    writer.writeMessage(
+  if (f.length > 0) {
+    writer.writeString(
       7,
-      f,
-      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+      f
     );
   }
 };
@@ -296,62 +290,32 @@ proto.access_token.AccessTokenRequest.prototype.setScope = function(value) {
 
 
 /**
- * optional google.protobuf.Timestamp created_at = 6;
- * @return {?proto.google.protobuf.Timestamp}
+ * optional string created_at = 6;
+ * @return {string}
  */
 proto.access_token.AccessTokenRequest.prototype.getCreatedAt = function() {
-  return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 6));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
-/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+/** @param {string} value */
 proto.access_token.AccessTokenRequest.prototype.setCreatedAt = function(value) {
-  jspb.Message.setWrapperField(this, 6, value);
-};
-
-
-proto.access_token.AccessTokenRequest.prototype.clearCreatedAt = function() {
-  this.setCreatedAt(undefined);
+  jspb.Message.setProto3StringField(this, 6, value);
 };
 
 
 /**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.access_token.AccessTokenRequest.prototype.hasCreatedAt = function() {
-  return jspb.Message.getField(this, 6) != null;
-};
-
-
-/**
- * optional google.protobuf.Timestamp updated_at = 7;
- * @return {?proto.google.protobuf.Timestamp}
+ * optional string updated_at = 7;
+ * @return {string}
  */
 proto.access_token.AccessTokenRequest.prototype.getUpdatedAt = function() {
-  return /** @type{?proto.google.protobuf.Timestamp} */ (
-    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 7));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
-/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+/** @param {string} value */
 proto.access_token.AccessTokenRequest.prototype.setUpdatedAt = function(value) {
-  jspb.Message.setWrapperField(this, 7, value);
-};
-
-
-proto.access_token.AccessTokenRequest.prototype.clearUpdatedAt = function() {
-  this.setUpdatedAt(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.access_token.AccessTokenRequest.prototype.hasUpdatedAt = function() {
-  return jspb.Message.getField(this, 7) != null;
+  jspb.Message.setProto3StringField(this, 7, value);
 };
 
 

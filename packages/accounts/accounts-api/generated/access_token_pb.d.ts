@@ -5,7 +5,6 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
-import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as common_pb from "./common_pb";
 
 export class AccessTokenRequest extends jspb.Message { 
@@ -24,17 +23,11 @@ export class AccessTokenRequest extends jspb.Message {
     getScope(): string;
     setScope(value: string): void;
 
+    getCreatedAt(): string;
+    setCreatedAt(value: string): void;
 
-    hasCreatedAt(): boolean;
-    clearCreatedAt(): void;
-    getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
-    setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
-
-
-    hasUpdatedAt(): boolean;
-    clearUpdatedAt(): void;
-    getUpdatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
-    setUpdatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+    getUpdatedAt(): string;
+    setUpdatedAt(value: string): void;
 
 
     serializeBinary(): Uint8Array;
@@ -54,8 +47,8 @@ export namespace AccessTokenRequest {
         userId: string,
         token: string,
         scope: string,
-        createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
-        updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+        createdAt: string,
+        updatedAt: string,
     }
 }
 
