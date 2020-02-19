@@ -11,6 +11,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+goog.object.extend(proto, google_protobuf_timestamp_pb);
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
 goog.exportSymbol('proto.user.UserListRequest', null, global);
@@ -67,7 +69,9 @@ proto.user.UserRequest.toObject = function(includeInstance, msg) {
     password: jspb.Message.getFieldWithDefault(msg, 3, ""),
     email: jspb.Message.getFieldWithDefault(msg, 4, ""),
     firstName: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    lastName: jspb.Message.getFieldWithDefault(msg, 6, "")
+    lastName: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -127,6 +131,16 @@ proto.user.UserRequest.deserializeBinaryFromReader = function(msg, reader) {
     case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.setLastName(value);
+      break;
+    case 7:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAt(value);
+      break;
+    case 8:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setUpdatedAt(value);
       break;
     default:
       reader.skipField();
@@ -197,6 +211,22 @@ proto.user.UserRequest.serializeBinaryToWriter = function(message, writer) {
     writer.writeString(
       6,
       f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
 };
@@ -289,6 +319,66 @@ proto.user.UserRequest.prototype.getLastName = function() {
 /** @param {string} value */
 proto.user.UserRequest.prototype.setLastName = function(value) {
   jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_at = 7;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.user.UserRequest.prototype.getCreatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 7));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.user.UserRequest.prototype.setCreatedAt = function(value) {
+  jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+proto.user.UserRequest.prototype.clearCreatedAt = function() {
+  this.setCreatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.user.UserRequest.prototype.hasCreatedAt = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp updated_at = 8;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.user.UserRequest.prototype.getUpdatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 8));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.user.UserRequest.prototype.setUpdatedAt = function(value) {
+  jspb.Message.setWrapperField(this, 8, value);
+};
+
+
+proto.user.UserRequest.prototype.clearUpdatedAt = function() {
+  this.setUpdatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.user.UserRequest.prototype.hasUpdatedAt = function() {
+  return jspb.Message.getField(this, 8) != null;
 };
 
 

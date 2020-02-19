@@ -5,26 +5,36 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as common_pb from "./common_pb";
 
 export class AccessTokenRequest extends jspb.Message { 
     getId(): string;
     setId(value: string): void;
 
-    getName(): string;
-    setName(value: string): void;
+    getClientId(): string;
+    setClientId(value: string): void;
 
-    getPassword(): string;
-    setPassword(value: string): void;
+    getUserId(): string;
+    setUserId(value: string): void;
 
-    getEmail(): string;
-    setEmail(value: string): void;
+    getToken(): string;
+    setToken(value: string): void;
 
-    getFirstName(): string;
-    setFirstName(value: string): void;
+    getScope(): string;
+    setScope(value: string): void;
 
-    getLastName(): string;
-    setLastName(value: string): void;
+
+    hasCreatedAt(): boolean;
+    clearCreatedAt(): void;
+    getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+
+    hasUpdatedAt(): boolean;
+    clearUpdatedAt(): void;
+    getUpdatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setUpdatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
 
 
     serializeBinary(): Uint8Array;
@@ -40,11 +50,12 @@ export class AccessTokenRequest extends jspb.Message {
 export namespace AccessTokenRequest {
     export type AsObject = {
         id: string,
-        name: string,
-        password: string,
-        email: string,
-        firstName: string,
-        lastName: string,
+        clientId: string,
+        userId: string,
+        token: string,
+        scope: string,
+        createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+        updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     }
 }
 

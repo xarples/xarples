@@ -41,9 +41,12 @@ export async function findOne(
 ) {
   try {
     const id = call.request.getId()
+    const payload = call.request.toObject()
 
     if (!cache.has(id)) {
-      const found = await User.findByPk(id)
+      const found = await User.findOne({
+        where: { username: payload.username }
+      })
 
       logger.info(`Fetching user with id ${id} from database`)
 
@@ -69,6 +72,45 @@ export async function findOne(
     logger.info(`Fetching user with id ${id} from the cache`)
 
     const found = cache.get(id) as User
+    const message = getMessage(found)
+
+    callback(null, message)
+  } catch (e) {
+    logger.error(e.message)
+    logger.debug(e.stack)
+    callback(e, null)
+  }
+}
+
+export async function findByUsername(
+  call: grpc.ServerUnaryCall<messages.UserRequest>,
+  callback: grpc.sendUnaryData<messages.UserRequest>
+) {
+  try {
+    const username = call.request.getUsername()
+
+    const found = await User.findOne({
+      where: { username }
+    })
+
+    logger.info(`Fetching user with username ${username} from database`)
+
+    if (!found) {
+      const error: grpc.ServiceError = {
+        name: '',
+        message: `user not found`,
+        code: grpc.status.NOT_FOUND
+      }
+
+      logger.error(
+        `Can't find user with username ${username} from the database`
+      )
+
+      callback(error, null)
+
+      return
+    }
+
     const message = getMessage(found)
 
     callback(null, message)

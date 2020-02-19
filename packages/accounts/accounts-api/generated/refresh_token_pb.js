@@ -11,6 +11,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+goog.object.extend(proto, google_protobuf_timestamp_pb);
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
 goog.exportSymbol('proto.refresh_token.RefreshTokenListRequest', null, global);
@@ -63,11 +65,12 @@ proto.refresh_token.RefreshTokenRequest.prototype.toObject = function(opt_includ
 proto.refresh_token.RefreshTokenRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    password: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    email: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    firstName: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    lastName: jspb.Message.getFieldWithDefault(msg, 6, "")
+    clientId: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    userId: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    token: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    scope: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -110,23 +113,29 @@ proto.refresh_token.RefreshTokenRequest.deserializeBinaryFromReader = function(m
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setName(value);
+      msg.setClientId(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setPassword(value);
+      msg.setUserId(value);
       break;
     case 4:
       var value = /** @type {string} */ (reader.readString());
-      msg.setEmail(value);
+      msg.setToken(value);
       break;
     case 5:
       var value = /** @type {string} */ (reader.readString());
-      msg.setFirstName(value);
+      msg.setScope(value);
       break;
     case 6:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setLastName(value);
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAt(value);
+      break;
+    case 7:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setUpdatedAt(value);
       break;
     default:
       reader.skipField();
@@ -164,39 +173,48 @@ proto.refresh_token.RefreshTokenRequest.serializeBinaryToWriter = function(messa
       f
     );
   }
-  f = message.getName();
+  f = message.getClientId();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getPassword();
+  f = message.getUserId();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = message.getEmail();
+  f = message.getToken();
   if (f.length > 0) {
     writer.writeString(
       4,
       f
     );
   }
-  f = message.getFirstName();
+  f = message.getScope();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = message.getLastName();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getCreatedAt();
+  if (f != null) {
+    writer.writeMessage(
       6,
-      f
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
 };
@@ -218,77 +236,122 @@ proto.refresh_token.RefreshTokenRequest.prototype.setId = function(value) {
 
 
 /**
- * optional string name = 2;
+ * optional string client_id = 2;
  * @return {string}
  */
-proto.refresh_token.RefreshTokenRequest.prototype.getName = function() {
+proto.refresh_token.RefreshTokenRequest.prototype.getClientId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.refresh_token.RefreshTokenRequest.prototype.setName = function(value) {
+proto.refresh_token.RefreshTokenRequest.prototype.setClientId = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional string password = 3;
+ * optional string user_id = 3;
  * @return {string}
  */
-proto.refresh_token.RefreshTokenRequest.prototype.getPassword = function() {
+proto.refresh_token.RefreshTokenRequest.prototype.getUserId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /** @param {string} value */
-proto.refresh_token.RefreshTokenRequest.prototype.setPassword = function(value) {
+proto.refresh_token.RefreshTokenRequest.prototype.setUserId = function(value) {
   jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
 /**
- * optional string email = 4;
+ * optional string token = 4;
  * @return {string}
  */
-proto.refresh_token.RefreshTokenRequest.prototype.getEmail = function() {
+proto.refresh_token.RefreshTokenRequest.prototype.getToken = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
 /** @param {string} value */
-proto.refresh_token.RefreshTokenRequest.prototype.setEmail = function(value) {
+proto.refresh_token.RefreshTokenRequest.prototype.setToken = function(value) {
   jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
 /**
- * optional string first_name = 5;
+ * optional string scope = 5;
  * @return {string}
  */
-proto.refresh_token.RefreshTokenRequest.prototype.getFirstName = function() {
+proto.refresh_token.RefreshTokenRequest.prototype.getScope = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
 /** @param {string} value */
-proto.refresh_token.RefreshTokenRequest.prototype.setFirstName = function(value) {
+proto.refresh_token.RefreshTokenRequest.prototype.setScope = function(value) {
   jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * optional string last_name = 6;
- * @return {string}
+ * optional google.protobuf.Timestamp created_at = 6;
+ * @return {?proto.google.protobuf.Timestamp}
  */
-proto.refresh_token.RefreshTokenRequest.prototype.getLastName = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+proto.refresh_token.RefreshTokenRequest.prototype.getCreatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 6));
 };
 
 
-/** @param {string} value */
-proto.refresh_token.RefreshTokenRequest.prototype.setLastName = function(value) {
-  jspb.Message.setProto3StringField(this, 6, value);
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.refresh_token.RefreshTokenRequest.prototype.setCreatedAt = function(value) {
+  jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+proto.refresh_token.RefreshTokenRequest.prototype.clearCreatedAt = function() {
+  this.setCreatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.refresh_token.RefreshTokenRequest.prototype.hasCreatedAt = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp updated_at = 7;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.refresh_token.RefreshTokenRequest.prototype.getUpdatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 7));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.refresh_token.RefreshTokenRequest.prototype.setUpdatedAt = function(value) {
+  jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+proto.refresh_token.RefreshTokenRequest.prototype.clearUpdatedAt = function() {
+  this.setUpdatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.refresh_token.RefreshTokenRequest.prototype.hasUpdatedAt = function() {
+  return jspb.Message.getField(this, 7) != null;
 };
 
 

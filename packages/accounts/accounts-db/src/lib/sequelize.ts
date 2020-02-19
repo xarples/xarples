@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize'
 import config from '@xarples/config'
 
-const sequelize = new Sequelize(config.auth.db)
+const sequelize = new Sequelize(config.accounts.db)
 
 // Object.freeze(sequelize)
 

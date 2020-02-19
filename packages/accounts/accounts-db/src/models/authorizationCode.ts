@@ -4,7 +4,7 @@ import utils from '@xarples/utils'
 import sequelize from '../lib/sequelize'
 
 import Client from './client'
-import User from './User'
+import User from './user'
 
 class AuthorizationCode extends Model {
   id!: string

@@ -1,6 +1,14 @@
 import { IConfigModule } from '@xarples/types'
 
 const config: IConfigModule = {
+  frontend: {
+    host: process.env.ACCOUNTS_HOST || 'https://accounts.xarples.com',
+    port: +process.env.ACCOUNTS_PORT! || 5000
+  },
+  api: {
+    host: process.env.ACCOUNTS_API_HOST || 'https:/api.xarples.com/accounts',
+    port: +process.env.ACCOUNTS_API_PORT! || 5001
+  },
   service: {
     host: 'https://accounts.xarples.com',
     port: 5001
@@ -8,22 +16,10 @@ const config: IConfigModule = {
   db: {
     username: process.env.DB_USERNAME || 'xarples',
     password: process.env.DB_PASSWORD || 'xarples',
-    database: process.env.DB_NAME || 'xarples_auth',
+    database: process.env.DB_NAME || 'xarples_accounts',
     host: process.env.DB_HOST || 'localhost',
     dialect: 'postgres',
     port: 5432
-  },
-  redis: {
-    host: process.env.REDIS_HOST || 'localhost'
-  }
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  config!.db!.host = process.env.DB_HOST || 'localhost'
-
-  config.service = {
-    host: 'localhost',
-    port: 5001
   }
 }
 

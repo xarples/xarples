@@ -3,6 +3,7 @@
 'use strict';
 var grpc = require('grpc');
 var user_pb = require('./user_pb.js');
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 var common_pb = require('./common_pb.js');
 
 function serialize_common_Empty(arg) {
@@ -53,6 +54,17 @@ var UserService = exports.UserService = {
   },
   findOne: {
     path: '/user.User/FindOne',
+    requestStream: false,
+    responseStream: false,
+    requestType: user_pb.UserRequest,
+    responseType: user_pb.UserRequest,
+    requestSerialize: serialize_user_UserRequest,
+    requestDeserialize: deserialize_user_UserRequest,
+    responseSerialize: serialize_user_UserRequest,
+    responseDeserialize: deserialize_user_UserRequest,
+  },
+  findByUsername: {
+    path: '/user.User/FindByUsername',
     requestStream: false,
     responseStream: false,
     requestType: user_pb.UserRequest,

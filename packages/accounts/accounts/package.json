@@ -14,9 +14,12 @@
   "dependencies": {
     "@xarples/config": "*",
     "@xarples/utils": "*",
+    "@xarples/accounts-api": "*",
     "@nuxt/typescript-runtime": "^0.3.8",
     "nuxt": "^2.0.0",
-    "nuxt-buefy": "^0.3.2"
+    "nuxt-buefy": "^0.3.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@nuxt/types": "^0.6.1",

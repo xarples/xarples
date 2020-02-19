@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
 import "common.proto";
 
 package client;
@@ -14,11 +15,15 @@ service Client {
 
 message ClientRequest {
   string id = 1;
-  string name = 2;
-  string password = 3;
-  string email = 4;
-  string first_name = 5;
-  string last_name = 6;
+  string user_id = 2;
+  string client_id = 3;
+  string client_secret = 4;
+  string redirect_uri = 5;
+  string type = 6;
+  string homepage_url = 7;
+  string logo_url = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
 }
 
 message ClientListRequest {

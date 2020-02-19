@@ -1,224 +1,224 @@
-import grpc from 'grpc'
-import { AccessToken } from '@xarples/accounts-db'
-import { logger, cache as getCache } from '@xarples/utils'
+// import grpc from 'grpc'
+// import { AccessToken } from '@xarples/accounts-db'
+// import { logger, cache as getCache } from '@xarples/utils'
 
-import messages from '../../../generated/access_tokens_pb'
+// import messages from '../../../generated/access_tokens_pb'
 
-const cache = getCache<string, AccessToken | AccessToken[]>({
-  maxAge: 1000 * 60 * 60 // 1 hour
-})
+// const cache = getCache<string, AccessToken | AccessToken[]>({
+//   maxAge: 1000 * 60 * 60 // 1 hour
+// })
 
-export async function create(
-  call: grpc.ServerUnaryCall<messages.AccessToken>,
-  callback: grpc.sendUnaryData<messages.AccessToken>
-) {
-  try {
-    const data = call.request.toObject()
+// export async function create(
+//   call: grpc.ServerUnaryCall<messages.AccessToken>,
+//   callback: grpc.sendUnaryData<messages.AccessToken>
+// ) {
+//   try {
+//     const data = call.request.toObject()
 
-    delete data.id
+//     delete data.id
 
-    logger.info(`Creating access token in the database`)
-    logger.debug('data', data)
+//     logger.info(`Creating access token in the database`)
+//     logger.debug('data', data)
 
-    const created = await AccessToken.create(data)
-    const message = getMessage(created)
+//     const created = await AccessToken.create(data)
+//     const message = getMessage(created)
 
-    logger.info(`Creating access token with id ${created.id} in the cache`)
+//     logger.info(`Creating access token with id ${created.id} in the cache`)
 
-    cache.set(created.id, created)
+//     cache.set(created.id, created)
 
-    callback(null, message)
-  } catch (e) {
-    logger.error(e.message)
-    logger.debug(e.stack)
-    callback(e, null)
-  }
-}
+//     callback(null, message)
+//   } catch (e) {
+//     logger.error(e.message)
+//     logger.debug(e.stack)
+//     callback(e, null)
+//   }
+// }
 
-export async function findOne(
-  call: grpc.ServerUnaryCall<messages.AccessToken>,
-  callback: grpc.sendUnaryData<messages.AccessToken>
-) {
-  try {
-    const id = call.request.getId()
+// export async function findOne(
+//   call: grpc.ServerUnaryCall<messages.AccessToken>,
+//   callback: grpc.sendUnaryData<messages.AccessToken>
+// ) {
+//   try {
+//     const id = call.request.getId()
 
-    if (!cache.has(id)) {
-      const found = await AccessToken.findByPk(id)
+//     if (!cache.has(id)) {
+//       const found = await AccessToken.findByPk(id)
 
-      logger.info(`Fetching access token with id ${id} from database`)
+//       logger.info(`Fetching access token with id ${id} from database`)
 
-      if (!found) {
-        const error: grpc.ServiceError = {
-          name: '',
-          message: `access token not found`,
-          code: grpc.status.NOT_FOUND
-        }
+//       if (!found) {
+//         const error: grpc.ServiceError = {
+//           name: '',
+//           message: `access token not found`,
+//           code: grpc.status.NOT_FOUND
+//         }
 
-        logger.error(`Can't find access token with id ${id} from the database`)
+//         logger.error(`Can't find access token with id ${id} from the database`)
 
-        callback(error, null)
+//         callback(error, null)
 
-        return
-      }
+//         return
+//       }
 
-      logger.info(`Creating access token with id ${id} in the cache`)
+//       logger.info(`Creating access token with id ${id} in the cache`)
 
-      cache.set(found.id, found)
-    }
+//       cache.set(found.id, found)
+//     }
 
-    logger.info(`Fetching access token with id ${id} from the cache`)
+//     logger.info(`Fetching access token with id ${id} from the cache`)
 
-    const found = cache.get(id) as AccessToken
-    const message = getMessage(found)
+//     const found = cache.get(id) as AccessToken
+//     const message = getMessage(found)
 
-    callback(null, message)
-  } catch (e) {
-    logger.error(e.message)
-    logger.debug(e.stack)
-    callback(e, null)
-  }
-}
+//     callback(null, message)
+//   } catch (e) {
+//     logger.error(e.message)
+//     logger.debug(e.stack)
+//     callback(e, null)
+//   }
+// }
 
-export async function findAll(
-  call: grpc.ServerUnaryCall<messages.AccessTokenList>,
-  callback: grpc.sendUnaryData<messages.AccessTokenList>
-) {
-  try {
-    call.request.toObject()
+// export async function findAll(
+//   call: grpc.ServerUnaryCall<messages.AccessTokenList>,
+//   callback: grpc.sendUnaryData<messages.AccessTokenList>
+// ) {
+//   try {
+//     call.request.toObject()
 
-    if (!cache.has('foundList')) {
-      logger.info(`Fetching access token list from the database`)
+//     if (!cache.has('foundList')) {
+//       logger.info(`Fetching access token list from the database`)
 
-      const foundList = await AccessToken.findAll({ raw: true })
+//       const foundList = await AccessToken.findAll({ raw: true })
 
-      logger.info(`Creating access token in the cache`)
+//       logger.info(`Creating access token in the cache`)
 
-      cache.set('foundList', foundList)
-    }
+//       cache.set('foundList', foundList)
+//     }
 
-    logger.info(`Fetching access token list from the cache`)
+//     logger.info(`Fetching access token list from the cache`)
 
-    const foundList = cache.get('foundList') as AccessToken[]
-    const message = getMessageList(foundList)
+//     const foundList = cache.get('foundList') as AccessToken[]
+//     const message = getMessageList(foundList)
 
-    callback(null, message)
-  } catch (e) {
-    logger.error(e.message)
-    logger.debug(e.stack)
-    callback(e, null)
-  }
-}
-export async function update(
-  call: grpc.ServerUnaryCall<messages.AccessToken>,
-  callback: grpc.sendUnaryData<messages.AccessToken>
-) {
-  try {
-    const id = call.request.getId()
+//     callback(null, message)
+//   } catch (e) {
+//     logger.error(e.message)
+//     logger.debug(e.stack)
+//     callback(e, null)
+//   }
+// }
+// export async function update(
+//   call: grpc.ServerUnaryCall<messages.AccessToken>,
+//   callback: grpc.sendUnaryData<messages.AccessToken>
+// ) {
+//   try {
+//     const id = call.request.getId()
 
-    logger.info(`Fetching access token with id ${id} from the database`)
+//     logger.info(`Fetching access token with id ${id} from the database`)
 
-    const data = call.request.toObject()
-    const found = await AccessToken.findByPk(id)
+//     const data = call.request.toObject()
+//     const found = await AccessToken.findByPk(id)
 
-    delete data.id
+//     delete data.id
 
-    if (!found) {
-      const error: grpc.ServiceError = {
-        name: '',
-        message: `access token not found`,
-        code: grpc.status.NOT_FOUND
-      }
+//     if (!found) {
+//       const error: grpc.ServiceError = {
+//         name: '',
+//         message: `access token not found`,
+//         code: grpc.status.NOT_FOUND
+//       }
 
-      logger.error(`Can't find access token with id ${id} from the database`)
+//       logger.error(`Can't find access token with id ${id} from the database`)
 
-      callback(error, null)
+//       callback(error, null)
 
-      return
-    }
+//       return
+//     }
 
-    logger.info(`Updating access token with id ${id} from the database`)
-    logger.debug('data', data)
+//     logger.info(`Updating access token with id ${id} from the database`)
+//     logger.debug('data', data)
 
-    const updated = await found.update(data)
-    const message = getMessage(updated)
+//     const updated = await found.update(data)
+//     const message = getMessage(updated)
 
-    logger.info(`Updating access token with id ${id} from the cache`)
+//     logger.info(`Updating access token with id ${id} from the cache`)
 
-    cache.set(updated.id, updated)
+//     cache.set(updated.id, updated)
 
-    logger.info(`Invalidating the access token list of the cache`)
+//     logger.info(`Invalidating the access token list of the cache`)
 
-    cache.del('foundList')
+//     cache.del('foundList')
 
-    callback(null, message)
-  } catch (e) {
-    logger.error(e.message)
-    logger.debug(e.stack)
-    callback(e, null)
-  }
-}
-export async function destroy(
-  call: grpc.ServerUnaryCall<messages.AccessToken>,
-  callback: grpc.sendUnaryData<messages.AccessToken>
-) {
-  try {
-    const id = call.request.getId()
+//     callback(null, message)
+//   } catch (e) {
+//     logger.error(e.message)
+//     logger.debug(e.stack)
+//     callback(e, null)
+//   }
+// }
+// export async function destroy(
+//   call: grpc.ServerUnaryCall<messages.AccessToken>,
+//   callback: grpc.sendUnaryData<messages.AccessToken>
+// ) {
+//   try {
+//     const id = call.request.getId()
 
-    logger.info(`Fetching access token with id ${id} from the database`)
+//     logger.info(`Fetching access token with id ${id} from the database`)
 
-    const found = await AccessToken.findByPk(id)
+//     const found = await AccessToken.findByPk(id)
 
-    if (!found) {
-      const error: grpc.ServiceError = {
-        name: '',
-        message: `access token not found`,
-        code: grpc.status.NOT_FOUND
-      }
+//     if (!found) {
+//       const error: grpc.ServiceError = {
+//         name: '',
+//         message: `access token not found`,
+//         code: grpc.status.NOT_FOUND
+//       }
 
-      logger.error(`Can't find access token with id ${id} from the database`)
+//       logger.error(`Can't find access token with id ${id} from the database`)
 
-      callback(error, null)
+//       callback(error, null)
 
-      return
-    }
+//       return
+//     }
 
-    const clone = JSON.parse(JSON.stringify(found)) as AccessToken
+//     const clone = JSON.parse(JSON.stringify(found)) as AccessToken
 
-    logger.info(`Deleting access token with id ${id} from the database`)
+//     logger.info(`Deleting access token with id ${id} from the database`)
 
-    await found.destroy()
+//     await found.destroy()
 
-    logger.info(`Deleting access token with id ${id} from the cache`)
+//     logger.info(`Deleting access token with id ${id} from the cache`)
 
-    cache.del(clone.id)
+//     cache.del(clone.id)
 
-    logger.info(`Invalidating the accessToken list of the cache`)
+//     logger.info(`Invalidating the accessToken list of the cache`)
 
-    cache.del('foundList')
+//     cache.del('foundList')
 
-    const message = getMessage(clone)
+//     const message = getMessage(clone)
 
-    callback(null, message)
-  } catch (e) {
-    logger.error(e.message)
-    logger.debug(e.stack)
-    callback(e, null)
-  }
-}
+//     callback(null, message)
+//   } catch (e) {
+//     logger.error(e.message)
+//     logger.debug(e.stack)
+//     callback(e, null)
+//   }
+// }
 
-function getMessage(payload: AccessToken) {
-  const message = new messages.AccessToken()
+// function getMessage(payload: AccessToken) {
+//   const message = new messages.AccessToken()
 
-  message.setId(payload.id)
+//   message.setId(payload.id)
 
-  return message
-}
+//   return message
+// }
 
-function getMessageList(payload: AccessToken[]) {
-  const message = new messages.AccessTokenList()
-  const messageList = payload.map(getMessage)
+// function getMessageList(payload: AccessToken[]) {
+//   const message = new messages.AccessTokenList()
+//   const messageList = payload.map(getMessage)
 
-  message.setAccessTokensList(messageList)
+//   message.setAccessTokensList(messageList)
 
-  return message
-}
+//   return message
+// }

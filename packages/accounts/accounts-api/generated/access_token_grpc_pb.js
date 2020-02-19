@@ -3,6 +3,7 @@
 'use strict';
 var grpc = require('grpc');
 var access_token_pb = require('./access_token_pb.js');
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 var common_pb = require('./common_pb.js');
 
 function serialize_access_token_AccessTokenListRequest(arg) {

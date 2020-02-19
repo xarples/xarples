@@ -11,6 +11,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+goog.object.extend(proto, google_protobuf_timestamp_pb);
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
 goog.exportSymbol('proto.client.ClientListRequest', null, global);
@@ -63,11 +65,15 @@ proto.client.ClientRequest.prototype.toObject = function(opt_includeInstance) {
 proto.client.ClientRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    password: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    email: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    firstName: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    lastName: jspb.Message.getFieldWithDefault(msg, 6, "")
+    userId: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    clientId: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    clientSecret: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    redirectUri: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    type: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    homepageUrl: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    logoUrl: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    updatedAt: (f = msg.getUpdatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -110,23 +116,41 @@ proto.client.ClientRequest.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setName(value);
+      msg.setUserId(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setPassword(value);
+      msg.setClientId(value);
       break;
     case 4:
       var value = /** @type {string} */ (reader.readString());
-      msg.setEmail(value);
+      msg.setClientSecret(value);
       break;
     case 5:
       var value = /** @type {string} */ (reader.readString());
-      msg.setFirstName(value);
+      msg.setRedirectUri(value);
       break;
     case 6:
       var value = /** @type {string} */ (reader.readString());
-      msg.setLastName(value);
+      msg.setType(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setHomepageUrl(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLogoUrl(value);
+      break;
+    case 9:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAt(value);
+      break;
+    case 10:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setUpdatedAt(value);
       break;
     default:
       reader.skipField();
@@ -164,39 +188,69 @@ proto.client.ClientRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getName();
+  f = message.getUserId();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getPassword();
+  f = message.getClientId();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = message.getEmail();
+  f = message.getClientSecret();
   if (f.length > 0) {
     writer.writeString(
       4,
       f
     );
   }
-  f = message.getFirstName();
+  f = message.getRedirectUri();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = message.getLastName();
+  f = message.getType();
   if (f.length > 0) {
     writer.writeString(
       6,
       f
+    );
+  }
+  f = message.getHomepageUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+  f = message.getLogoUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      9,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      10,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
     );
   }
 };
@@ -218,77 +272,167 @@ proto.client.ClientRequest.prototype.setId = function(value) {
 
 
 /**
- * optional string name = 2;
+ * optional string user_id = 2;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getName = function() {
+proto.client.ClientRequest.prototype.getUserId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setName = function(value) {
+proto.client.ClientRequest.prototype.setUserId = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional string password = 3;
+ * optional string client_id = 3;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getPassword = function() {
+proto.client.ClientRequest.prototype.getClientId = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setPassword = function(value) {
+proto.client.ClientRequest.prototype.setClientId = function(value) {
   jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
 /**
- * optional string email = 4;
+ * optional string client_secret = 4;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getEmail = function() {
+proto.client.ClientRequest.prototype.getClientSecret = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setEmail = function(value) {
+proto.client.ClientRequest.prototype.setClientSecret = function(value) {
   jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
 /**
- * optional string first_name = 5;
+ * optional string redirect_uri = 5;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getFirstName = function() {
+proto.client.ClientRequest.prototype.getRedirectUri = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setFirstName = function(value) {
+proto.client.ClientRequest.prototype.setRedirectUri = function(value) {
   jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * optional string last_name = 6;
+ * optional string type = 6;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getLastName = function() {
+proto.client.ClientRequest.prototype.getType = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setLastName = function(value) {
+proto.client.ClientRequest.prototype.setType = function(value) {
   jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string homepage_url = 7;
+ * @return {string}
+ */
+proto.client.ClientRequest.prototype.getHomepageUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/** @param {string} value */
+proto.client.ClientRequest.prototype.setHomepageUrl = function(value) {
+  jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string logo_url = 8;
+ * @return {string}
+ */
+proto.client.ClientRequest.prototype.getLogoUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/** @param {string} value */
+proto.client.ClientRequest.prototype.setLogoUrl = function(value) {
+  jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_at = 9;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.client.ClientRequest.prototype.getCreatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 9));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.client.ClientRequest.prototype.setCreatedAt = function(value) {
+  jspb.Message.setWrapperField(this, 9, value);
+};
+
+
+proto.client.ClientRequest.prototype.clearCreatedAt = function() {
+  this.setCreatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.client.ClientRequest.prototype.hasCreatedAt = function() {
+  return jspb.Message.getField(this, 9) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp updated_at = 10;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.client.ClientRequest.prototype.getUpdatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 10));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.client.ClientRequest.prototype.setUpdatedAt = function(value) {
+  jspb.Message.setWrapperField(this, 10, value);
+};
+
+
+proto.client.ClientRequest.prototype.clearUpdatedAt = function() {
+  this.setUpdatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.client.ClientRequest.prototype.hasUpdatedAt = function() {
+  return jspb.Message.getField(this, 10) != null;
 };
 
 

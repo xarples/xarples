@@ -18,7 +18,13 @@ export interface IConfigModuleService {
 
 export interface IConfigModule {
   service: IConfigModuleService
+  frontend?: IConfigModuleService
+  api?: IConfigModuleService
   db?: IConfigModuleDB
+  redis?: IConfigModuleRedis
+}
+
+export interface IConfigModuleShared {
   redis?: IConfigModuleRedis
 }
 

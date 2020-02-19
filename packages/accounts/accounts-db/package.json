@@ -9,6 +9,8 @@
     "lint:fix": "eslint ./src --ext .ts,.js --fix",
     "migration:run": "sequelize-cli db:migrate",
     "migration:generate": "NODE_ENV=development sequelize-cli migration:generate --name",
+    "seed:generate": "NODE_ENV=development sequelize-cli seed:generate --name",
+    "seed:run": "sequelize-cli db:seed:all",
     "test:coverage": "nyc --reporter=lcov --reporter=text-summary npm run test"
   },
   "keywords": [],

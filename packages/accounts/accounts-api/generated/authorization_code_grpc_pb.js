@@ -3,6 +3,7 @@
 'use strict';
 var grpc = require('grpc');
 var authorization_code_pb = require('./authorization_code_pb.js');
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 var common_pb = require('./common_pb.js');
 
 function serialize_authorization_code_AuthorizationCodeListRequest(arg) {

@@ -19,7 +19,7 @@ export default Vue.extend({
           <div class="column"></div>
           <div class="column">
             <img src="/static/logo.png" alt srcset />
-            <form action>
+            <form action="/api/auth/login" method="post">
               <b-field label="Username">
                 <b-input
                   v-model="username"
@@ -38,6 +38,7 @@ export default Vue.extend({
                 ></b-input>
               </b-field>
               <b-button
+                native-type="submit"
                 type="is-primary"
                 size="is-medium"
                 expanded

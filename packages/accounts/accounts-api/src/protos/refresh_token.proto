@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
 import "common.proto";
 
 package refresh_token;
@@ -14,11 +15,12 @@ service RefreshToken {
 
 message RefreshTokenRequest {
   string id = 1;
-  string name = 2;
-  string password = 3;
-  string email = 4;
-  string first_name = 5;
-  string last_name = 6;
+  string client_id = 2;
+  string user_id = 3;
+  string token = 4;
+  string scope = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
 }
 
 message RefreshTokenListRequest {

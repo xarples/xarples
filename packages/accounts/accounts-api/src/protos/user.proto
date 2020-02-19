@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
 import "common.proto";
 
 package user;
@@ -7,6 +8,7 @@ package user;
 service User {
   rpc Create (UserRequest) returns (UserRequest) {};
   rpc FindOne(UserRequest) returns (UserRequest) {};
+  rpc FindByUsername(UserRequest) returns (UserRequest) {};
   rpc FindAll (common.Empty) returns (UserListRequest) {};
   rpc Update (UserRequest) returns (UserRequest) {};
   rpc Destroy (UserRequest) returns (UserRequest) {};
@@ -19,6 +21,8 @@ message UserRequest {
   string email = 4;
   string first_name = 5;
   string last_name = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
 }
 
 message UserListRequest {

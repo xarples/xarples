@@ -29,19 +29,19 @@ export default {
         allowNull: false,
         unique: true
       },
-      firstName: {
+      first_name: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      lastName: {
+      last_name: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: DataTypes.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: DataTypes.DATE
       }

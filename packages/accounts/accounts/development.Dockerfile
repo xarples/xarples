@@ -9,7 +9,7 @@ RUN npm install
 COPY ./packages/types ./packages/types
 COPY ./packages/config ./packages/config
 COPY ./packages/utils ./packages/utils
-COPY ./packages/accounts/accounts ./packages/accounts/
+COPY ./packages/accounts ./packages/accounts
 
 RUN npx lerna bootstrap
 

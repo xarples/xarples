@@ -6,11 +6,13 @@
 
 import * as grpc from "grpc";
 import * as user_pb from "./user_pb";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as common_pb from "./common_pb";
 
 interface IUserService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     create: IUserService_ICreate;
     findOne: IUserService_IFindOne;
+    findByUsername: IUserService_IFindByUsername;
     findAll: IUserService_IFindAll;
     update: IUserService_IUpdate;
     destroy: IUserService_IDestroy;
@@ -27,6 +29,15 @@ interface IUserService_ICreate extends grpc.MethodDefinition<user_pb.UserRequest
 }
 interface IUserService_IFindOne extends grpc.MethodDefinition<user_pb.UserRequest, user_pb.UserRequest> {
     path: string; // "/user.User/FindOne"
+    requestStream: boolean; // false
+    responseStream: boolean; // false
+    requestSerialize: grpc.serialize<user_pb.UserRequest>;
+    requestDeserialize: grpc.deserialize<user_pb.UserRequest>;
+    responseSerialize: grpc.serialize<user_pb.UserRequest>;
+    responseDeserialize: grpc.deserialize<user_pb.UserRequest>;
+}
+interface IUserService_IFindByUsername extends grpc.MethodDefinition<user_pb.UserRequest, user_pb.UserRequest> {
+    path: string; // "/user.User/FindByUsername"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<user_pb.UserRequest>;
@@ -67,6 +78,7 @@ export const UserService: IUserService;
 export interface IUserServer {
     create: grpc.handleUnaryCall<user_pb.UserRequest, user_pb.UserRequest>;
     findOne: grpc.handleUnaryCall<user_pb.UserRequest, user_pb.UserRequest>;
+    findByUsername: grpc.handleUnaryCall<user_pb.UserRequest, user_pb.UserRequest>;
     findAll: grpc.handleUnaryCall<common_pb.Empty, user_pb.UserListRequest>;
     update: grpc.handleUnaryCall<user_pb.UserRequest, user_pb.UserRequest>;
     destroy: grpc.handleUnaryCall<user_pb.UserRequest, user_pb.UserRequest>;
@@ -79,6 +91,9 @@ export interface IUserClient {
     findOne(request: user_pb.UserRequest, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
     findOne(request: user_pb.UserRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
     findOne(request: user_pb.UserRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
+    findByUsername(request: user_pb.UserRequest, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
+    findByUsername(request: user_pb.UserRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
+    findByUsername(request: user_pb.UserRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
     findAll(request: common_pb.Empty, callback: (error: grpc.ServiceError | null, response: user_pb.UserListRequest) => void): grpc.ClientUnaryCall;
     findAll(request: common_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: user_pb.UserListRequest) => void): grpc.ClientUnaryCall;
     findAll(request: common_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: user_pb.UserListRequest) => void): grpc.ClientUnaryCall;
@@ -98,6 +113,9 @@ export class UserClient extends grpc.Client implements IUserClient {
     public findOne(request: user_pb.UserRequest, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
     public findOne(request: user_pb.UserRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
     public findOne(request: user_pb.UserRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
+    public findByUsername(request: user_pb.UserRequest, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
+    public findByUsername(request: user_pb.UserRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
+    public findByUsername(request: user_pb.UserRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: user_pb.UserRequest) => void): grpc.ClientUnaryCall;
     public findAll(request: common_pb.Empty, callback: (error: grpc.ServiceError | null, response: user_pb.UserListRequest) => void): grpc.ClientUnaryCall;
     public findAll(request: common_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: user_pb.UserListRequest) => void): grpc.ClientUnaryCall;
     public findAll(request: common_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: user_pb.UserListRequest) => void): grpc.ClientUnaryCall;

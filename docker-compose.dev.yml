@@ -29,21 +29,39 @@ services:
       - ./packages/console:/usr/src/console/packages/console/
       - /usr/src/console/packages/console/node_modules
 
-  accounts-api:
+  accounts:
     container_name: xarples-accounts
+    build:
+      context: .
+      dockerfile: ./packages/accounts/accounts/development.Dockerfile
+    ports:
+      - 5000:5000
+    depends_on:
+      - redis
+    environment:
+      ACCOUNTS_HOST: 0.0.0.0
+      ACCOUNTS_API_HOST: accounts-api
+      REDIS_HOST: redis
+    volumes:
+      - accounts_node_modules:/usr/src/console/packages/accounts/accounts/node_modules
+      - ./packages/accounts/accounts:/usr/src/console/packages/accounts/accounts/
+
+  accounts-api:
+    container_name: xarples-accounts-api
     build:
       context: .
       dockerfile: ./packages/accounts/accounts-api/development.Dockerfile
     ports:
-      - 5000:5000
+      - 5001:5001
     depends_on:
       - postgres
     environment:
-      USERS_SERVICE_HOST: 0.0.0.0
+      ACCOUNTS_API_HOST: 0.0.0.0
       DB_HOST: postgres
     volumes:
       - accounts_api_node_modules:/usr/src/console/packages/accounts/accounts-api/node_modules
-      - ./packages/accounts/accounts-api:/usr/src/console/packages/accounts/accounts-api
+      - ./packages/accounts/accounts-api:/usr/src/console/packages/accounts/accounts-api/
+      - ./packages/accounts/accounts-db:/usr/src/console/packages/accounts/accounts-db/
       - /usr/src/console/packages/accounts/accounts-db/node_modules
 
   postgres:
@@ -70,4 +88,5 @@ services:
       - 6379:6379
 
 volumes:
+  accounts_node_modules:
   accounts_api_node_modules:

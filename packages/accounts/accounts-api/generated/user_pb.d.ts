@@ -5,6 +5,7 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
 import * as common_pb from "./common_pb";
 
 export class UserRequest extends jspb.Message { 
@@ -27,6 +28,18 @@ export class UserRequest extends jspb.Message {
     setLastName(value: string): void;
 
 
+    hasCreatedAt(): boolean;
+    clearCreatedAt(): void;
+    getCreatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setCreatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+
+    hasUpdatedAt(): boolean;
+    clearUpdatedAt(): void;
+    getUpdatedAt(): google_protobuf_timestamp_pb.Timestamp | undefined;
+    setUpdatedAt(value?: google_protobuf_timestamp_pb.Timestamp): void;
+
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): UserRequest.AsObject;
     static toObject(includeInstance: boolean, msg: UserRequest): UserRequest.AsObject;
@@ -45,6 +58,8 @@ export namespace UserRequest {
         email: string,
         firstName: string,
         lastName: string,
+        createdAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+        updatedAt?: google_protobuf_timestamp_pb.Timestamp.AsObject,
     }
 }
 

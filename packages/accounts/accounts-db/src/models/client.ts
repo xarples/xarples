@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize'
 import utils from '@xarples/utils'
 
 import sequelize from '../lib/sequelize'
-import User from './User'
+import User from './user'
 
 class Client extends Model {
   id!: string
