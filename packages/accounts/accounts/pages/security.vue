@@ -60,50 +60,30 @@ export default Vue.extend({
           <div class="column is-9">
             <div class="columns">
               <div class="column">
-                <figure class="image is-128x128">
-                  <img
-                    class="is-rounded"
-                    src="https://bulma.io/images/placeholders/128x128.png"
-                  />
-                </figure>
                 <p class="title">
-                  Welcome, {{ currentUser.firstName }}
-                  {{ currentUser.lastName }}
+                  Security
                 </p>
                 <p class="subtitle">
-                  Manage your info, privacy, and security to make Google work
-                  better for you
+                  Settings and recommendations to help you keep your account
+                  secure
                 </p>
               </div>
             </div>
-            <div class="columns" v-for="i in [1, 2]">
-              <div class="column" v-for="i in [1, 2]">
+            <div class="columns">
+              <div class="column">
                 <div class="card">
                   <div class="card-content">
                     <div class="content">
-                      <div class="columns">
-                        <div class="column is-2">
-                          <b-icon
-                            icon="view-dashboard"
-                            size="is-large"
-                            type="is-primary"
-                          >
-                          </b-icon>
-                        </div>
-                        <div class="column is-10">
-                          <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Phasellus nec iaculis mauris Lorem ipsum dolor
-                            sit amet, consectetur adipiscing elit. Phasellus nec
-                            iaculis mauris.
-                          </p>
-                        </div>
-                      </div>
+                      <p class="title is-5">
+                        Ways we can verify it's you
+                      </p>
+                      <p class="subtitle is-6">
+                        These can be used to make sure it's really you signing
+                        in or to reach you if there's suspicious activity in
+                        your account
+                      </p>
                     </div>
                   </div>
-                  <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Get started</a>
-                  </footer>
                 </div>
               </div>
             </div>

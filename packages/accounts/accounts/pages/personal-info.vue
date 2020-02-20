@@ -60,15 +60,8 @@ export default Vue.extend({
           <div class="column is-9">
             <div class="columns">
               <div class="column">
-                <figure class="image is-128x128">
-                  <img
-                    class="is-rounded"
-                    src="https://bulma.io/images/placeholders/128x128.png"
-                  />
-                </figure>
                 <p class="title">
-                  Welcome, {{ currentUser.firstName }}
-                  {{ currentUser.lastName }}
+                  Personal Information
                 </p>
                 <p class="subtitle">
                   Manage your info, privacy, and security to make Google work
@@ -76,34 +69,37 @@ export default Vue.extend({
                 </p>
               </div>
             </div>
-            <div class="columns" v-for="i in [1, 2]">
-              <div class="column" v-for="i in [1, 2]">
+            <div class="columns">
+              <div class="column">
                 <div class="card">
                   <div class="card-content">
                     <div class="content">
-                      <div class="columns">
-                        <div class="column is-2">
-                          <b-icon
-                            icon="view-dashboard"
-                            size="is-large"
-                            type="is-primary"
-                          >
-                          </b-icon>
-                        </div>
-                        <div class="column is-10">
-                          <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Phasellus nec iaculis mauris Lorem ipsum dolor
-                            sit amet, consectetur adipiscing elit. Phasellus nec
-                            iaculis mauris.
-                          </p>
-                        </div>
-                      </div>
+                      <p class="title is-5">
+                        Profile
+                      </p>
+                      <p class="subtitle is-6">
+                        Some info may be visible to other people using Google
+                        services. Learn more
+                      </p>
                     </div>
                   </div>
-                  <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Get started</a>
-                  </footer>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <div class="card">
+                  <div class="card-content">
+                    <div class="content">
+                      <p class="title is-5">
+                        Contact Information
+                      </p>
+                      <p class="subtitle is-6">
+                        Some info may be visible to other people using Google
+                        services. Learn more
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
