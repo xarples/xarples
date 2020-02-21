@@ -1,7 +1,12 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  name: 'MainHeader'
+  name: 'MainHeader',
+  computed: {
+    user() {
+      return this.$store.state.user
+    }
+  }
 })
 </script>
 
@@ -16,14 +21,41 @@ export default Vue.extend({
       </b-navbar-item>
     </template>
     <template slot="end">
-      <b-navbar-item tag="div">
-        <figure class="image is-24x24">
-          <img
-            class="is-rounded"
-            src="https://bulma.io/images/placeholders/24x24.png"
-          />
-        </figure>
-      </b-navbar-item>
+      <b-dropdown position="is-bottom-left" aria-role="menu" trap-focus>
+        <a class="navbar-item" slot="trigger">
+          <figure class="image is-24x24">
+            <img
+              class="is-rounded"
+              src="https://bulma.io/images/placeholders/24x24.png"
+            />
+          </figure>
+          <b-icon icon="menu-down"></b-icon>
+        </a>
+
+        <b-dropdown-item
+          aria-role="menu-item"
+          :focusable="false"
+          custom
+          paddingless
+        >
+          <div class="modal-card" style="width:300px;">
+            <section class="modal-card-body">
+              <p class="title is-6 has-text-centered">
+                {{ user.firstName }} {{ user.lastName }}
+              </p>
+              <p class="subtitle is-6 has-text-centered">{{ user.email }}</p>
+              <b-button expanded rounded>
+                Manage your xarples accounts
+              </b-button>
+            </section>
+            <footer class="modal-card-foot">
+              <b-button expanded>
+                Sign out
+              </b-button>
+            </footer>
+          </div>
+        </b-dropdown-item>
+      </b-dropdown>
     </template>
   </b-navbar>
 </template>
