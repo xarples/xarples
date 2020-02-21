@@ -1,115 +1,68 @@
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
   name: 'Home',
-  asyncData(ctx) {
-    // @ts-ignore
-    const currentUser = ctx.req.user
-
-    return {
-      currentUser
+  computed: {
+    user() {
+      return this.$store.state.user
     }
   }
 })
 </script>
 
 <template>
-  <section class="main">
-    <b-navbar wrapper-class="container" shadow>
-      <template slot="brand">
-        <b-navbar-item tag="router-link" :to="{ path: '/' }">
+  <section class="section">
+    <div class="columns">
+      <div class="column">
+        <figure class="image is-128x128">
           <img
-            src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-            alt="Lightweight UI components for Vue.js based on Bulma"
+            class="is-rounded"
+            src="https://bulma.io/images/placeholders/128x128.png"
           />
-        </b-navbar-item>
-      </template>
-      <template slot="end">
-        <b-navbar-item tag="div">
-          <figure class="image is-24x24">
-            <img
-              class="is-rounded"
-              src="https://bulma.io/images/placeholders/24x24.png"
-            />
-          </figure>
-        </b-navbar-item>
-      </template>
-    </b-navbar>
-    <div class="section">
-      <div class="container">
-        <div class="columns">
-          <div class="column is-3">
-            <b-menu>
-              <b-menu-list>
-                <b-menu-item
-                  icon="information-outline"
-                  label="Home"
-                ></b-menu-item>
-                <b-menu-item
-                  icon="information-outline"
-                  label="Personal info"
-                ></b-menu-item>
-                <b-menu-item icon="settings" label="Security"></b-menu-item>
-                <b-menu-item
-                  icon="information"
-                  label="Payment and subscriptions"
-                ></b-menu-item>
-              </b-menu-list>
-            </b-menu>
-          </div>
-          <div class="column is-9">
-            <div class="columns">
-              <div class="column">
-                <figure class="image is-128x128">
-                  <img
-                    class="is-rounded"
-                    src="https://bulma.io/images/placeholders/128x128.png"
-                  />
-                </figure>
-                <p class="title">
-                  Welcome, {{ currentUser.firstName }}
-                  {{ currentUser.lastName }}
-                </p>
-                <p class="subtitle">
-                  Manage your info, privacy, and security to make Google work
-                  better for you
-                </p>
-              </div>
-            </div>
-            <div class="columns" v-for="i in [1, 2]">
-              <div class="column" v-for="i in [1, 2]">
-                <div class="card">
-                  <div class="card-content">
-                    <div class="content">
-                      <div class="columns">
-                        <div class="column is-2">
-                          <b-icon
-                            icon="view-dashboard"
-                            size="is-large"
-                            type="is-primary"
-                          >
-                          </b-icon>
-                        </div>
-                        <div class="column is-10">
-                          <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Phasellus nec iaculis mauris Lorem ipsum dolor
-                            sit amet, consectetur adipiscing elit. Phasellus nec
-                            iaculis mauris.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Get started</a>
-                  </footer>
+        </figure>
+        <p class="title">Welcome, {{ user.firstName }} {{ user.lastName }}</p>
+        <p class="subtitle">
+          Manage your info, privacy, and security to make Google work better for
+          you
+        </p>
+      </div>
+    </div>
+    <div class="columns" v-for="(i, index) in [1, 2]" :key="index">
+      <div class="column" v-for="(i, index) in [1, 2]" :key="index">
+        <div class="card">
+          <div class="card-content">
+            <div class="content">
+              <div class="columns">
+                <div class="column is-2">
+                  <b-icon
+                    icon="view-dashboard"
+                    size="is-large"
+                    type="is-primary"
+                  >
+                  </b-icon>
+                </div>
+                <div class="column is-10">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus nec iaculis mauris Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Get started</a>
+          </footer>
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<style lang="scss" scoped>
+body {
+  color: $primary;
+}
+</style>

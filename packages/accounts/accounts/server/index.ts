@@ -39,19 +39,20 @@ passport.deserializeUser(auth.deserializeUser)
 passport.serializeUser(auth.serializeUser)
 
 app.use('/api', routes.api)
-app.use(nuxt.render)
 
 async function main() {
   const { host, port } = config.accounts.frontend!
 
+  await nuxt.ready()
+
   if (nuxtConfig.dev) {
     const builder = new Builder(nuxt)
     await builder.build()
-  } else {
-    await nuxt.ready()
   }
 
-  server.listen(port, () => {
+  app.use(nuxt.render)
+
+  app.listen(port, () => {
     logger.info(`Server listening on http://${host}:${port}`)
   })
 
