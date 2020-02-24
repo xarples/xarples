@@ -15,6 +15,10 @@ export default {
         email: 'glopez@test.com',
         first_name: 'Guillermo',
         last_name: 'Lopez',
+        gender: 'male',
+        picture: '',
+        birth_date: new Date(),
+        phone_number: 18091112222,
         created_at: new Date(),
         updated_at: new Date()
       }

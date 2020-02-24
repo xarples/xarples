@@ -17,7 +17,6 @@ export const mutations: MutationTree<RootState> = {
 
 export const actions: ActionTree<RootState, RootState> = {
   nuxtServerInit({ commit }, { req }) {
-    console.log('sdasdassdasdasdasdasdas')
     if (req.user) {
       commit('SET_USER', { user: req.user })
     }

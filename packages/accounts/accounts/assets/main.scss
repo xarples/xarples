@@ -18,3 +18,7 @@ $menu-item-hover-background-color: transparent;
 // Import Bulma and Buefy styles
 @import '~bulma';
 @import '~buefy/src/scss/buefy';
+
+.has-background-gray {
+  background-color: #fbfbfd;
+}

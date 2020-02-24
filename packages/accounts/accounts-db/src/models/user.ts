@@ -10,6 +10,10 @@ class User extends Model {
   email!: string
   firstName!: string
   lastName!: string
+  gender: string | undefined
+  picture: string | undefined
+  phoneNumber: number | undefined
+  birthDate: Date | undefined
   readonly createdAt!: Date
   readonly updatedAt!: Date
 }
@@ -43,6 +47,22 @@ User.init(
     lastName: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    gender: {
+      type: DataTypes.ENUM('male', 'female', 'other'),
+      allowNull: false
+    },
+    picture: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    birthDate: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    phoneNumber: {
+      allowNull: false,
+      type: DataTypes.NUMBER
     }
   },
   {

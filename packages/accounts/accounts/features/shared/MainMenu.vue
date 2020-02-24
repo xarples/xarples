@@ -1,7 +1,28 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  name: 'MainMenu'
+  name: 'MainMenu',
+  data() {
+    const pages = [
+      { label: 'Home', path: '/', icon: 'information-outline' },
+      {
+        label: 'Personal information',
+        path: '/personal-info',
+        icon: 'information-outline'
+      },
+      { label: 'Security', path: '/security', icon: 'settings' },
+      {
+        label: 'Payments & subscriptions',
+        path: '/payments-and-subscriptions',
+        icon: 'information'
+      }
+    ]
+
+    return {
+      pages,
+      currentPath: this.$route.path
+    }
+  }
 })
 </script>
 
@@ -9,34 +30,14 @@ export default Vue.extend({
   <b-menu>
     <b-menu-list>
       <b-menu-item
-        class="b-menu-item "
+        v-for="page of pages"
+        :key="page.label"
+        :icon="page.icon"
+        :label="page.label"
+        :to="page.path"
+        :active="page.path === currentPath"
         tag="nuxt-link"
-        icon="information-outline"
-        label="Home"
-        to="/"
-      >
-      </b-menu-item>
-      <b-menu-item
-        tag="nuxt-link"
-        class="b-menu-item "
-        icon="information-outline"
-        label="Personal info"
-        to="/personal-info"
-      ></b-menu-item>
-      <b-menu-item
-        tag="nuxt-link"
-        class="b-menu-item "
-        icon="settings"
-        label="Security"
-        to="/security"
-      >
-      </b-menu-item>
-      <b-menu-item
-        tag="nuxt-link"
-        class="b-menu-item "
-        icon="information"
-        label="Payment and subscriptions"
-        :to="{ path: '/payment-subscriptions' }"
+        class="b-menu-item"
       ></b-menu-item>
     </b-menu-list>
   </b-menu>

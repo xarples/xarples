@@ -16,10 +16,11 @@ export default Vue.extend({
     <div class="columns">
       <div class="column">
         <p class="title">
-          Security
+          Payments & subscriptions
         </p>
         <p class="subtitle">
-          Settings and recommendations to help you keep your account secure
+          Your payment information, transactions, recurring payments, and
+          reservations
         </p>
       </div>
     </div>

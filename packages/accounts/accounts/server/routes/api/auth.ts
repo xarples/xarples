@@ -4,19 +4,19 @@ import passport from 'passport'
 const router = Router()
 
 router.post(
-  '/auth/login',
+  '/signin',
   passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login'
+    failureRedirect: '/signin'
   })
 )
 
-router.get('/auth/logout', (req, res) => {
+router.get('/logout', (req, res) => {
   req.logout()
-  res.redirect('/login')
+  res.redirect('/signin')
 })
 
-router.get('/auth/token-info', (req, res) => {
+router.get('/token-info', (req, res) => {
   res.send(req.user)
 })
 

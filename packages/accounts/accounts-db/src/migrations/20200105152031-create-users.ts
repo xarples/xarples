@@ -37,6 +37,22 @@ export default {
         type: DataTypes.STRING,
         allowNull: false
       },
+      gender: {
+        type: DataTypes.ENUM('male', 'female', 'other'),
+        allowNull: false
+      },
+      picture: {
+        allowNull: false,
+        type: DataTypes.STRING
+      },
+      birth_date: {
+        allowNull: false,
+        type: DataTypes.DATE
+      },
+      phone_number: {
+        allowNull: false,
+        type: DataTypes.NUMBER
+      },
       created_at: {
         allowNull: false,
         type: DataTypes.DATE

@@ -20,7 +20,7 @@ export default Vue.extend({
           <div class="column"></div>
           <div class="column">
             <img src="/static/logo.png" alt srcset />
-            <form action="/api/auth/login" method="post">
+            <form action="/api/auth/signin" method="post">
               <b-field label="Username">
                 <b-input
                   v-model="username"

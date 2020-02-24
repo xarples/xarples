@@ -40,6 +40,8 @@ passport.serializeUser(auth.serializeUser)
 
 app.use('/api', routes.api)
 
+app.use(nuxt.render)
+
 async function main() {
   const { host, port } = config.accounts.frontend!
 
@@ -50,9 +52,7 @@ async function main() {
     await builder.build()
   }
 
-  app.use(nuxt.render)
-
-  app.listen(port, () => {
+  server.listen(port, () => {
     logger.info(`Server listening on http://${host}:${port}`)
   })
 
@@ -62,4 +62,8 @@ async function main() {
   process.on('unhandledRejection', exitHandler(1, 'Unhandled Promise'))
 }
 
-main()
+if (!module.parent) {
+  main()
+}
+
+export default app

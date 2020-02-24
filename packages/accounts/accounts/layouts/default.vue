@@ -13,7 +13,7 @@ export default Vue.extend({
 </script>
 
 <template>
-  <main>
+  <main class="main has-background-gray">
     <main-header />
     <section class="section">
       <div class="container">
@@ -29,3 +29,9 @@ export default Vue.extend({
     </section>
   </main>
 </template>
+
+<style lang="scss" scoped>
+.main {
+  min-height: 100vh;
+}
+</style>

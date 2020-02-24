@@ -12,23 +12,17 @@ export default Vue.extend({
 </script>
 
 <template>
-  <section class="section">
+  <section class="container">
     <div class="columns">
       <div class="column">
-        <figure class="image is-128x128">
-          <img
-            class="is-rounded"
-            src="https://bulma.io/images/placeholders/128x128.png"
-          />
-        </figure>
-        <p class="title">Welcome, {{ user.firstName }} {{ user.lastName }}</p>
-        <p class="subtitle">
-          Manage your info, privacy, and security to make Google work better for
-          you
-        </p>
+        <h1 class="title">Welcome, {{ user.firstName }} {{ user.lastName }}</h1>
+        <h2 class="subtitle">
+          Manage your info, privacy, and security to make Xarples work better
+          for you
+        </h2>
       </div>
     </div>
-    <div class="columns" v-for="(i, index) in [1, 2]" :key="index">
+    <!-- <div class="columns" v-for="(i, index) in [1, 2]" :key="index">
       <div class="column" v-for="(i, index) in [1, 2]" :key="index">
         <div class="card">
           <div class="card-content">
@@ -57,12 +51,6 @@ export default Vue.extend({
           </footer>
         </div>
       </div>
-    </div>
+    </div> -->
   </section>
 </template>
-
-<style lang="scss" scoped>
-body {
-  color: $primary;
-}
-</style>
