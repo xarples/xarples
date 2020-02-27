@@ -1,26 +1,77 @@
 <script lang="ts">
 import Vue from 'vue'
 
+interface IField {
+  type: string
+  name: string
+  value: string
+}
+
+interface IFields {
+  firstName: IField
+  lastName: IField
+  username: IField
+  password: IField
+  email: IField
+}
+
 export default Vue.extend({
   name: 'Home',
   data() {
     const user = this.$store.state.user
 
-    const fields = [
-      { type: 'text', name: 'First name', value: user.firstName },
-      { type: 'text', name: 'Last name', value: user.lastName },
-      { type: 'text', name: 'Username', value: user.username },
-      { type: 'password', name: 'Password', value: 'secret' },
-      { type: 'text', name: 'Email', value: user.email }
-    ]
+    const fields = {
+      firstName: { type: 'text', name: 'First name', value: user.firstName },
+      lastName: { type: 'text', name: 'Last name', value: user.lastName },
+      username: { type: 'text', name: 'Username', value: user.username },
+      password: { type: 'password', name: 'Password', value: 'secret' },
+      email: { type: 'text', name: 'Email', value: user.email }
+    }
 
     return {
+      isPasswordChanged: false,
       fields
     }
   },
   computed: {
     user() {
       return this.$store.state.user
+    }
+  },
+  watch: {
+    'fields.password.value': function password(
+      newPassword: IFields,
+      oldPassword: IFields
+    ) {
+      if (newPassword !== oldPassword) {
+        this.isPasswordChanged = true
+      }
+    }
+  },
+  methods: {
+    updateUser() {
+      const data = Object.keys(this.fields).reduce((acc, current) => {
+        // @ts-ignore
+        acc[current] = this.fields[current].value
+
+        return acc
+      }, {})
+
+      if (!this.isPasswordChanged) {
+        // @ts-ignore
+        delete data.password
+      }
+
+      // @ts-ignore
+      data.id = this.user.id
+
+      fetch('/api/users', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     }
   }
 })
@@ -60,7 +111,9 @@ export default Vue.extend({
                   <b-input :type="field.type" v-model="field.value"></b-input>
                 </b-field>
                 <div class="column is-2">
-                  <b-button type="is-primary">Done</b-button>
+                  <b-button @click="updateUser" type="is-primary"
+                    >Done</b-button
+                  >
                 </div>
               </form>
             </div>
