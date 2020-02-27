@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   web:
@@ -24,7 +24,7 @@ services:
     environment:
       DB_HOST: postgres
       REDIS_HOST: redis
-      USERS_SERVICE_HOST: users
+      ACCOUNTS_HOST: accounts
     volumes:
       - ./packages/console:/usr/src/console/packages/console/
       - /usr/src/console/packages/console/node_modules

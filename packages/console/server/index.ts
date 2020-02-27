@@ -33,16 +33,14 @@ app.get('/api/auth/tokeninfo', (req, res) => {
   res.send(req.session)
 })
 
-app.get('/api/auth/logout', (req, res) => {
-  res.send(
-    req!.session!.destroy(err => {
-      if (err) {
-        return res.status(500).send({ error: err })
-      }
+app.get('/api/auth/logout', (_, res) => {
+  const url = `${config.accounts.frontend!.host}:${
+    config.accounts.frontend!.port
+  }`
 
-      res.status(200).send({ success: true })
-    })
-  )
+  console.log(url)
+
+  res.redirect(`http://${url}`)
 })
 
 app.get('/login', (_, res) => {

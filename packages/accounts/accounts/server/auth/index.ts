@@ -29,22 +29,21 @@ const localStrategy = new LocalStrategy((username, password, done) => {
 })
 
 function serializeUser(user: any, done: any) {
-  done(null, { username: user.username })
+  // done(null, { username: user.username })
+  done(null, user)
 }
 
 function deserializeUser(user: any, done: any) {
-  const message = new accounts.services.user.messages.UserRequest()
-
-  message.setUsername(user.username)
-
-  userClient.findByUsername(message, (err, response) => {
-    if (err) {
-      logger.error(err.message)
-      return done(err)
-    }
-
-    done(null, response.toObject())
-  })
+  done(null, user)
+  // const message = new accounts.services.user.messages.UserRequest()
+  // message.setUsername(user.username)
+  // userClient.findByUsername(message, (err, response) => {
+  //   if (err) {
+  //     logger.error(err.message)
+  //     return done(err)
+  //   }
+  //   done(null, response.toObject())
+  // })
 }
 
 export default {
