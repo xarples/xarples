@@ -1,16 +1,21 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title is-2 has-text-centered">
-        Explore our products
-      </h1>
-      <h2 class="subtitle is-h4 has-text-centered">
-        All our products are available in the console, activate those you need
-        and optimize your workflow.
-      </h2>
+  <w-section color="gray1">
+    <w-grid-container>
+      <w-grid-row>
+        <w-grid-column>
+          <w-text variant="h2" align="center">
+            <strong>Explore our products</strong>
+          </w-text>
+          <w-text variant="h5" align="center">
+            All our products are available in the console, activate those you
+            need and optimize your workflow.
+          </w-text>
+        </w-grid-column>
+      </w-grid-row>
+      <w-spacer size="3x" />
       <product-list />
-    </div>
-  </section>
+    </w-grid-container>
+  </w-section>
 </template>
 
 <script lang="ts">

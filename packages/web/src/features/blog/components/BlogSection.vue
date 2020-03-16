@@ -1,16 +1,21 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title is-2 has-text-centered">
-        The latest Xarples news, articles, tips and more
-      </h1>
-      <h2 class="subtitle is-4 has-text-centered">
-        Keep updated, we are always doing new things so that all businesses
-        continue to grow successfully.
-      </h2>
+  <w-section size="medium">
+    <w-grid-container>
+      <w-grid-row>
+        <w-grid-column>
+          <w-text variant="h2" align="center">
+            <strong>The latest Xarples news, articles, tips and more</strong>
+          </w-text>
+          <w-text variant="h5" align="center">
+            Keep updated, we are always doing new things so that all businesses
+            continue to grow successfully.
+          </w-text>
+        </w-grid-column>
+      </w-grid-row>
+      <w-spacer size="3x" />
       <post-list />
-    </div>
-  </section>
+    </w-grid-container>
+  </w-section>
 </template>
 
 <script lang="ts">

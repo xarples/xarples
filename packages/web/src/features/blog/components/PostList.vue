@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <div class="columns">
-      <div class="column">
-        <post />
-      </div>
-      <div class="column">
-        <post />
-      </div>
-      <div class="column">
-        <post />
-      </div>
-    </div>
-  </div>
+  <w-grid-row>
+    <w-grid-column :sm="12" :md="4">
+      <post />
+    </w-grid-column>
+    <w-grid-column :sm="12" :md="4">
+      <post />
+    </w-grid-column>
+    <w-grid-column :sm="12" :md="4">
+      <post />
+    </w-grid-column>
+  </w-grid-row>
 </template>
 
 <script lang="ts">

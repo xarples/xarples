@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@xarples/wolfi": "file:../wolfi",
     "@nuxtjs/style-resources": "^1.0.0",
     "body-parser": "^1.19.0",
     "connect-redis": "^4.0.4",

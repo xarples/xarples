@@ -1,6 +1,16 @@
 <template>
   <main>
     <main-header />
+    <w-divider />
+    <!-- <w-alert color="info">
+      <w-text color="white" align="center">
+        <strong>
+          Slack is the place for remote work Schedule a consultation with Slack
+          experts to learn how to stay productive.
+        </strong>
+      </w-text>
+      <w-icon color="white" name="times" />
+    </w-alert>-->
     <hero />
     <feature-list />
     <featured-section />

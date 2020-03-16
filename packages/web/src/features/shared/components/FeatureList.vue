@@ -1,46 +1,52 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <div class="columns">
-        <div class="column">
-          <p class="is-size-6 has-text-weight-bold">
-            One platform, with products that work better together
-          </p>
-          <p>
+  <w-section>
+    <w-grid-container>
+      <w-grid-row>
+        <w-grid-column :sm="12" :md="3">
+          <w-icon name="sync" size="2x" />
+          <w-text variant="h4">
+            <strong>Zero config</strong>
+          </w-text>
+          <w-text>
             Xarples products work great individually but share data and
             insights, so they work even better together.
-          </p>
-        </div>
-        <div class="column">
-          <p class="is-size-6 has-text-weight-bold">
-            One platform, with products that work better together
-          </p>
-          <p>
+          </w-text>
+        </w-grid-column>
+        <w-grid-column :sm="12" :md="3">
+          <w-icon name="sync" size="2x" />
+          <w-text variant="h4">
+            <strong>Collaborative</strong>
+          </w-text>
+          <w-text>
             Xarples products work great individually but share data and
             insights, so they work even better together.
-          </p>
-        </div>
-        <div class="column">
-          <p class="is-size-6 has-text-weight-bold">
-            One platform, with products that work better together
-          </p>
-          <p>
+          </w-text>
+        </w-grid-column>
+        <w-grid-column :sm="12" :md="3">
+          <w-icon name="sync" size="2x" />
+
+          <w-text variant="h4">
+            <strong>Automatic SSL</strong>
+          </w-text>
+          <w-text>
             Xarples products work great individually but share data and
             insights, so they work even better together.
-          </p>
-        </div>
-        <div class="column">
-          <p class="is-size-6 has-text-weight-bold">
-            One platform, with products that work better together
-          </p>
-          <p>
+          </w-text>
+        </w-grid-column>
+        <w-grid-column :sm="12" :md="3">
+          <w-icon name="sync" size="2x" />
+
+          <w-text variant="h4">
+            <strong>Blazing fast</strong>
+          </w-text>
+          <w-text>
             Xarples products work great individually but share data and
             insights, so they work even better together.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+          </w-text>
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-container>
+  </w-section>
 </template>
 
 <script lang="ts">

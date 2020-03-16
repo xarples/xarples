@@ -12,5 +12,7 @@ export default Vue.extend({
 </script>
 
 <template>
-  <featured-product />
+  <w-section color="gray1">
+    <featured-product />
+  </w-section>
 </template>

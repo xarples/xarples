@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@xarples/config": "*",
+    "@xarples/wolfi": "file:../../../wolfi",
     "@nuxt/typescript-runtime": "^0.3.8",
     "nuxt": "^2.11.0",
     "nuxt-buefy": "^0.3.21"

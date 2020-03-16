@@ -1,8 +1,19 @@
 <template>
-  <div>
-    <product />
-    <product :inverted="true" />
-  </div>
+  <w-grid-row>
+    <w-grid-column>
+      <w-grid-row>
+        <w-grid-column>
+          <product />
+        </w-grid-column>
+      </w-grid-row>
+      <w-spacer size="5x" />
+      <w-grid-row>
+        <w-grid-column>
+          <product :inverted="true" />
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-column>
+  </w-grid-row>
 </template>
 
 <script lang="ts">

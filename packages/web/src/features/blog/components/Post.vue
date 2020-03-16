@@ -1,29 +1,16 @@
 <template>
-  <div class="card">
-    <div class="card-image">
-      <figure class="image is-4by3">
-        <img
-          src="https://bulma.io/images/placeholders/1280x960.png"
-          alt="Placeholder image"
-        />
-      </figure>
-    </div>
-    <div class="card-content">
-      <div class="media">
-        <div class="media-content">
-          <p class="title is-5">
-            The magic of state shared explained
-          </p>
-        </div>
-      </div>
-
-      <div class="content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-        iaculis mauris.
-        <a>@bulmaio</a>.
-      </div>
-    </div>
-  </div>
+<w-card>
+  <w-card-image variant="pattern" color="gray1" src="https://demos.creative-tim.com/argon-design-system-pro/assets/img/ill/p2.svg" />
+  <w-card-body>
+  <w-card-category icon="address-card">Features</w-card-category>
+  <w-card-title color="primary">FiftyThree Files For Paper</w-card-title>
+  <w-card-description>Yesterday, as Facebook launched its news reader app Paper, design-focused startup FiftyThree called out Facebook...</w-card-description>
+  </w-card-body>
+  <w-card-footer>
+    <w-text variant="text">Jhon doe</w-text>
+  </w-card-footer>
+</w-card>
+</div>
 </template>
 
 <script lang="ts">
