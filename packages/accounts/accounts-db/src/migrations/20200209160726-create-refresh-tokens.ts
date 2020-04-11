@@ -16,13 +16,13 @@ export default {
         primaryKey: true,
         allowNull: false
       },
-      //@ts-ignore
       client_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
           model: {
             tableName: 'clients',
+            //@ts-ignore
             schema: 'public'
           },
           key: 'id'
@@ -35,6 +35,7 @@ export default {
         references: {
           model: {
             tableName: 'users',
+            //@ts-ignore
             schema: 'public'
           },
           key: 'id'

@@ -12,45 +12,17 @@ export default Vue.extend({
 </script>
 
 <template>
-  <section class="container">
-    <div class="columns">
-      <div class="column">
-        <h1 class="title">Welcome, {{ user.firstName }} {{ user.lastName }}</h1>
-        <h2 class="subtitle">
-          Manage your info, privacy, and security to make Xarples work better
-          for you
-        </h2>
-      </div>
-    </div>
-    <!-- <div class="columns" v-for="(i, index) in [1, 2]" :key="index">
-      <div class="column" v-for="(i, index) in [1, 2]" :key="index">
-        <div class="card">
-          <div class="card-content">
-            <div class="content">
-              <div class="columns">
-                <div class="column is-2">
-                  <b-icon
-                    icon="view-dashboard"
-                    size="is-large"
-                    type="is-primary"
-                  >
-                  </b-icon>
-                </div>
-                <div class="column is-10">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <a href="#" class="card-footer-item">Get started</a>
-          </footer>
-        </div>
-      </div>
-    </div> -->
-  </section>
+  <w-section>
+    <w-grid-container>
+      <w-grid-row>
+        <w-grid-column>
+          <w-text variant="h1">Welcome, {{ user.firstName }} {{ user.lastName }}</w-text>
+          <w-text variant="h5">
+            Manage your info, privacy, and security to make Xarples work better
+            for you
+          </w-text>
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-container>
+  </w-section>
 </template>

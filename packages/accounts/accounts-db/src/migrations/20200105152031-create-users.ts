@@ -51,7 +51,7 @@ export default {
       },
       phone_number: {
         allowNull: false,
-        type: DataTypes.NUMBER
+        type: DataTypes.STRING
       },
       created_at: {
         allowNull: false,

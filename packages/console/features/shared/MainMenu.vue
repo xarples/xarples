@@ -43,7 +43,7 @@ export default Vue.extend({
   </b-menu>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .b-menu-item {
   font-weight: bold;
 }

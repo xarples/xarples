@@ -27,23 +27,21 @@ export default Vue.extend({
 </script>
 
 <template>
-  <b-menu>
-    <b-menu-list>
-      <b-menu-item
+  <w-sidebar-menu>
+    <w-sidebar-menu-list>
+      <w-sidebar-menu-item
         v-for="page of pages"
         :key="page.label"
         :icon="page.icon"
-        :label="page.label"
-        :to="page.path"
         :active="page.path === currentPath"
-        tag="nuxt-link"
-        class="b-menu-item"
-      ></b-menu-item>
-    </b-menu-list>
-  </b-menu>
+      >
+        <nuxt-link :to="page.path">{{ page.label }}</nuxt-link>
+      </w-sidebar-menu-item>
+    </w-sidebar-menu-list>
+  </w-sidebar-menu>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .b-menu-item {
   font-weight: bold;
 }

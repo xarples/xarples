@@ -78,48 +78,47 @@ export default Vue.extend({
 </script>
 
 <template>
-  <section class="container">
-    <div class="columns">
-      <div class="column">
-        <p class="title">Personal Information</p>
-        <p class="subtitle">
-          Basic information, like your name and photo, that you use on Xarples
-          services
-        </p>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <div class="card">
-          <div class="card-content">
-            <div class="content">
-              <div class="columns">
-                <div class="column is-10">
-                  <p class="title is-4">Profile</p>
-                  <p class="subtitle is-6">
-                    Some info may be visible to other people using Xarples
-                    services. Learn more
-                  </p>
-                </div>
-              </div>
+  <w-section>
+    <w-grid-container fluid>
+      <w-grid-row>
+        <w-grid-column>
+          <w-text variant="h1">Personal Information</w-text>
+          <w-text variant="h5">
+            Basic information, like your name and photo, that you use on Xarples
+            services
+          </w-text>
+        </w-grid-column>
+      </w-grid-row>
+      <w-spacer></w-spacer>
+      <w-grid-row>
+        <w-grid-column>
+          <w-card :shadow="false">
+            <w-card-body>
+              <w-text variant="h4">Profile</w-text>
+              <w-text variant="h6">
+                Some info may be visible to other people using Xarples services.
+                Learn more
+              </w-text>
+              <w-spacer></w-spacer>
+
               <form action>
-                <b-field
-                  v-for="field of fields"
-                  :key="field.name"
-                  :label="field.name"
-                >
-                  <b-input :type="field.type" v-model="field.value"></b-input>
-                </b-field>
+                <template v-for="field of fields">
+                  <w-input
+                    :key="field.name"
+                    :type="field.type"
+                    v-model="field.value"
+                  ></w-input>
+                  <w-spacer :key="field.name" />
+                </template>
+
                 <div class="column is-2">
-                  <b-button @click="updateUser" type="is-primary"
-                    >Done</b-button
-                  >
+                  <w-button @click="updateUser">Done</w-button>
                 </div>
               </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+            </w-card-body>
+          </w-card>
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-container>
+  </w-section>
 </template>

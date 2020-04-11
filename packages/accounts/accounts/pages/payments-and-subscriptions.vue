@@ -12,17 +12,17 @@ export default Vue.extend({
 </script>
 
 <template>
-  <section class="container">
-    <div class="columns">
-      <div class="column">
-        <p class="title">
-          Payments & subscriptions
-        </p>
-        <p class="subtitle">
-          Your payment information, transactions, recurring payments, and
-          reservations
-        </p>
-      </div>
-    </div>
-  </section>
+  <w-section>
+    <w-grid-container fluid>
+      <w-grid-row>
+        <w-grid-column>
+          <w-text variant="h1">Payments & subscriptions</w-text>
+          <w-text variant="h5">
+            Your payment information, transactions, recurring payments, and
+            reservations
+          </w-text>
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-container>
+  </w-section>
 </template>

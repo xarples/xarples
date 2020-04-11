@@ -13,68 +13,56 @@ export default Vue.extend({
 </script>
 
 <template>
-  <main class="main is-flex">
-    <section class="section has-background has-flex-1">
-      <div class="container has-full-height">
-        <div class="columns is-vcentered has-full-height">
-          <div class="column"></div>
-          <div class="column">
-            <img src="/static/logo.png" alt srcset />
-            <form action="/api/auth/signin" method="post">
-              <b-field label="Username">
-                <b-input
+  <w-section color="gray1">
+    <w-grid-container no-gutters>
+      <w-grid-row
+        no-gutters
+        horizontal-align="center"
+        :style="{ height: '100%' }"
+      >
+        <w-grid-column :cols="4">
+          <w-image
+            :style="{ width: '100px', display: 'block', margin: 'auto' }"
+            src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
+            alt
+          />
+          <w-spacer size="2x" />
+          <w-card>
+            <w-card-body>
+              <w-text variant="h4" align="center">
+                Sign in
+              </w-text>
+              <w-spacer />
+              <form action="/api/auth/signin" method="post">
+                <w-input
                   v-model="username"
                   name="username"
-                  size="is-medium"
-                  maxlength="30"
-                ></b-input>
-              </b-field>
-              <b-field label="Password">
-                <b-input
+                  placeholder="Username"
+                ></w-input>
+                <w-spacer />
+                <w-input
                   v-model="password"
                   name="password"
-                  size="is-medium"
                   type="password"
-                  password-reveal
-                ></b-input>
-              </b-field>
-              <b-button
-                native-type="submit"
-                type="is-primary"
-                size="is-medium"
-                expanded
-                class="has-margin"
-              >
-                <span class="has-text-bold">Sign in</span>
-              </b-button>
-            </form>
-          </div>
-          <div class="column"></div>
-        </div>
-      </div>
-    </section>
-  </main>
+                  placeholder="Password"
+                ></w-input>
+                <w-spacer />
+                <w-spacer />
+                <w-text>Forgot your password?</w-text>
+                <w-spacer />
+                <w-button type="submit" block>
+                  Sign in
+                </w-button>
+                <w-spacer />
+
+                <w-button block color="white">
+                  Sign up
+                </w-button>
+              </form>
+            </w-card-body>
+          </w-card>
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-container>
+  </w-section>
 </template>
-
-<style scoped>
-.main {
-  height: 100vh;
-  flex-direction: column;
-}
-
-.has-background {
-  background-color: #fbfbfd;
-}
-
-.has-flex-1 {
-  flex: 1;
-}
-
-.has-full-height {
-  height: 100%;
-}
-
-.has-margin {
-  margin-top: 1.5em;
-}
-</style>

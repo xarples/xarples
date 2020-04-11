@@ -12,16 +12,14 @@ export default Vue.extend({
 </script>
 
 <template>
-  <section class="container">
-    <div class="columns">
-      <div class="column">
-        <p class="title">
-          Security
-        </p>
-        <p class="subtitle">
-          Settings and recommendations to help you keep your account secure
-        </p>
-      </div>
-    </div>
-  </section>
+  <w-section>
+    <w-grid-container fluid>
+      <w-grid-row>
+        <w-grid-column>
+          <w-text variant="h1">Security</w-text>
+          <w-text variant="h5">Settings and recommendations to help you keep your account secure</w-text>
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-container>
+  </w-section>
 </template>

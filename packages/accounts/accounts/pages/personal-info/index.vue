@@ -15,6 +15,7 @@ export default Vue.extend({
         name: 'Password',
         value: user.password
           .split('')
+          .slice(0, 6)
           .map(() => '*')
           .join('')
       },
@@ -34,49 +35,45 @@ export default Vue.extend({
 </script>
 
 <template>
-  <section class="container">
-    <div class="columns is-vcentered">
-      <div class="column">
-        <p class="title">Personal Information</p>
-        <p class="subtitle">
-          Basic information, like your name and photo, that you use on Xarples
-          services
-        </p>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <div class="card">
-          <div class="card-content">
-            <div class="content">
-              <div class="columns">
-                <div class="column">
-                  <p class="title is-4">Profile</p>
-                  <p class="subtitle is-6">
-                    Some info may be visible to other people using Xarples
-                    services. Learn more
-                  </p>
-                </div>
-              </div>
-              <table class="table">
-                <tbody>
-                  <tr v-for="field in fields" :key="field.name">
-                    <td>{{ field.name }}</td>
-                    <td>{{ field.value }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="card-footer-item">
+  <w-section>
+    <w-grid-container fluid>
+      <w-grid-row>
+        <w-grid-column>
+          <w-text variant="h1">Personal information</w-text>
+          <w-text variant="h5">
+            Basic information, like your name and photo, that you use on Xarples
+            services
+          </w-text>
+        </w-grid-column>
+      </w-grid-row>
+      <w-spacer />
+      <w-grid-row>
+        <w-grid-column>
+          <w-card :shadow="false">
+            <w-card-body>
+              <w-text variant="h4">Profile</w-text>
+              <w-text variant="h6">
+                Some info may be visible to other people using Xarples services.
+                Learn more
+              </w-text>
+              <w-spacer></w-spacer>
+              <w-table>
+                <w-table-body>
+                  <w-table-row v-for="field in fields" :key="field.name">
+                    <w-table-body-cell>{{ field.name }}</w-table-body-cell>
+                    <w-table-body-cell>{{ field.value }}</w-table-body-cell>
+                  </w-table-row>
+                </w-table-body>
+              </w-table>
+            </w-card-body>
+            <w-card-footer>
               <nuxt-link to="/personal-info/profile">
-                Manage profile
+                <w-button variant="text">Manage profile</w-button>
               </nuxt-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+            </w-card-footer>
+          </w-card>
+        </w-grid-column>
+      </w-grid-row>
+    </w-grid-container>
+  </w-section>
 </template>

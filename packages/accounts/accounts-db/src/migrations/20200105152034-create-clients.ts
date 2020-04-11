@@ -16,13 +16,13 @@ export default {
         primaryKey: true,
         allowNull: false
       },
-      // @ts-ignore
       user_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
           model: {
             tableName: 'users',
+            // @ts-ignore
             schema: 'public'
           },
           key: 'id'

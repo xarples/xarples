@@ -13,24 +13,23 @@ export default Vue.extend({
 </script>
 
 <template>
-  <main class="main has-background-gray">
+  <w-container class="main" fluid color="gray1">
     <main-header />
-    <section class="section">
-      <div class="container">
-        <div class="columns">
-          <div class="column is-3">
-            <main-menu />
-          </div>
-          <div class="column is-9">
-            <nuxt />
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+    <w-divider />
+    <w-container>
+      <w-grid-row vertical-align="top">
+        <w-grid-column :cols="3">
+          <main-menu />
+        </w-grid-column>
+        <w-grid-column :cols="9">
+          <nuxt />
+        </w-grid-column>
+      </w-grid-row>
+    </w-container>
+  </w-container>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .main {
   min-height: 100vh;
 }

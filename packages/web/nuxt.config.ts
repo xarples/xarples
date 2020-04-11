@@ -5,9 +5,7 @@ const { port } = xarplesConfig.web.service
 
 const config: Configuration = {
   buildModules: ['@nuxt/typescript-build'],
-  css: ['~/assets/main.css'],
-  // modules: ['nuxt-buefy'],
-  plugins: ['wolfi'],
+  modules: ['@xarples/wolfi-nuxt'],
   srcDir: './src',
   server: { port },
   typescript: {

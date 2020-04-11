@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "My sweet Nuxt.js project",
   "author": "xarples",
-  "private": true,
   "scripts": {
     "dev": "nodemon",
     "build": "nuxt-ts build; tsc --project server/tsconfig.json",
@@ -15,9 +14,9 @@
     "@xarples/config": "*",
     "@xarples/utils": "*",
     "@xarples/accounts-api": "*",
+    "@xarples/wolfi-nuxt": "^0.0.17-alpha.0",
     "@nuxt/typescript-runtime": "^0.3.8",
     "nuxt": "^2.0.0",
-    "nuxt-buefy": "^0.3.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
   },

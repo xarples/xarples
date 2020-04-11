@@ -12,7 +12,7 @@ class User extends Model {
   lastName!: string
   gender: string | undefined
   picture: string | undefined
-  phoneNumber: number | undefined
+  phoneNumber: string | undefined
   birthDate: Date | undefined
   readonly createdAt!: Date
   readonly updatedAt!: Date
@@ -62,7 +62,7 @@ User.init(
     },
     phoneNumber: {
       allowNull: false,
-      type: DataTypes.NUMBER
+      type: DataTypes.STRING
     }
   },
   {
