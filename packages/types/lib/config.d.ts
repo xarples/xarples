@@ -5,6 +5,9 @@ export interface IConfigModuleDB {
   host: string
   port: number
   dialect: 'postgres' | 'sqlite'
+  seederStorage?: string
+  migrationStorageTableName?: string
+  seederStorageTableName?: string
 }
 
 export interface IConfigModuleRedis {

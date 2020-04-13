@@ -16,6 +16,7 @@ export async function create(
     const data = call.request.toObject()
 
     delete data.id
+    delete data.token
 
     logger.info(`Creating access token in the database`)
     logger.debug('data', data)

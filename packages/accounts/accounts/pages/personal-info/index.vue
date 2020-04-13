@@ -51,11 +51,11 @@ export default Vue.extend({
         <w-grid-column>
           <w-card :shadow="false">
             <w-card-body>
-              <w-text variant="h4">Profile</w-text>
-              <w-text variant="h6">
+              <w-card-title>Profile</w-card-title>
+              <w-card-description>
                 Some info may be visible to other people using Xarples services.
                 Learn more
-              </w-text>
+              </w-card-description>
               <w-spacer></w-spacer>
               <w-table>
                 <w-table-body>

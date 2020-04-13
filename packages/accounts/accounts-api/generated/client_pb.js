@@ -67,11 +67,13 @@ proto.client.ClientRequest.toObject = function(includeInstance, msg) {
     clientId: jspb.Message.getFieldWithDefault(msg, 3, ""),
     clientSecret: jspb.Message.getFieldWithDefault(msg, 4, ""),
     redirectUri: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    type: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    homepageUrl: jspb.Message.getFieldWithDefault(msg, 7, ""),
-    logoUrl: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    createdAt: jspb.Message.getFieldWithDefault(msg, 9, ""),
-    updatedAt: jspb.Message.getFieldWithDefault(msg, 10, "")
+    name: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    description: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    type: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    homepageUrl: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    logoUrl: jspb.Message.getFieldWithDefault(msg, 10, ""),
+    createdAt: jspb.Message.getFieldWithDefault(msg, 11, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 12, "")
   };
 
   if (includeInstance) {
@@ -130,21 +132,29 @@ proto.client.ClientRequest.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 6:
       var value = /** @type {string} */ (reader.readString());
-      msg.setType(value);
+      msg.setName(value);
       break;
     case 7:
       var value = /** @type {string} */ (reader.readString());
-      msg.setHomepageUrl(value);
+      msg.setDescription(value);
       break;
     case 8:
       var value = /** @type {string} */ (reader.readString());
-      msg.setLogoUrl(value);
+      msg.setType(value);
       break;
     case 9:
       var value = /** @type {string} */ (reader.readString());
-      msg.setCreatedAt(value);
+      msg.setHomepageUrl(value);
       break;
     case 10:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLogoUrl(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCreatedAt(value);
+      break;
+    case 12:
       var value = /** @type {string} */ (reader.readString());
       msg.setUpdatedAt(value);
       break;
@@ -212,38 +222,52 @@ proto.client.ClientRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getType();
+  f = message.getName();
   if (f.length > 0) {
     writer.writeString(
       6,
       f
     );
   }
-  f = message.getHomepageUrl();
+  f = message.getDescription();
   if (f.length > 0) {
     writer.writeString(
       7,
       f
     );
   }
-  f = message.getLogoUrl();
+  f = message.getType();
   if (f.length > 0) {
     writer.writeString(
       8,
       f
     );
   }
-  f = message.getCreatedAt();
+  f = message.getHomepageUrl();
   if (f.length > 0) {
     writer.writeString(
       9,
       f
     );
   }
-  f = message.getUpdatedAt();
+  f = message.getLogoUrl();
   if (f.length > 0) {
     writer.writeString(
       10,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
+      f
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      12,
       f
     );
   }
@@ -326,77 +350,107 @@ proto.client.ClientRequest.prototype.setRedirectUri = function(value) {
 
 
 /**
- * optional string type = 6;
+ * optional string name = 6;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getType = function() {
+proto.client.ClientRequest.prototype.getName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setType = function(value) {
+proto.client.ClientRequest.prototype.setName = function(value) {
   jspb.Message.setProto3StringField(this, 6, value);
 };
 
 
 /**
- * optional string homepage_url = 7;
+ * optional string description = 7;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getHomepageUrl = function() {
+proto.client.ClientRequest.prototype.getDescription = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setHomepageUrl = function(value) {
+proto.client.ClientRequest.prototype.setDescription = function(value) {
   jspb.Message.setProto3StringField(this, 7, value);
 };
 
 
 /**
- * optional string logo_url = 8;
+ * optional string type = 8;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getLogoUrl = function() {
+proto.client.ClientRequest.prototype.getType = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setLogoUrl = function(value) {
+proto.client.ClientRequest.prototype.setType = function(value) {
   jspb.Message.setProto3StringField(this, 8, value);
 };
 
 
 /**
- * optional string created_at = 9;
+ * optional string homepage_url = 9;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getCreatedAt = function() {
+proto.client.ClientRequest.prototype.getHomepageUrl = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setCreatedAt = function(value) {
+proto.client.ClientRequest.prototype.setHomepageUrl = function(value) {
   jspb.Message.setProto3StringField(this, 9, value);
 };
 
 
 /**
- * optional string updated_at = 10;
+ * optional string logo_url = 10;
  * @return {string}
  */
-proto.client.ClientRequest.prototype.getUpdatedAt = function() {
+proto.client.ClientRequest.prototype.getLogoUrl = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
 };
 
 
 /** @param {string} value */
-proto.client.ClientRequest.prototype.setUpdatedAt = function(value) {
+proto.client.ClientRequest.prototype.setLogoUrl = function(value) {
   jspb.Message.setProto3StringField(this, 10, value);
+};
+
+
+/**
+ * optional string created_at = 11;
+ * @return {string}
+ */
+proto.client.ClientRequest.prototype.getCreatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/** @param {string} value */
+proto.client.ClientRequest.prototype.setCreatedAt = function(value) {
+  jspb.Message.setProto3StringField(this, 11, value);
+};
+
+
+/**
+ * optional string updated_at = 12;
+ * @return {string}
+ */
+proto.client.ClientRequest.prototype.getUpdatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
+};
+
+
+/** @param {string} value */
+proto.client.ClientRequest.prototype.setUpdatedAt = function(value) {
+  jspb.Message.setProto3StringField(this, 12, value);
 };
 
 

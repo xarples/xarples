@@ -11,15 +11,17 @@ export default Vue.extend({
 </script>
 
 <template>
-  <w-container>
-    <w-navbar-menu>
-      <w-navbar-menu-list>
-        <w-navbar-menu-item-logo>
-          <img
-            src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-          />
-        </w-navbar-menu-item-logo>
-      </w-navbar-menu-list>
-    </w-navbar-menu>
-  </w-container>
+  <w-navbar-menu>
+    <w-container>
+      <w-navbar-menu-container>
+        <w-navbar-menu-list>
+          <w-navbar-menu-item-logo>
+            <img
+              src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
+            />
+          </w-navbar-menu-item-logo>
+        </w-navbar-menu-list>
+      </w-navbar-menu-container>
+    </w-container>
+  </w-navbar-menu>
 </template>

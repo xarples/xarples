@@ -17,9 +17,11 @@ message AuthorizationCodeRequest {
   string client_id = 2;
   string user_id = 3;
   string code = 4;
-  string scope = 5;
-  string created_at = 6;
-  string updated_at = 7;
+  string code_challenge = 5;
+  string code_challenge_method = 6;
+  string scope = 7;
+  string created_at = 8;
+  string updated_at = 9;
 }
 
 message AuthorizationCodeListRequest {

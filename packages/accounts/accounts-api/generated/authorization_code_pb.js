@@ -66,9 +66,11 @@ proto.authorization_code.AuthorizationCodeRequest.toObject = function(includeIns
     clientId: jspb.Message.getFieldWithDefault(msg, 2, ""),
     userId: jspb.Message.getFieldWithDefault(msg, 3, ""),
     code: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    scope: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    createdAt: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    updatedAt: jspb.Message.getFieldWithDefault(msg, 7, "")
+    codeChallenge: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    codeChallengeMethod: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    scope: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    createdAt: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -123,13 +125,21 @@ proto.authorization_code.AuthorizationCodeRequest.deserializeBinaryFromReader = 
       break;
     case 5:
       var value = /** @type {string} */ (reader.readString());
-      msg.setScope(value);
+      msg.setCodeChallenge(value);
       break;
     case 6:
       var value = /** @type {string} */ (reader.readString());
-      msg.setCreatedAt(value);
+      msg.setCodeChallengeMethod(value);
       break;
     case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setScope(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCreatedAt(value);
+      break;
+    case 9:
       var value = /** @type {string} */ (reader.readString());
       msg.setUpdatedAt(value);
       break;
@@ -190,24 +200,38 @@ proto.authorization_code.AuthorizationCodeRequest.serializeBinaryToWriter = func
       f
     );
   }
-  f = message.getScope();
+  f = message.getCodeChallenge();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = message.getCreatedAt();
+  f = message.getCodeChallengeMethod();
   if (f.length > 0) {
     writer.writeString(
       6,
       f
     );
   }
-  f = message.getUpdatedAt();
+  f = message.getScope();
   if (f.length > 0) {
     writer.writeString(
       7,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getUpdatedAt();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
       f
     );
   }
@@ -275,47 +299,77 @@ proto.authorization_code.AuthorizationCodeRequest.prototype.setCode = function(v
 
 
 /**
- * optional string scope = 5;
+ * optional string code_challenge = 5;
  * @return {string}
  */
-proto.authorization_code.AuthorizationCodeRequest.prototype.getScope = function() {
+proto.authorization_code.AuthorizationCodeRequest.prototype.getCodeChallenge = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
 /** @param {string} value */
-proto.authorization_code.AuthorizationCodeRequest.prototype.setScope = function(value) {
+proto.authorization_code.AuthorizationCodeRequest.prototype.setCodeChallenge = function(value) {
   jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * optional string created_at = 6;
+ * optional string code_challenge_method = 6;
  * @return {string}
  */
-proto.authorization_code.AuthorizationCodeRequest.prototype.getCreatedAt = function() {
+proto.authorization_code.AuthorizationCodeRequest.prototype.getCodeChallengeMethod = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
 /** @param {string} value */
-proto.authorization_code.AuthorizationCodeRequest.prototype.setCreatedAt = function(value) {
+proto.authorization_code.AuthorizationCodeRequest.prototype.setCodeChallengeMethod = function(value) {
   jspb.Message.setProto3StringField(this, 6, value);
 };
 
 
 /**
- * optional string updated_at = 7;
+ * optional string scope = 7;
  * @return {string}
  */
-proto.authorization_code.AuthorizationCodeRequest.prototype.getUpdatedAt = function() {
+proto.authorization_code.AuthorizationCodeRequest.prototype.getScope = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
 /** @param {string} value */
-proto.authorization_code.AuthorizationCodeRequest.prototype.setUpdatedAt = function(value) {
+proto.authorization_code.AuthorizationCodeRequest.prototype.setScope = function(value) {
   jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string created_at = 8;
+ * @return {string}
+ */
+proto.authorization_code.AuthorizationCodeRequest.prototype.getCreatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/** @param {string} value */
+proto.authorization_code.AuthorizationCodeRequest.prototype.setCreatedAt = function(value) {
+  jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string updated_at = 9;
+ * @return {string}
+ */
+proto.authorization_code.AuthorizationCodeRequest.prototype.getUpdatedAt = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/** @param {string} value */
+proto.authorization_code.AuthorizationCodeRequest.prototype.setUpdatedAt = function(value) {
+  jspb.Message.setProto3StringField(this, 9, value);
 };
 
 

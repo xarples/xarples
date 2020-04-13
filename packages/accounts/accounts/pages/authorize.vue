@@ -2,16 +2,24 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  layout: 'auth',
   asyncData(ctx) {
     // @ts-ignore
     const client = ctx.req.client
+
     // @ts-ignore
     const user = ctx.req.user
+
     return {
       client,
       user,
+      responseType: ctx.query.response_type,
+      clientId: ctx.query.client_id,
+      redirectUri: ctx.query.redirect_uri,
+      codeChallenge: ctx.query.code_challenge,
+      codeChallengeMethod: ctx.query.code_challenge_method || 'plain',
       scope: ctx.query.scope,
-      state: ctx.query.state
+      state: ctx.query.state || undefined
     }
   }
 })
@@ -65,40 +73,21 @@ export default Vue.extend({
                 </p>
               </div>
               <div class="buttons">
-                <form action="/authorize" method="post">
-                  <input type="hidden" name="consent" value="deny" />
-                  <input
-                    type="hidden"
-                    name="client_id"
-                    :value="client.clientId"
-                  />
-                  <input
-                    type="hidden"
-                    name="redirect_uri"
-                    :value="client.redirectUri"
-                  />
-                  <input type="hidden" name="state" :value="state" />
-                  <input type="submit" class="button is-light" value="Deny" />
-                </form>
-                <form action="/authorize" method="post">
+                <form action="/authorize" method="post" enctype="application/x-www-form-urlencoded">
                   <input type="hidden" name="consent" value="allow" />
-                  <input
-                    type="hidden"
-                    name="client_id"
-                    :value="client.clientId"
-                  />
-                  <input
-                    type="hidden"
-                    name="redirect_uri"
-                    :value="client.redirectUri"
-                  />
+                  <input type="hidden" name="client_id" :value="clientId" />
+                  <input type="hidden" name="redirect_uri" :value="redirectUri" />
+                  <input type="hidden" name="response_type" :value="responseType" />
+                  <input type="hidden" name="code_challenge" :value="codeChallenge" />
+                  <input type="hidden" name="code_challenge_method" :value="codeChallengeMethod" />
                   <input type="hidden" name="scope" :value="scope" />
                   <input type="hidden" name="state" :value="state" />
-                  <input
-                    type="submit"
-                    class="button is-primary"
-                    value="Allow"
-                  />
+                  <w-button block type="submit">Allow</w-button>
+                </form>
+                <w-spacer></w-spacer>
+                <form action="/authorize" method="post" enctype="application/x-www-form-urlencoded">
+                  <input type="hidden" name="consent" value="deny" />
+                  <w-button color="white" block type="submit">Deny</w-button>
                 </form>
               </div>
             </div>

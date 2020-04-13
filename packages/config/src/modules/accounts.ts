@@ -19,7 +19,10 @@ const config: IConfigModule = {
     database: process.env.DB_NAME || 'xarples_accounts',
     host: process.env.DB_HOST || 'localhost',
     dialect: 'postgres',
-    port: 5432
+    port: 5432,
+    seederStorage: 'sequelize',
+    migrationStorageTableName: 'migrations',
+    seederStorageTableName: 'seeds'
   }
 }
 

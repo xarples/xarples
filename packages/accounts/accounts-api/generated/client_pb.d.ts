@@ -23,6 +23,12 @@ export class ClientRequest extends jspb.Message {
     getRedirectUri(): string;
     setRedirectUri(value: string): void;
 
+    getName(): string;
+    setName(value: string): void;
+
+    getDescription(): string;
+    setDescription(value: string): void;
+
     getType(): string;
     setType(value: string): void;
 
@@ -56,6 +62,8 @@ export namespace ClientRequest {
         clientId: string,
         clientSecret: string,
         redirectUri: string,
+        name: string,
+        description: string,
         type: string,
         homepageUrl: string,
         logoUrl: string,

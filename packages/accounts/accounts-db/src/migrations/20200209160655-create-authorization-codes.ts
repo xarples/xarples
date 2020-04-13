@@ -45,6 +45,15 @@ export default {
         allowNull: false,
         defaultValue: () => utils.randomBytes(32)
       },
+      code_challenge: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      code_challenge_method: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'plain'
+      },
       scope: {
         type: DataTypes.STRING,
         allowNull: true

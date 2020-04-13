@@ -8,9 +8,11 @@ import User from './user'
 
 class AuthorizationCode extends Model {
   id!: string
-  clientId!: string
   userId!: string
+  clientId!: string
   code?: string
+  codeChallenge!: string
+  codeChallengeMethod?: string
   scope?: string
   readonly createdAt!: Date
   readonly updatedAt!: Date
@@ -32,6 +34,15 @@ AuthorizationCode.init(
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: () => utils.randomBytes(32)
+    },
+    codeChallenge: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    codeChallengeMethod: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'plain'
     },
     scope: {
       type: DataTypes.STRING,

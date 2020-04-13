@@ -20,6 +20,12 @@ export class AuthorizationCodeRequest extends jspb.Message {
     getCode(): string;
     setCode(value: string): void;
 
+    getCodeChallenge(): string;
+    setCodeChallenge(value: string): void;
+
+    getCodeChallengeMethod(): string;
+    setCodeChallengeMethod(value: string): void;
+
     getScope(): string;
     setScope(value: string): void;
 
@@ -46,6 +52,8 @@ export namespace AuthorizationCodeRequest {
         clientId: string,
         userId: string,
         code: string,
+        codeChallenge: string,
+        codeChallengeMethod: string,
         scope: string,
         createdAt: string,
         updatedAt: string,

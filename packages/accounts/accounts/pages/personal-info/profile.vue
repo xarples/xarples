@@ -49,13 +49,17 @@ export default Vue.extend({
     }
   },
   methods: {
-    updateUser() {
+    updateUser(e: Event) {
+      e.preventDefault()
+
       const data = Object.keys(this.fields).reduce((acc, current) => {
         // @ts-ignore
         acc[current] = this.fields[current].value
 
         return acc
       }, {})
+
+      debugger
 
       if (!this.isPasswordChanged) {
         // @ts-ignore
@@ -101,18 +105,18 @@ export default Vue.extend({
               </w-text>
               <w-spacer></w-spacer>
 
-              <form action>
+              <form @submit="updateUser">
                 <template v-for="field of fields">
                   <w-input
                     :key="field.name"
                     :type="field.type"
                     v-model="field.value"
                   ></w-input>
-                  <w-spacer :key="field.name" />
+                  <w-spacer :key="`${field.name}-spacer`" />
                 </template>
 
                 <div class="column is-2">
-                  <w-button @click="updateUser">Done</w-button>
+                  <w-button type="submit">Done</w-button>
                 </div>
               </form>
             </w-card-body>

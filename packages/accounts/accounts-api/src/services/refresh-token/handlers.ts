@@ -16,6 +16,7 @@ export async function create(
     const data = call.request.toObject()
 
     delete data.id
+    delete data.token
 
     logger.info(`Creating refresh token in the database`)
     logger.debug('data', data)
@@ -210,6 +211,12 @@ function getMessage(payload: RefreshToken) {
   const message = new messages.RefreshTokenRequest()
 
   message.setId(payload.id)
+  message.setUserId(payload.userId)
+  message.setClientId(payload.clientId)
+  message.setToken(payload.token!)
+  message.setScope(payload.scope!)
+  message.setCreatedAt(payload.createdAt.toString())
+  message.setUpdatedAt(payload.updatedAt.toString())
 
   return message
 }

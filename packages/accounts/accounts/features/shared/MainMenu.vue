@@ -27,18 +27,21 @@ export default Vue.extend({
 </script>
 
 <template>
-  <w-sidebar-menu>
-    <w-sidebar-menu-list>
-      <w-sidebar-menu-item
-        v-for="page of pages"
-        :key="page.label"
-        :icon="page.icon"
-        :active="page.path === currentPath"
-      >
-        <nuxt-link :to="page.path">{{ page.label }}</nuxt-link>
-      </w-sidebar-menu-item>
-    </w-sidebar-menu-list>
-  </w-sidebar-menu>
+  <w-section>
+    <w-sidebar-menu>
+      <w-sidebar-menu-list title="Account">
+        <w-sidebar-menu-item
+          v-for="page of pages"
+          :key="page.label"
+          :icon="page.icon"
+          :active="page.path === currentPath"
+        >
+          <nuxt-link :to="page.path">{{ page.label }}</nuxt-link>
+        </w-sidebar-menu-item>
+      </w-sidebar-menu-list>
+      <w-sidebar-menu-list title="Notifications"> </w-sidebar-menu-list>
+    </w-sidebar-menu>
+  </w-section>
 </template>
 
 <style scoped>

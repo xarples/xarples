@@ -16,6 +16,7 @@ export async function create(
     const data = call.request.toObject()
 
     delete data.id
+    delete data.code
 
     logger.info(`Creating authorization code in the database`)
     logger.debug('data', data)
@@ -42,12 +43,12 @@ export async function findOne(
   callback: grpc.sendUnaryData<messages.AuthorizationCodeRequest>
 ) {
   try {
-    const id = call.request.getId()
+    const code = call.request.getCode()
 
-    if (!cache.has(id)) {
-      const found = await AuthorizationCode.findByPk(id)
+    if (!cache.has(code)) {
+      const found = await AuthorizationCode.findOne({ where: { code } })
 
-      logger.info(`Fetching authorization code with id ${id} from database`)
+      logger.info(`Fetching authorization code with code ${code} from database`)
 
       if (!found) {
         const error: grpc.ServiceError = {
@@ -57,7 +58,7 @@ export async function findOne(
         }
 
         logger.error(
-          `Can't find authorization code with id ${id} from the database`
+          `Can't find authorization code with code ${code} from the database`
         )
 
         callback(error, null)
@@ -65,14 +66,14 @@ export async function findOne(
         return
       }
 
-      logger.info(`Creating authorization code with id ${id} in the cache`)
+      logger.info(`Creating authorization code with code ${code} in the cache`)
 
-      cache.set(found.id, found)
+      cache.set(found.code!, found)
     }
 
-    logger.info(`Fetching authorization code with id ${id} from the cache`)
+    logger.info(`Fetching authorization code with code ${code} from the cache`)
 
-    const found = cache.get(id) as AuthorizationCode
+    const found = cache.get(code) as AuthorizationCode
     const message = getMessage(found)
 
     callback(null, message)
@@ -218,6 +219,14 @@ function getMessage(payload: AuthorizationCode) {
   const message = new messages.AuthorizationCodeRequest()
 
   message.setId(payload.id)
+  message.setUserId(payload.userId)
+  message.setClientId(payload.clientId)
+  message.setCode(payload.code!)
+  message.setScope(payload.scope!)
+  message.setCodeChallenge(payload.codeChallenge)
+  message.setCodeChallengeMethod(payload.codeChallengeMethod!)
+  message.setCreatedAt(payload.createdAt.toString())
+  message.setUpdatedAt(payload.updatedAt.toString())
 
   return message
 }

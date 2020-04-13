@@ -72,9 +72,6 @@ User.init(
     hooks: {
       beforeCreate(user) {
         user.password = utils.encrypt(user.password)
-      },
-      beforeUpdate(user) {
-        user.password = utils.encrypt(user.password)
       }
     }
   }

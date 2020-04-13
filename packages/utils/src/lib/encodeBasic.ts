@@ -1,3 +1,5 @@
 export default function encodeBasic(username: string, password: string) {
-  Buffer.from(`Basic ${username}:${password}`).toString('base64')
+  const base64 = Buffer.from(`${username}:${password}`).toString('base64')
+
+  return `Basic ${base64}`
 }

@@ -1,6 +1,6 @@
 import grpc from 'grpc'
 import { User } from '@xarples/accounts-db'
-import { logger, cache as getCache } from '@xarples/utils'
+import { logger, cache as getCache, encrypt } from '@xarples/utils'
 
 import messages from '../../../generated/user_pb'
 
@@ -164,6 +164,12 @@ export async function update(
 
     delete data.id
 
+    if (!data.password) {
+      delete data.password
+    } else {
+      data.password = encrypt(data.password)
+    }
+
     if (!found) {
       const error: grpc.ServiceError = {
         name: '',
@@ -179,6 +185,7 @@ export async function update(
     }
 
     logger.info(`Updating user with id ${id} from the database`)
+    logger.info('data', data)
     logger.debug('data', data)
 
     const updated = await found.update(data)
