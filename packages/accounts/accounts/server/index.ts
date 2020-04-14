@@ -8,7 +8,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
 import config from '@xarples/config'
-import { services } from '@xarples/accounts-api'
+import accounts from '@xarples/accounts-client'
 import {
   logger,
   terminate,
@@ -23,6 +23,7 @@ import auth from './auth'
 import routes from './routes'
 
 const RedisStore = connectRedis(expressSession)
+const client = accounts.createClient()
 const nuxt = new Nuxt(nuxtConfig)
 const app = express()
 const server = http.createServer(app)
@@ -34,13 +35,6 @@ const session = expressSession({
   saveUninitialized: false,
   resave: false
 })
-
-const client = services.client.createClient()
-const authorizationCodeClient = services.authorizationCode.createClient()
-const accessTokenClient = services.accessToken.createClient()
-const refreshTokenClient = services.refreshToken.createClient()
-const RefreshTokenRequest = services.refreshToken.messages.RefreshTokenRequest
-const AccessTokenRequest = services.accessToken.messages.AccessTokenRequest
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -78,11 +72,11 @@ app.get('/authorize', (req, res) => {
     return res.send('transform algorithm not supported')
   }
 
-  const message = new services.client.messages.ClientRequest()
+  const message = new accounts.messages.Client()
 
   message.setClientId(clientId)
 
-  client.findOne(message, (err, found) => {
+  client.findOneClient(message, (err, found) => {
     if (err) {
       return res.send('Invalid client')
     }
@@ -148,11 +142,11 @@ app.post('/authorize', (req, res) => {
     })
   }
 
-  const message = new services.client.messages.ClientRequest()
+  const message = new accounts.messages.Client()
 
   message.setClientId(clientId)
 
-  client.findOne(message, (err, found) => {
+  client.findOneClient(message, (err, found) => {
     if (err) {
       return res.send({
         error: 'invalid_request',
@@ -167,7 +161,7 @@ app.post('/authorize', (req, res) => {
       })
     }
 
-    const message = new services.authorizationCode.messages.AuthorizationCodeRequest()
+    const message = new accounts.messages.AuthorizationCode()
 
     // @ts-ignore
     message.setUserId(req.user.id)
@@ -176,7 +170,7 @@ app.post('/authorize', (req, res) => {
     message.setCodeChallenge(codeChallenge)
     message.setCodeChallengeMethod(codeChallengeMethod)
 
-    authorizationCodeClient.create(message, (err, result) => {
+    client.createAuthorizationCode(message, (err, result) => {
       if (err) {
         const queryParams = querystring.stringify({
           error: 'invalid_request',
@@ -218,11 +212,11 @@ app.post('/token', (req, res) => {
     })
   }
 
-  const findClientMessage = new services.client.messages.ClientRequest()
+  const findClientMessage = new accounts.messages.Client()
 
   findClientMessage.setClientId(clientId)
 
-  client.findOne(findClientMessage, async (err, clientResult) => {
+  client.findOneClient(findClientMessage, async (err, clientResult) => {
     if (err) {
       res.status(400).send({
         error: 'invalid_request',
@@ -266,11 +260,11 @@ app.post('/token', (req, res) => {
       }
     }
 
-    const findAuthorizationCodeMessage = new services.authorizationCode.messages.AuthorizationCodeRequest()
+    const findAuthorizationCodeMessage = new accounts.messages.AuthorizationCode()
 
     findAuthorizationCodeMessage.setCode(code)
 
-    authorizationCodeClient.findOne(
+    client.findOneAuthorizationCode(
       findAuthorizationCodeMessage,
       (err, authorizationCodeResult) => {
         if (err) {
@@ -283,11 +277,11 @@ app.post('/token', (req, res) => {
         }
 
         if (authorizationCodeResult.getClientId() !== clientResult.getId()) {
-          const destroyMessage = new services.authorizationCode.messages.AuthorizationCodeRequest()
+          const destroyMessage = new accounts.messages.AuthorizationCode()
 
           destroyMessage.setCode(code)
 
-          authorizationCodeClient.destroy(destroyMessage, () => {
+          client.destroyAuthorizationCode(destroyMessage, () => {
             res.status(400).send({
               error: 'invalid_grant',
               error_description: 'Invalid authorization code'
@@ -303,11 +297,11 @@ app.post('/token', (req, res) => {
         })
 
         if (isAuthorizationCodeExpired) {
-          const destroyMessage = new services.authorizationCode.messages.AuthorizationCodeRequest()
+          const destroyMessage = new accounts.messages.AuthorizationCode()
 
           destroyMessage.setCode(code)
 
-          authorizationCodeClient.destroy(destroyMessage, () => {
+          client.destroyAuthorizationCode(destroyMessage, () => {
             res.status(400).send({
               error: 'invalid_grant',
               error_description: 'Authorization code expired'
@@ -342,7 +336,7 @@ app.post('/token', (req, res) => {
           return
         }
 
-        const createAccessTokenMessage = new AccessTokenRequest()
+        const createAccessTokenMessage = new accounts.messages.AccessToken()
 
         // @ts-ignore
         createAccessTokenMessage.setUserId(authorizationCodeResult.getUserId())
@@ -351,7 +345,7 @@ app.post('/token', (req, res) => {
         )
         createAccessTokenMessage.setScope(authorizationCodeResult.getScope())
 
-        const createRefreshTokenMessage = new RefreshTokenRequest()
+        const createRefreshTokenMessage = new accounts.messages.RefreshToken()
 
         // @ts-ignore
         createRefreshTokenMessage.setUserId(authorizationCodeResult.getUserId())
@@ -360,8 +354,8 @@ app.post('/token', (req, res) => {
         )
         createRefreshTokenMessage.setScope(authorizationCodeResult.getScope())
 
-        accessTokenClient.create(createAccessTokenMessage, (_, accessToken) => {
-          refreshTokenClient.create(
+        client.createAccessToken(createAccessTokenMessage, (_, accessToken) => {
+          client.createRefreshToken(
             createRefreshTokenMessage,
             (_, refreshToken) => {
               res.send({
@@ -414,11 +408,11 @@ function authenticateClient(encoded: string): Promise<boolean> {
       return resolve(false)
     }
 
-    const message = new services.client.messages.ClientRequest()
+    const message = new accounts.messages.Client()
 
     message.setClientId(credentials.username)
 
-    client.findOne(message, (err, result) => {
+    client.findOneClient(message, (err, result) => {
       if (err) {
         return resolve(false)
       }

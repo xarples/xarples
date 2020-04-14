@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import accounts from '@xarples/accounts-api'
+import accounts from '@xarples/accounts-client'
 
 const router = Router()
-const client = accounts.services.user.createClient()
+const client = accounts.createClient()
 
 router.post('/', (req, res) => {
   const data = req.body
-  const message = new accounts.services.user.messages.UserRequest()
+  const message = new accounts.messages.User()
 
   message.setFirstName(data.firstName)
   message.setLastName(data.lastName)
@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
   message.setEmail(data.email)
   message.setPassword(data.password)
 
-  client.create(message, (err, user) => {
+  client.createUser(message, (err, user) => {
     if (err) {
       return res.status(400).send(err)
     }
@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
 
 router.put('/', (req, res) => {
   const data = req.body
-  const message = new accounts.services.user.messages.UserRequest()
+  const message = new accounts.messages.User()
 
   message.setId(data.id)
   message.setFirstName(data.firstName)
@@ -37,7 +37,7 @@ router.put('/', (req, res) => {
     message.setPassword(data.password)
   }
 
-  client.update(message, (err, user) => {
+  client.updateUser(message, (err, user) => {
     if (err) {
       return res.status(400).send(err)
     }
