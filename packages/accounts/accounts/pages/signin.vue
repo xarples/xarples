@@ -3,10 +3,11 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'Login',
   layout: 'auth',
-  asyncData() {
+  asyncData(context) {
     return {
       username: '',
-      password: ''
+      password: '',
+      query: JSON.stringify(context.query)
     }
   }
 })
@@ -29,9 +30,7 @@ export default Vue.extend({
           <w-spacer size="2x" />
           <w-card>
             <w-card-body>
-              <w-text variant="h4" align="center">
-                Sign in
-              </w-text>
+              <w-text variant="h4" align="center">Sign in</w-text>
               <w-spacer />
               <form action="/api/auth/signin" method="post">
                 <w-input
@@ -46,18 +45,15 @@ export default Vue.extend({
                   type="password"
                   placeholder="Password"
                 ></w-input>
+                <input hidden :value="query" name="query" type="text" />
                 <w-spacer />
                 <w-spacer />
                 <w-text>Forgot your password?</w-text>
                 <w-spacer />
-                <w-button type="submit" block>
-                  Sign in
-                </w-button>
+                <w-button type="submit" block>Sign in</w-button>
                 <w-spacer />
 
-                <w-button block color="white">
-                  Sign up
-                </w-button>
+                <w-button block color="white">Sign up</w-button>
               </form>
             </w-card-body>
           </w-card>

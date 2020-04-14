@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package account;
+
+service Account {
+  rpc CreateAccessToken (AccessToken) returns (AccessToken) {}
+  rpc FindOneAccessToken (AccessToken) returns (AccessToken) {}
+  rpc FindAllAccessToken (Empty) returns (AccessTokenList) {}
+  rpc DestroyAccessToken (AccessToken) returns (AccessToken) {}
+  rpc CreateAuthorizationCode (AuthorizationCode) returns (AuthorizationCode) {}
+  rpc FindOneAuthorizationCode (AuthorizationCode) returns (AuthorizationCode) {}
+  rpc FindAllAuthorizationCode (Empty) returns (AuthorizationCodeList) {}
+  rpc DestroyAuthorizationCode (AuthorizationCode) returns (AuthorizationCode) {}
+  rpc CreateClient (Client) returns (Client) {}
+  rpc FindOneClient (Client) returns (Client) {}
+  rpc FindAllClient (Empty) returns (ClientList) {}
+  rpc UpdateClient (Client) returns (Client) {}
+  rpc DestroyClient (Client) returns (Client) {}
+  rpc CreateRefreshToken (RefreshToken) returns (RefreshToken) {}
+  rpc FindOneRefreshToken (RefreshToken) returns (RefreshToken) {}
+  rpc FindAllRefreshToken (Empty) returns (RefreshTokenList) {}
+  rpc DestroyRefreshToken (RefreshToken) returns (RefreshToken) {}
+  rpc CreateUser (User) returns (User) {}
+  rpc FindUserByUsername (User) returns (User) {}
+  rpc FindOneUser (User) returns (User) {}
+  rpc FindAllUser (Empty) returns (UserList) {}
+  rpc UpdateUser (User) returns (User) {}
+  rpc DestroyUser (User) returns (User) {}
+}
+
+message Empty {}
+
+message AccessToken {
+  string id = 1;
+  string client_id = 2;
+  string user_id = 3;
+  string token = 4;
+  string scope = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message AccessTokenList {
+  repeated AccessToken access_tokens = 1;
+}
+
+message AuthorizationCode {
+  string id = 1;
+  string client_id = 2;
+  string user_id = 3;
+  string code = 4;
+  string code_challenge = 5;
+  string code_challenge_method = 6;
+  string scope = 7;
+  string created_at = 8;
+  string updated_at = 9;
+}
+
+message AuthorizationCodeList {
+  repeated AuthorizationCode authorization_codes = 1;
+}
+
+message Client {
+  string id = 1;
+  string user_id = 2;
+  string client_id = 3;
+  string client_secret = 4;
+  string redirect_uri = 5;
+  string name = 6;
+  string description = 7;
+  string type = 8;
+  string homepage_url = 9;
+  string logo_url = 10;
+  string created_at = 11;
+  string updated_at = 12;
+}
+
+message ClientList {
+  repeated Client clients = 1;
+}
+
+message RefreshToken {
+  string id = 1;
+  string client_id = 2;
+  string user_id = 3;
+  string token = 4;
+  string scope = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message RefreshTokenList {
+  repeated RefreshToken refresh_tokens = 1;
+}
+
+message User {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
+  string first_name = 5;
+  string last_name = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message UserList {
+  repeated User users = 1;
+}

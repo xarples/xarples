@@ -1,14 +1,16 @@
-import { getUnixTime, add, Duration } from 'date-fns'
+import * as dateFns from 'date-fns'
 
 interface IOptions {
   entityCreatedAt: string
-  expiresIn: Duration
+  expiresIn: number
 }
 
 export default function isExpired(options: IOptions) {
-  const currentTime = getUnixTime(new Date())
+  const currentTime = dateFns.getUnixTime(new Date())
   const entityCreatedAt = new Date(options.entityCreatedAt)
-  const expirationTime = getUnixTime(add(entityCreatedAt, options.expiresIn))
+  const expirationTime = dateFns.getUnixTime(
+    dateFns.add(entityCreatedAt, { seconds: options.expiresIn })
+  )
 
   return currentTime > expirationTime
 }

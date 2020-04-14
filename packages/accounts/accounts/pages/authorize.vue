@@ -27,74 +27,99 @@ export default Vue.extend({
 
 <template>
   <main class="main has-background">
-    <section class="section">
-      <div class="container">
-        <div class="tile is-ancestor has-max-width">
-          <div class="tile is-parent">
-            <div class="tile is-child box">
-              <strong>Sign in with Xarples</strong>
-              <hr />
-              <p class="title is-3">
-                <strong>{{ client.name }}</strong>
-              </p>
-              <p class="subtitle is-5">
-                <span>wants access to your xarples account</span>
-              </p>
-              <div class="content">
-                <p>{{ user.email }}</p>
-                <p class="subtitle is-5">
+    <w-section>
+      <w-container>
+        <w-grid-row horizontal-align="center">
+          <w-grid-column :cols="5">
+            <w-card :shadow="false">
+              <w-card-header>
+                <w-text align="center">
+                  <strong>Sign in with Xarples</strong>
+                </w-text>
+              </w-card-header>
+              <w-card-body>
+                <w-card-title color="primary" align="center">
+                  {{ client.name }}
+                </w-card-title>
+                <w-text variant="h6" align="center">
+                  Wants access to your xarples account:
+                  <strong>{{ user.email }}</strong>
+                </w-text>
+                <w-spacer></w-spacer>
+                <w-text variant="h6">
                   This will allow
-                  <strong>{{ client.name }}</strong>
-                  to:
-                </p>
-                <ul>
-                  <li>
-                    View and manage your data across Google Cloud Platform
-                    services
-                  </li>
-                  <li>
-                    View and manage your data across Google Cloud Platform
-                    services
-                  </li>
-                  <li>
-                    View and manage your data across Google Cloud Platform
-                    services
-                  </li>
-                </ul>
+                  <strong>{{ client.name }}</strong> to:
+                </w-text>
+                <template v-for="item of [1, 2, 3]">
+                  <w-spacer :key="`${item}-spacer`"></w-spacer>
+                  <w-grid-row :key="item">
+                    <w-grid-column>
+                      <w-text>
+                        View and manage your data across Xarples console
+                        services.
+                      </w-text>
+                    </w-grid-column>
+                  </w-grid-row>
+                </template>
 
-                <p class="subtitle is-6">
+                <w-spacer></w-spacer>
+                <w-text variant="h6">
                   <strong>Make sure you trust {{ client.name }}</strong>
-                </p>
-                <p>
+                </w-text>
+                <w-text>
                   You may be sharing sensitive info with this site or app. Learn
                   about how {{ client.name }} will handle your data by reviewing
                   its terms of service and privacy policies. You can always see
                   or remove access in your
-                </p>
-              </div>
-              <div class="buttons">
-                <form action="/authorize" method="post" enctype="application/x-www-form-urlencoded">
+                </w-text>
+              </w-card-body>
+              <w-card-footer>
+                <form
+                  action="/authorize"
+                  method="post"
+                  enctype="application/x-www-form-urlencoded"
+                >
                   <input type="hidden" name="consent" value="allow" />
                   <input type="hidden" name="client_id" :value="clientId" />
-                  <input type="hidden" name="redirect_uri" :value="redirectUri" />
-                  <input type="hidden" name="response_type" :value="responseType" />
-                  <input type="hidden" name="code_challenge" :value="codeChallenge" />
-                  <input type="hidden" name="code_challenge_method" :value="codeChallengeMethod" />
+                  <input
+                    type="hidden"
+                    name="redirect_uri"
+                    :value="redirectUri"
+                  />
+                  <input
+                    type="hidden"
+                    name="response_type"
+                    :value="responseType"
+                  />
+                  <input
+                    type="hidden"
+                    name="code_challenge"
+                    :value="codeChallenge"
+                  />
+                  <input
+                    type="hidden"
+                    name="code_challenge_method"
+                    :value="codeChallengeMethod"
+                  />
                   <input type="hidden" name="scope" :value="scope" />
                   <input type="hidden" name="state" :value="state" />
                   <w-button block type="submit">Allow</w-button>
                 </form>
                 <w-spacer></w-spacer>
-                <form action="/authorize" method="post" enctype="application/x-www-form-urlencoded">
+                <form
+                  action="/authorize"
+                  method="post"
+                  enctype="application/x-www-form-urlencoded"
+                >
                   <input type="hidden" name="consent" value="deny" />
                   <w-button color="white" block type="submit">Deny</w-button>
                 </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+              </w-card-footer>
+            </w-card>
+          </w-grid-column>
+        </w-grid-row>
+      </w-container>
+    </w-section>
   </main>
 </template>
 

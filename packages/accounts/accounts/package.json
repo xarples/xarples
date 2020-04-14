@@ -13,8 +13,8 @@
   "dependencies": {
     "@xarples/config": "*",
     "@xarples/utils": "*",
-    "@xarples/accounts-api": "*",
-    "@xarples/wolfi-nuxt": "^0.0.22-alpha.0",
+    "@xarples/accounts-client": "*",
+    "@xarples/wolfi-nuxt": "^0.0.23-alpha.0",
     "@nuxt/typescript-runtime": "^0.3.8",
     "nuxt": "^2.0.0",
     "passport": "^0.4.1",

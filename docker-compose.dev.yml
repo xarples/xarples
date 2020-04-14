@@ -43,9 +43,11 @@ services:
       ACCOUNTS_API_HOST: accounts-api
       REDIS_HOST: redis
     volumes:
-      - accounts_api_node_modules:/usr/src/console/packages/accounts/accounts-api/node_modules
+      - accounts_protos_node_modules:/usr/src/console/packages/accounts/accounts-protos/node_modules
+      - accounts_client_node_modules:/usr/src/console/packages/accounts/accounts-client/node_modules
       - accounts_node_modules:/usr/src/console/packages/accounts/accounts/node_modules
-      - ./packages/accounts/accounts-api:/usr/src/console/packages/accounts/accounts-api/
+      - ./packages/accounts/accounts-protos:/usr/src/console/packages/accounts/accounts-protos/
+      - ./packages/accounts/accounts-client:/usr/src/console/packages/accounts/accounts-client/
       - ./packages/accounts/accounts:/usr/src/console/packages/accounts/accounts/
       - ./packages/config:/usr/src/console/packages/config/
       - ./packages/utils:/usr/src/console/packages/utils/
@@ -65,7 +67,9 @@ services:
       ACCOUNTS_API_HOST: 0.0.0.0
       DB_HOST: postgres
     volumes:
+      - accounts_protos_node_modules:/usr/src/console/packages/accounts/accounts-protos/node_modules
       - accounts_api_node_modules:/usr/src/console/packages/accounts/accounts-api/node_modules
+      - ./packages/accounts/accounts-protos:/usr/src/console/packages/accounts/accounts-protos/
       - ./packages/accounts/accounts-api:/usr/src/console/packages/accounts/accounts-api/
       - ./packages/accounts/accounts-db:/usr/src/console/packages/accounts/accounts-db/
       - ./packages/config:/usr/src/console/packages/config/
@@ -100,3 +104,5 @@ services:
 volumes:
   accounts_node_modules:
   accounts_api_node_modules:
+  accounts_client_node_modules:
+  accounts_protos_node_modules:

@@ -13,7 +13,7 @@ import {
   logger,
   terminate,
   decodeBasic,
-  // isExpired,
+  isExpired,
   generateCodeChallenge
 } from '@xarples/utils'
 // @ts-ignore
@@ -92,11 +92,13 @@ app.get('/authorize', (req, res) => {
     }
 
     if (!req.isAuthenticated()) {
-      return res.redirect('/signin')
+      const queryParams = querystring.stringify(req.query)
+
+      return res.redirect(`/signin?${queryParams}&redirect=/authorize`)
     }
 
     // @ts-ignore
-    req.client = found
+    req.client = found.toObject()
 
     nuxt.render(req, res)
   })
@@ -222,35 +224,45 @@ app.post('/token', (req, res) => {
 
   client.findOne(findClientMessage, async (err, clientResult) => {
     if (err) {
-      return res.status(400).send({
+      res.status(400).send({
         error: 'invalid_request',
         error_description: 'Invalid client'
       })
+
+      return
     }
 
     if (clientResult.getType() === 'confidential') {
       if (!req.headers.authorization) {
-        return res
+        res
           .status(401)
           .send({
             error: 'invalid_request',
             error_description: 'Missing required Authorization Header'
           })
           .setHeader('WWW-Authenticate', 'Basic')
+
+        return
       }
 
-      const isAuthenticated = await authenticateClient(
-        req.headers.authorization
-      )
+      let isAuthenticated = false
+
+      try {
+        isAuthenticated = await authenticateClient(req.headers.authorization)
+      } catch (error) {
+        isAuthenticated = false
+      }
 
       if (!isAuthenticated) {
-        return res
+        res
           .status(401)
           .send({
             error: 'invalid_client',
             error_description: 'Invalid client credentials'
           })
           .setHeader('WWW-Authenticate', 'Basic')
+
+        return
       }
     }
 
@@ -262,10 +274,12 @@ app.post('/token', (req, res) => {
       findAuthorizationCodeMessage,
       (err, authorizationCodeResult) => {
         if (err) {
-          return res.status(400).send({
+          res.status(400).send({
             error: 'invalid_grant',
             error_description: 'Invalid authorization code'
           })
+
+          return
         }
 
         if (authorizationCodeResult.getClientId() !== clientResult.getId()) {
@@ -274,30 +288,34 @@ app.post('/token', (req, res) => {
           destroyMessage.setCode(code)
 
           authorizationCodeClient.destroy(destroyMessage, () => {
-            return res.status(400).send({
+            res.status(400).send({
               error: 'invalid_grant',
               error_description: 'Invalid authorization code'
             })
           })
+
+          return
         }
 
-        // const isAuthorizationCodeExpired = isExpired({
-        //   expiresIn: { minutes: 1 },
-        //   entityCreatedAt: authorizationCodeResult.getCreatedAt()
-        // })
+        const isAuthorizationCodeExpired = isExpired({
+          expiresIn: 60,
+          entityCreatedAt: authorizationCodeResult.getCreatedAt()
+        })
 
-        // if (isAuthorizationCodeExpired) {
-        //   const destroyMessage = new services.authorizationCode.messages.AuthorizationCodeRequest()
+        if (isAuthorizationCodeExpired) {
+          const destroyMessage = new services.authorizationCode.messages.AuthorizationCodeRequest()
 
-        //   destroyMessage.setCode(code)
+          destroyMessage.setCode(code)
 
-        //   authorizationCodeClient.destroy(destroyMessage, () => {
-        //     return res.status(400).send({
-        //       error: 'invalid_grant',
-        //       error_description: 'Authorization code expired'
-        //     })
-        //   })
-        // }
+          authorizationCodeClient.destroy(destroyMessage, () => {
+            res.status(400).send({
+              error: 'invalid_grant',
+              error_description: 'Authorization code expired'
+            })
+          })
+
+          return
+        }
 
         const codeChallengeMethod = authorizationCodeResult.getCodeChallengeMethod()
         const codeChallenge = generateCodeChallenge(
@@ -307,17 +325,21 @@ app.post('/token', (req, res) => {
         )
 
         if (authorizationCodeResult.getCodeChallenge() !== codeChallenge) {
-          return res.status(400).send({
+          res.status(400).send({
             error: 'invalid_grant',
             error_description: 'Invalid code_verifier'
           })
+
+          return
         }
 
         if (clientResult.getRedirectUri() !== redirectUri) {
-          return res.status(400).send({
+          res.status(400).send({
             error: 'invalid_grant',
             error_description: 'Invalid redirect_uri'
           })
+
+          return
         }
 
         const createAccessTokenMessage = new AccessTokenRequest()
@@ -355,21 +377,6 @@ app.post('/token', (req, res) => {
     )
   })
 })
-
-// app.get('/cb', async (req, res) => {
-//   const response = await fetch('/token', {
-//     method: 'POST',
-//     body: JSON.stringify({
-//       grant_type: 'authorization_code',
-//       code: req.query.code,
-//       redirect_uri: 'http://localhost:5000/cb',
-//       client_id: 'test',
-//       code_verifier: 'test'
-//     })
-//   })
-
-//   res.send(response)
-// })
 
 app.use(nuxt.render)
 

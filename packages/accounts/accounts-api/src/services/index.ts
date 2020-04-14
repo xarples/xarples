@@ -1,5 +1,7 @@
-export { default as accessToken } from './access-token'
-export { default as authorizationCode } from './authorization-code'
-export { default as client } from './client'
-export { default as refreshToken } from './refresh-token'
-export { default as user } from './user'
+import * as accessToken from './access-token'
+import * as authorizationCode from './authorization-code'
+import * as client from './client'
+import * as refreshToken from './refresh-token'
+import * as user from './user'
+
+export { accessToken, authorizationCode, client, refreshToken, user }
