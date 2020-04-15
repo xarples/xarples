@@ -1,6 +1,6 @@
 import { Strategy as LocalStrategy } from 'passport-local'
 import accounts from '@xarples/accounts-client'
-import { encrypt, logger } from '@xarples/utils'
+import { encrypt, logger, decodeBasic } from '@xarples/utils'
 
 const client = accounts.createClient()
 
@@ -47,8 +47,35 @@ function deserializeUser(user: any, done: any) {
   })
 }
 
+function authenticateClient(encoded: string): Promise<boolean> {
+  return new Promise(resolve => {
+    const credentials = decodeBasic(encoded)
+
+    if (!credentials) {
+      return resolve(false)
+    }
+
+    const message = new accounts.messages.Client()
+
+    message.setClientId(credentials.username)
+
+    client.findOneClient(message, (err, result) => {
+      if (err) {
+        return resolve(false)
+      }
+
+      if (result.getClientSecret() !== credentials.password) {
+        return resolve(false)
+      }
+
+      resolve(true)
+    })
+  })
+}
+
 export default {
   localStrategy,
   serializeUser,
-  deserializeUser
+  deserializeUser,
+  authenticateClient
 }

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "My sweet Nuxt.js project",
   "author": "xarples",
-  "main": "./dist//index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "generate": "grpc_tools_node_protoc --proto_path=./protos --ts_out=./generated --js_out=import_style=commonjs,binary:./generated/ --grpc_out=./generated --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin` ./protos/account.proto"
