@@ -1,4 +1,4 @@
-import querystring from 'querystring'
+import querystring from 'query-string'
 import { Router } from 'express'
 import passport from 'passport'
 
@@ -7,15 +7,11 @@ const router = Router()
 router.post('/signin', (req, res, next) => {
   const query = JSON.parse(req.body.query)
   const _query = {
-    client_id: query.client_id,
-    response_type: query.response_type,
-    redirect_uri: query.redirect_uri,
-    code_challenge: query.code_challenge,
-    state: query.state
-  }
-
-  if (!query.state) {
-    delete _query.state
+    client_id: query.client_id = undefined,
+    response_type: query.response_type = undefined,
+    redirect_uri: query.redirect_uri = undefined,
+    code_challenge: query.code_challenge = undefined,
+    state: query.state = undefined
   }
 
   const successRedirect = query.redirect || '/'

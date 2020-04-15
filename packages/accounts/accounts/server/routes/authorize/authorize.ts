@@ -1,5 +1,5 @@
 import { promisify } from 'util'
-import querystring from 'querystring'
+import querystring from 'query-string'
 import express from 'express'
 import accounts from '@xarples/accounts-client'
 import {
@@ -90,10 +90,6 @@ router.post('/', async (req, res) => {
     const query = {
       code: authorizationCode.getCode(),
       state
-    }
-
-    if (!state) {
-      delete query.state
     }
 
     const queryParams = querystring.stringify(query)

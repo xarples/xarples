@@ -1,5 +1,5 @@
 import { promisify } from 'util'
-import querystring from 'querystring'
+import querystring from 'query-string'
 import express from 'express'
 import accounts from '@xarples/accounts-client'
 import { Client } from '@xarples/accounts-protos/generated/account_pb'
@@ -45,9 +45,7 @@ router.get('/', async (req, res, next) => {
     if (!req.isAuthenticated()) {
       const queryParams = querystring.stringify(req.query)
 
-      return res.redirect(
-        `/signin?redirect=/authorize${queryParams ? `&${queryParams}` : ''}`
-      )
+      return res.redirect(`/signin?redirect=/authorize?${queryParams}`)
     }
 
     // @ts-ignore
