@@ -254,7 +254,7 @@ export async function destroyUser(
   }
 }
 
-function getMessage(payload: User) {
+export function getMessage(payload: User) {
   const message = new messages.User()
 
   message.setId(payload.id)

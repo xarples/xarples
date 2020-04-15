@@ -16,6 +16,7 @@ export default {
         primaryKey: true,
         allowNull: false
       },
+      // @ts-ignore
       user_id: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -56,11 +57,11 @@ export default {
       },
       homepage_url: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       logo_url: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       created_at: {
         allowNull: false,

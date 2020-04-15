@@ -16,6 +16,7 @@ export default {
         primaryKey: true,
         allowNull: false
       },
+      // @ts-ignore
       client_id: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -28,6 +29,7 @@ export default {
           key: 'id'
         }
       },
+      // @ts-ignore
       user_id: {
         type: DataTypes.UUID,
         allowNull: false,

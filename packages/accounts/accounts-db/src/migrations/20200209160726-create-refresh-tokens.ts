@@ -16,6 +16,7 @@ export default {
         primaryKey: true,
         allowNull: false
       },
+      // @ts-ignore
       client_id: {
         type: DataTypes.UUID,
         allowNull: false,

@@ -12,6 +12,8 @@ class RefreshToken extends Model {
   userId!: string
   token?: string
   scope?: string
+  client!: Client
+  user!: User
   readonly createdAt!: Date
   readonly updatedAt!: Date
 }

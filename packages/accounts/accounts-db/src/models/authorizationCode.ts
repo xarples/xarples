@@ -12,7 +12,7 @@ class AuthorizationCode extends Model {
   clientId!: string
   code?: string
   codeChallenge!: string
-  codeChallengeMethod?: string
+  codeChallengeMethod?: 'S256' | 'plain'
   scope?: string
   readonly createdAt!: Date
   readonly updatedAt!: Date
@@ -40,7 +40,7 @@ AuthorizationCode.init(
       allowNull: false
     },
     codeChallengeMethod: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM('S256', 'plain'),
       allowNull: false,
       defaultValue: 'plain'
     },

@@ -33,7 +33,7 @@ const destroyAuthorizationCode = promisify<
   AuthorizationCode
 >(client.destroyAuthorizationCode).bind(client)
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const {
       grant_type: grantType,
@@ -49,6 +49,10 @@ router.post('/', async (req, res) => {
         error_description:
           'Missing required parameter client_id, grant_type, redirect_uri or code_verifier'
       })
+    }
+
+    if (grantType !== 'authorization_code') {
+      next()
     }
 
     const findClientMessage = new accounts.messages.Client()

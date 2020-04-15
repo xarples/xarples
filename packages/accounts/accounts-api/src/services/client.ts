@@ -207,7 +207,7 @@ export async function destroyClient(
   }
 }
 
-function getMessage(payload: Client) {
+export function getMessage(payload: Client) {
   const message = new messages.Client()
 
   message.setId(payload.id)

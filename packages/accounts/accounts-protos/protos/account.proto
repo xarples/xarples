@@ -85,8 +85,10 @@ message RefreshToken {
   string user_id = 3;
   string token = 4;
   string scope = 5;
-  string created_at = 6;
-  string updated_at = 7;
+  Client client = 6;
+  User user = 7;
+  string created_at = 8;
+  string updated_at = 9;
 }
 
 message RefreshTokenList {
