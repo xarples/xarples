@@ -6,6 +6,7 @@ import User from './user'
 
 class Client extends Model {
   id!: string
+  userId!: string
   clientId!: string
   clientSecret!: string
   redirectUri!: string

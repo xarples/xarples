@@ -3,6 +3,11 @@ import { Client } from '@xarples/accounts-db'
 import { messages } from '@xarples/accounts-protos'
 import { logger, cache as getCache } from '@xarples/utils'
 
+import {
+  getClientMessage as getMessage,
+  getClientListMessage as getMessageList
+} from '../utils'
+
 const cache = getCache<string, Client | Client[]>({
   maxAge: 1000 * 60 * 60 // 1 hour
 })
@@ -205,30 +210,4 @@ export async function destroyClient(
     logger.debug(e.stack)
     callback(e, null)
   }
-}
-
-export function getMessage(payload: Client) {
-  const message = new messages.Client()
-
-  message.setId(payload.id)
-  message.setClientId(payload.clientId)
-  message.setClientSecret(payload.clientSecret)
-  message.setRedirectUri(payload.redirectUri)
-  message.setType(payload.type)
-  message.setName(payload.name)
-  message.setDescription(payload.description)
-  message.setHomepageUrl(payload.homepageUrl!)
-  message.setCreatedAt(payload.createdAt.toString())
-  message.setUpdatedAt(payload.updatedAt.toString())
-
-  return message
-}
-
-function getMessageList(payload: Client[]) {
-  const message = new messages.ClientList()
-  const messageList = payload.map(getMessage)
-
-  message.setClientsList(messageList)
-
-  return message
 }

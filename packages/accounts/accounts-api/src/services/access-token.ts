@@ -3,6 +3,11 @@ import { AccessToken } from '@xarples/accounts-db'
 import { messages } from '@xarples/accounts-protos'
 import { logger, cache as getCache } from '@xarples/utils'
 
+import {
+  getAccessTokenMessage as getMessage,
+  getAccessTokenListMessage as getMessageList
+} from '../utils'
+
 const cache = getCache<string, AccessToken | AccessToken[]>({
   maxAge: 1000 * 60 * 60 // 1 hour
 })
@@ -40,12 +45,12 @@ export async function findOneAccessToken(
   callback: grpc.sendUnaryData<messages.AccessToken>
 ) {
   try {
-    const id = call.request.getId()
+    const token = call.request.getToken()
 
-    if (!cache.has(id)) {
-      const found = await AccessToken.findByPk(id)
+    if (!cache.has(token)) {
+      const found = await AccessToken.findOne({ where: { token } })
 
-      logger.info(`Fetching access token with id ${id} from database`)
+      logger.info(`Fetching access token with token ${token} from database`)
 
       if (!found) {
         const error: grpc.ServiceError = {
@@ -54,21 +59,23 @@ export async function findOneAccessToken(
           code: grpc.status.NOT_FOUND
         }
 
-        logger.error(`Can't find access token with id ${id} from the database`)
+        logger.error(
+          `Can't find access token with token ${token} from the database`
+        )
 
         callback(error, null)
 
         return
       }
 
-      logger.info(`Creating access token with id ${id} in the cache`)
+      logger.info(`Creating access token with token ${token} in the cache`)
 
-      cache.set(found.id, found)
+      cache.set(found.token!, found)
     }
 
-    logger.info(`Fetching access token with id ${id} from the cache`)
+    logger.info(`Fetching access token with token ${token} from the cache`)
 
-    const found = cache.get(id) as AccessToken
+    const found = cache.get(token) as AccessToken
     const message = getMessage(found)
 
     callback(null, message)
@@ -162,11 +169,11 @@ export async function destroyAccessToken(
   callback: grpc.sendUnaryData<messages.AccessToken>
 ) {
   try {
-    const id = call.request.getId()
+    const token = call.request.getToken()
 
-    logger.info(`Fetching access token with id ${id} from the database`)
+    logger.info(`Fetching access token with token ${token} from the database`)
 
-    const found = await AccessToken.findByPk(id)
+    const found = await AccessToken.findOne({ where: { token } })
 
     if (!found) {
       const error: grpc.ServiceError = {
@@ -175,7 +182,9 @@ export async function destroyAccessToken(
         code: grpc.status.NOT_FOUND
       }
 
-      logger.error(`Can't find access token with id ${id} from the database`)
+      logger.error(
+        `Can't find access token with token ${token} from the database`
+      )
 
       callback(error, null)
 
@@ -184,13 +193,13 @@ export async function destroyAccessToken(
 
     const clone = JSON.parse(JSON.stringify(found)) as AccessToken
 
-    logger.info(`Deleting access token with id ${id} from the database`)
+    logger.info(`Deleting access token with token ${token} from the database`)
 
     await found.destroy()
 
-    logger.info(`Deleting access token with id ${id} from the cache`)
+    logger.info(`Deleting access token with token ${token} from the cache`)
 
-    cache.del(clone.id)
+    cache.del(clone.token!)
 
     logger.info(`Invalidating the accessToken list of the cache`)
 
@@ -204,27 +213,4 @@ export async function destroyAccessToken(
     logger.debug(e.stack)
     callback(e, null)
   }
-}
-
-function getMessage(payload: AccessToken) {
-  const message = new messages.AccessToken()
-
-  message.setId(payload.id)
-  message.setClientId(payload.clientId)
-  message.setUserId(payload.userId)
-  message.setToken(payload.token!)
-  message.setScope(payload.scope!)
-  message.setCreatedAt(payload.createdAt.toString())
-  message.setUpdatedAt(payload.updatedAt.toString())
-
-  return message
-}
-
-function getMessageList(payload: AccessToken[]) {
-  const message = new messages.AccessTokenList()
-  const messageList = payload.map(getMessage)
-
-  message.setAccessTokensList(messageList)
-
-  return message
 }

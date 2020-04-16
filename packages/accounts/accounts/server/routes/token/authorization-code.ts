@@ -16,10 +16,6 @@ const router = express.Router()
 
 const findClient = promisify<Client, Client>(client.findOneClient).bind(client)
 
-const findAuthorizationCode = promisify<AuthorizationCode, AuthorizationCode>(
-  client.findOneAuthorizationCode
-).bind(client)
-
 const createAccessToken = promisify<AccessToken, AccessToken>(
   client.createAccessToken
 ).bind(client)
@@ -43,16 +39,16 @@ router.post('/', async (req, res, next) => {
       code_verifier: codeVerifier
     } = req.body
 
+    if (grantType !== 'authorization_code') {
+      return next()
+    }
+
     if (!grantType || !code || !redirectUri || !clientId || !codeVerifier) {
       return res.status(400).send({
         error: 'invalid_request',
         error_description:
           'Missing required parameter client_id, grant_type, redirect_uri or code_verifier'
       })
-    }
-
-    if (grantType !== 'authorization_code') {
-      next()
     }
 
     const findClientMessage = new accounts.messages.Client()
@@ -97,13 +93,11 @@ router.post('/', async (req, res, next) => {
       }
     }
 
-    const findAuthorizationCodeMessage = new accounts.messages.AuthorizationCode()
+    const destroyMessage = new accounts.messages.AuthorizationCode()
 
-    findAuthorizationCodeMessage.setCode(code)
+    destroyMessage.setCode(code)
 
-    const authorizationCode = await findAuthorizationCode(
-      findAuthorizationCodeMessage
-    )
+    const authorizationCode = await destroyAuthorizationCode(destroyMessage)
 
     const isAuthorizationCodeExpired = isExpired({
       expiresIn: 60, // seconds
@@ -114,12 +108,6 @@ router.post('/', async (req, res, next) => {
       authorizationCode.getClientId() !== foundClient.getId() ||
       isAuthorizationCodeExpired
     ) {
-      const destroyMessage = new accounts.messages.AuthorizationCode()
-
-      destroyMessage.setCode(code)
-
-      await destroyAuthorizationCode(destroyMessage)
-
       return res.status(400).send({
         error: 'invalid_grant',
         error_description: 'Invalid authorization code'
@@ -153,6 +141,7 @@ router.post('/', async (req, res, next) => {
     createAccessTokenMessage.setUserId(authorizationCode.getUserId())
     createAccessTokenMessage.setClientId(authorizationCode.getClientId())
     createAccessTokenMessage.setScope(authorizationCode.getScope())
+
     createRefreshTokenMessage.setUserId(authorizationCode.getUserId())
     createRefreshTokenMessage.setClientId(authorizationCode.getClientId())
     createRefreshTokenMessage.setScope(authorizationCode.getScope())
@@ -183,7 +172,7 @@ router.post('/', async (req, res, next) => {
 
     res.status(500).send({
       error: 'server_error',
-      error_description: 'Invalid client'
+      error_description: error.message
     })
   }
 })

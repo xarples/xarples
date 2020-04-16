@@ -3,6 +3,11 @@ import { User } from '@xarples/accounts-db'
 import { messages } from '@xarples/accounts-protos'
 import { logger, cache as getCache, encrypt } from '@xarples/utils'
 
+import {
+  getUserMessage as getMessage,
+  getUserListMessage as getMessageList
+} from '../utils'
+
 const cache = getCache<string, User | User[]>({
   maxAge: 1000 * 60 * 60 // 1 hour
 })
@@ -252,28 +257,4 @@ export async function destroyUser(
     logger.debug(e.stack)
     callback(e, null)
   }
-}
-
-export function getMessage(payload: User) {
-  const message = new messages.User()
-
-  message.setId(payload.id)
-  message.setUsername(payload.username)
-  message.setPassword(payload.password)
-  message.setEmail(payload.email)
-  message.setFirstName(payload.firstName)
-  message.setLastName(payload.lastName)
-  message.setCreatedAt(payload.createdAt.toString())
-  message.setUpdatedAt(payload.updatedAt.toString())
-
-  return message
-}
-
-function getMessageList(payload: User[]) {
-  const message = new messages.UserList()
-  const messageList = payload.map(getMessage)
-
-  message.setUsersList(messageList)
-
-  return message
 }

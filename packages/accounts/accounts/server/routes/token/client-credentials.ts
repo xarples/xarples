@@ -21,15 +21,8 @@ router.post('/', async (req, res, next) => {
   try {
     const { grant_type: grantType, scope = '' } = req.body
 
-    if (!grantType) {
-      return res.status(400).send({
-        error: 'invalid_request',
-        error_description: 'Missing required parameter grant_type'
-      })
-    }
-
     if (grantType !== 'client_credentials') {
-      next()
+      return next()
     }
 
     if (!req.headers.authorization) {
@@ -61,14 +54,14 @@ router.post('/', async (req, res, next) => {
     const credentials = decodeBasic(req.headers.authorization)
     const findClientMessage = new accounts.messages.Client()
 
-    findClientMessage.setClientId(credentials?.username!)
+    findClientMessage.setClientId(credentials!.username)
 
     const foundClient = await findClient(findClientMessage)
 
     const createAccessTokenMessage = new accounts.messages.AccessToken()
 
     createAccessTokenMessage.setUserId(foundClient.getUserId())
-    createAccessTokenMessage.setClientId(foundClient.getClientId())
+    createAccessTokenMessage.setClientId(foundClient.getId())
     createAccessTokenMessage.setScope(scope)
 
     const accessToken = await createAccessToken(createAccessTokenMessage)

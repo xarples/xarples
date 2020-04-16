@@ -21,22 +21,17 @@ const createAccessToken = promisify<AccessToken, AccessToken>(
 
 router.post('/', async (req, res, next) => {
   try {
-    const {
-      grant_type: grantType,
-      refresh_token: refreshToken,
-      scope = ''
-    } = req.body
-
-    if (!grantType || !refreshToken) {
-      return res.status(400).send({
-        error: 'invalid_request',
-        error_description:
-          'Missing required parameter grant_type or refresh_token'
-      })
-    }
+    const { grant_type: grantType, refresh_token: refreshToken } = req.body
 
     if (grantType !== 'refresh_token') {
-      next()
+      return next()
+    }
+
+    if (!refreshToken) {
+      return res.status(400).send({
+        error: 'invalid_request',
+        error_description: 'Missing required parameter refresh_token'
+      })
     }
 
     const findRefreshTokenMessage = new accounts.messages.RefreshToken()
@@ -46,7 +41,7 @@ router.post('/', async (req, res, next) => {
     const foundRefreshToken = await findRefreshToken(findRefreshTokenMessage)
     const foundClient = foundRefreshToken.getClient()
 
-    if (foundClient?.getType() === 'confidential') {
+    if (foundClient!.getType() === 'confidential') {
       if (!req.headers.authorization) {
         res
           .status(401)
@@ -81,7 +76,7 @@ router.post('/', async (req, res, next) => {
 
       const credentials = decodeBasic(req.headers.authorization!)
 
-      if (foundClient.getClientId() !== credentials!.username) {
+      if (foundClient!.getClientId() !== credentials!.username) {
         return res.status(400).send({
           error: 'invalid_client',
           error_description: 'Invalid client'
@@ -91,15 +86,15 @@ router.post('/', async (req, res, next) => {
 
     const createAccessTokenMessage = new accounts.messages.AccessToken()
 
-    createAccessTokenMessage.setUserId(foundClient!.getUserId())
-    createAccessTokenMessage.setClientId(foundClient!.getClientId())
-    createAccessTokenMessage.setScope(scope)
+    createAccessTokenMessage.setUserId(foundRefreshToken!.getUserId())
+    createAccessTokenMessage.setClientId(foundRefreshToken!.getClientId())
+    createAccessTokenMessage.setScope(foundRefreshToken.getScope())
 
     const accessToken = await createAccessToken(createAccessTokenMessage)
 
     res.status(200).send({
       access_token: accessToken.getToken(),
-      refresh_token: refreshToken,
+      refresh_token: foundRefreshToken.getToken(),
       token_type: 'Bearer',
       expires_in: 3600
     })

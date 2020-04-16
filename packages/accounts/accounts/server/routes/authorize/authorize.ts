@@ -89,7 +89,7 @@ router.post('/', async (req, res) => {
 
     const query = {
       code: authorizationCode.getCode(),
-      state
+      state: state || undefined
     }
 
     const queryParams = querystring.stringify(query)

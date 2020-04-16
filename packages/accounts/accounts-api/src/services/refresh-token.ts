@@ -3,8 +3,10 @@ import { RefreshToken, Client, User } from '@xarples/accounts-db'
 import { messages } from '@xarples/accounts-protos'
 import { logger, cache as getCache } from '@xarples/utils'
 
-import { getMessage as getClientMessage } from './client'
-import { getMessage as getUserMessage } from './user'
+import {
+  getRefreshTokenMessage as getMessage,
+  getRefreshTokenListMessage as getMessageList
+} from '../utils'
 
 const cache = getCache<string, RefreshToken | RefreshToken[]>({
   maxAge: 1000 * 60 * 60 // 1 hour
@@ -23,7 +25,10 @@ export async function createRefreshToken(
     logger.info(`Creating refresh token in the database`)
     logger.debug('data', data)
 
-    const created = await RefreshToken.create(data)
+    const created = await RefreshToken.create(data, { include: [Client, User] })
+
+    await created.reload()
+
     const message = getMessage(created)
 
     logger.info(`Creating refresh token with id ${created.id} in the cache`)
@@ -116,65 +121,17 @@ export async function findAllRefreshToken(
     callback(e, null)
   }
 }
-// export async function updateRefreshToken(
-//   call: grpc.ServerUnaryCall<messages.RefreshToken>,
-//   callback: grpc.sendUnaryData<messages.RefreshToken>
-// ) {
-//   try {
-//     const id = call.request.getId()
 
-//     logger.info(`Fetching refresh token with id ${id} from the database`)
-
-//     const data = call.request.toObject()
-//     const found = await RefreshToken.findByPk(id)
-
-//     delete data.id
-
-//     if (!found) {
-//       const error: grpc.ServiceError = {
-//         name: '',
-//         message: `refresh token not found`,
-//         code: grpc.status.NOT_FOUND
-//       }
-
-//       logger.error(`Can't find refresh token with id ${id} from the database`)
-
-//       callback(error, null)
-
-//       return
-//     }
-
-//     logger.info(`Updating refresh token with id ${id} from the database`)
-//     logger.debug('data', data)
-
-//     const updated = await found.update(data)
-//     const message = getMessage(updated)
-
-//     logger.info(`Updating refresh token with id ${id} from the cache`)
-
-//     cache.set(updated.id, updated)
-
-//     logger.info(`Invalidating the refresh token list of the cache`)
-
-//     cache.del('foundList')
-
-//     callback(null, message)
-//   } catch (e) {
-//     logger.error(e.message)
-//     logger.debug(e.stack)
-//     callback(e, null)
-//   }
-// }
 export async function destroyRefreshToken(
   call: grpc.ServerUnaryCall<messages.RefreshToken>,
   callback: grpc.sendUnaryData<messages.RefreshToken>
 ) {
   try {
-    const id = call.request.getId()
+    const token = call.request.getToken()
 
-    logger.info(`Fetching refresh token with id ${id} from the database`)
+    logger.info(`Fetching refresh token with token ${token} from the database`)
 
-    const found = await RefreshToken.findByPk(id)
+    const found = await RefreshToken.findOne({ where: { token } })
 
     if (!found) {
       const error: grpc.ServiceError = {
@@ -183,7 +140,9 @@ export async function destroyRefreshToken(
         code: grpc.status.NOT_FOUND
       }
 
-      logger.error(`Can't find refresh token with id ${id} from the database`)
+      logger.error(
+        `Can't find refresh token with token ${token} from the database`
+      )
 
       callback(error, null)
 
@@ -192,13 +151,13 @@ export async function destroyRefreshToken(
 
     const clone = JSON.parse(JSON.stringify(found)) as RefreshToken
 
-    logger.info(`Deleting refresh token with id ${id} from the database`)
+    logger.info(`Deleting refresh token with token ${token} from the database`)
 
     await found.destroy()
 
-    logger.info(`Deleting refresh token with id ${id} from the cache`)
+    logger.info(`Deleting refresh token with token ${token} from the cache`)
 
-    cache.del(clone.id)
+    cache.del(clone.token!)
 
     logger.info(`Invalidating the RefreshToken list of the cache`)
 
@@ -212,31 +171,4 @@ export async function destroyRefreshToken(
     logger.debug(e.stack)
     callback(e, null)
   }
-}
-
-function getMessage(payload: RefreshToken) {
-  const message = new messages.RefreshToken()
-  const client = getClientMessage(payload.client)
-  const user = getUserMessage(payload.user)
-
-  message.setId(payload.id)
-  message.setUserId(payload.userId)
-  message.setClientId(payload.clientId)
-  message.setToken(payload.token!)
-  message.setScope(payload.scope!)
-  message.setClient(client)
-  message.setUser(user)
-  message.setCreatedAt(payload.createdAt.toString())
-  message.setUpdatedAt(payload.updatedAt.toString())
-
-  return message
-}
-
-function getMessageList(payload: RefreshToken[]) {
-  const message = new messages.RefreshTokenList()
-  const messageList = payload.map(getMessage)
-
-  message.setRefreshTokensList(messageList)
-
-  return message
 }

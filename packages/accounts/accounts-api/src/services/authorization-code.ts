@@ -3,6 +3,11 @@ import { AuthorizationCode } from '@xarples/accounts-db'
 import { messages } from '@xarples/accounts-protos'
 import { logger, cache as getCache } from '@xarples/utils'
 
+import {
+  getAuthorizationCodeMessage as getMessage,
+  getAuthorizationCodeListMessage as getMessageList
+} from '../utils'
+
 const cache = getCache<string, AuthorizationCode | AuthorizationCode[]>({
   maxAge: 1000 * 60 * 60 // 1 hour
 })
@@ -216,29 +221,4 @@ export async function destroyAuthorizationCode(
     logger.debug(e.stack)
     callback(e, null)
   }
-}
-
-function getMessage(payload: AuthorizationCode) {
-  const message = new messages.AuthorizationCode()
-
-  message.setId(payload.id)
-  message.setUserId(payload.userId)
-  message.setClientId(payload.clientId)
-  message.setCode(payload.code!)
-  message.setScope(payload.scope!)
-  message.setCodeChallenge(payload.codeChallenge)
-  message.setCodeChallengeMethod(payload.codeChallengeMethod!)
-  message.setCreatedAt(payload.createdAt.toString())
-  message.setUpdatedAt(payload.updatedAt.toString())
-
-  return message
-}
-
-function getMessageList(payload: AuthorizationCode[]) {
-  const message = new messages.AuthorizationCodeList()
-  const messageList = payload.map(getMessage)
-
-  message.setAuthorizationCodesList(messageList)
-
-  return message
 }
