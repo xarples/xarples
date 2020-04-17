@@ -1,8 +1,12 @@
+import { promisify } from 'util'
 import { Strategy as LocalStrategy } from 'passport-local'
 import accounts from '@xarples/accounts-client'
+import { Client } from '@xarples/accounts-protos/generated/account_pb'
 import { encrypt, logger, decodeBasic } from '@xarples/utils'
 
 const client = accounts.createClient()
+
+const findClient = promisify<Client, Client>(client.findOneClient).bind(client)
 
 const localStrategy = new LocalStrategy((username, password, done) => {
   const message = new accounts.messages.User()
@@ -47,30 +51,28 @@ function deserializeUser(user: any, done: any) {
   })
 }
 
-function authenticateClient(encoded: string): Promise<boolean> {
-  return new Promise(resolve => {
+async function authenticateClient(encoded: string): Promise<boolean> {
+  try {
     const credentials = decodeBasic(encoded)
 
     if (!credentials) {
-      return resolve(false)
+      return Promise.resolve(false)
     }
 
     const message = new accounts.messages.Client()
 
     message.setClientId(credentials.username)
 
-    client.findOneClient(message, (err, result) => {
-      if (err) {
-        return resolve(false)
-      }
+    const foundClient = await findClient(message)
 
-      if (result.getClientSecret() !== credentials.password) {
-        return resolve(false)
-      }
+    if (foundClient.getClientSecret() !== credentials.password) {
+      return Promise.resolve(false)
+    }
 
-      resolve(true)
-    })
-  })
+    return Promise.resolve(true)
+  } catch (error) {
+    return Promise.resolve(false)
+  }
 }
 
 export default {

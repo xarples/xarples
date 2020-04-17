@@ -28,11 +28,11 @@ router.post('/', async (req, res, next) => {
     if (!req.headers.authorization) {
       res
         .status(401)
+        .set('WWW-Authenticate', 'Basic')
         .send({
           error: 'invalid_client',
           error_description: 'Missing required Authorization Header'
         })
-        .setHeader('WWW-Authenticate', 'Basic')
 
       return
     }
@@ -44,11 +44,11 @@ router.post('/', async (req, res, next) => {
     if (!isAuthenticated) {
       return res
         .status(401)
+        .set('WWW-Authenticate', 'Basic')
         .send({
           error: 'invalid_client',
           error_description: 'Invalid client credentials'
         })
-        .setHeader('WWW-Authenticate', 'Basic')
     }
 
     const credentials = decodeBasic(req.headers.authorization)
@@ -73,7 +73,7 @@ router.post('/', async (req, res, next) => {
     })
   } catch (error) {
     if (error.message.match(/client not found/)) {
-      res.status(400).send({
+      return res.status(400).send({
         error: 'invalid_request',
         error_description: 'Invalid client'
       })
