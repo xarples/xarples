@@ -1,5 +1,5 @@
 import grpc from 'grpc'
-import { AccessToken } from '@xarples/accounts-db'
+import { AccessToken, User, Client } from '@xarples/accounts-db'
 import { messages } from '@xarples/accounts-protos'
 import { logger, cache as getCache } from '@xarples/utils'
 
@@ -25,7 +25,10 @@ export async function createAccessToken(
     logger.info(`Creating access token in the database`)
     logger.debug('data', data)
 
-    const created = await AccessToken.create(data)
+    const created = await AccessToken.create(data, { include: [User, Client] })
+
+    await created.reload()
+
     const message = getMessage(created)
 
     logger.info(`Creating access token with id ${created.id} in the cache`)
@@ -48,7 +51,10 @@ export async function findOneAccessToken(
     const token = call.request.getToken()
 
     if (!cache.has(token)) {
-      const found = await AccessToken.findOne({ where: { token } })
+      const found = await AccessToken.findOne({
+        where: { token },
+        include: [User, Client]
+      })
 
       logger.info(`Fetching access token with token ${token} from database`)
 
@@ -173,7 +179,10 @@ export async function destroyAccessToken(
 
     logger.info(`Fetching access token with token ${token} from the database`)
 
-    const found = await AccessToken.findOne({ where: { token } })
+    const found = await AccessToken.findOne({
+      where: { token },
+      include: [User, Client]
+    })
 
     if (!found) {
       const error: grpc.ServiceError = {

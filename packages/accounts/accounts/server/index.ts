@@ -43,6 +43,7 @@ app.use('/api', routes.api)
 app.use('/authorize', routes.authorize)
 app.use('/token', routes.token)
 app.use('/introspect', routes.introspect)
+app.use('/revoke', routes.revoke)
 app.use(nuxt.render)
 
 async function main() {

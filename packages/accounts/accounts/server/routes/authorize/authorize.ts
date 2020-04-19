@@ -65,10 +65,19 @@ router.post('/', async (req, res) => {
 
     message.setClientId(clientId)
 
-    const foundClient = await findClient(message)
+    let foundClient: Client | undefined
 
-    if (foundClient.getRedirectUri() !== redirectUri) {
-      return res.send({
+    try {
+      foundClient = await findClient(message)
+
+      if (foundClient.getRedirectUri() !== redirectUri) {
+        return res.status(400).send({
+          error: 'invalid_request',
+          error_description: 'Invalid client'
+        })
+      }
+    } catch (error) {
+      return res.status(400).send({
         error: 'invalid_request',
         error_description: 'Invalid client'
       })
@@ -96,13 +105,6 @@ router.post('/', async (req, res) => {
 
     res.redirect(`${redirectUri}?${queryParams}`)
   } catch (error) {
-    if (error.message.match(/not found/)) {
-      res.status(400).send({
-        error: 'invalid_request',
-        error_description: 'Invalid client'
-      })
-    }
-
     res.status(500).send({
       error: 'server_error',
       error_description: 'Invalid client'

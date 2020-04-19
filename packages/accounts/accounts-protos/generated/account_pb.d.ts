@@ -39,6 +39,18 @@ export class AccessToken extends jspb.Message {
     getScope(): string;
     setScope(value: string): void;
 
+
+    hasClient(): boolean;
+    clearClient(): void;
+    getClient(): Client | undefined;
+    setClient(value?: Client): void;
+
+
+    hasUser(): boolean;
+    clearUser(): void;
+    getUser(): User | undefined;
+    setUser(value?: User): void;
+
     getCreatedAt(): string;
     setCreatedAt(value: string): void;
 
@@ -63,6 +75,8 @@ export namespace AccessToken {
         userId: string,
         token: string,
         scope: string,
+        client?: Client.AsObject,
+        user?: User.AsObject,
         createdAt: string,
         updatedAt: string,
     }

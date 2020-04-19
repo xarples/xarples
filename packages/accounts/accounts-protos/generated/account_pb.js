@@ -190,8 +190,10 @@ proto.account.AccessToken.toObject = function(includeInstance, msg) {
     userId: jspb.Message.getFieldWithDefault(msg, 3, ""),
     token: jspb.Message.getFieldWithDefault(msg, 4, ""),
     scope: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    createdAt: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    updatedAt: jspb.Message.getFieldWithDefault(msg, 7, "")
+    client: (f = msg.getClient()) && proto.account.Client.toObject(includeInstance, f),
+    user: (f = msg.getUser()) && proto.account.User.toObject(includeInstance, f),
+    createdAt: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 9, "")
   };
 
   if (includeInstance) {
@@ -249,10 +251,20 @@ proto.account.AccessToken.deserializeBinaryFromReader = function(msg, reader) {
       msg.setScope(value);
       break;
     case 6:
+      var value = new proto.account.Client;
+      reader.readMessage(value,proto.account.Client.deserializeBinaryFromReader);
+      msg.setClient(value);
+      break;
+    case 7:
+      var value = new proto.account.User;
+      reader.readMessage(value,proto.account.User.deserializeBinaryFromReader);
+      msg.setUser(value);
+      break;
+    case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setCreatedAt(value);
       break;
-    case 7:
+    case 9:
       var value = /** @type {string} */ (reader.readString());
       msg.setUpdatedAt(value);
       break;
@@ -320,17 +332,33 @@ proto.account.AccessToken.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getClient();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      proto.account.Client.serializeBinaryToWriter
+    );
+  }
+  f = message.getUser();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      proto.account.User.serializeBinaryToWriter
+    );
+  }
   f = message.getCreatedAt();
   if (f.length > 0) {
     writer.writeString(
-      6,
+      8,
       f
     );
   }
   f = message.getUpdatedAt();
   if (f.length > 0) {
     writer.writeString(
-      7,
+      9,
       f
     );
   }
@@ -413,32 +441,92 @@ proto.account.AccessToken.prototype.setScope = function(value) {
 
 
 /**
- * optional string created_at = 6;
+ * optional Client client = 6;
+ * @return {?proto.account.Client}
+ */
+proto.account.AccessToken.prototype.getClient = function() {
+  return /** @type{?proto.account.Client} */ (
+    jspb.Message.getWrapperField(this, proto.account.Client, 6));
+};
+
+
+/** @param {?proto.account.Client|undefined} value */
+proto.account.AccessToken.prototype.setClient = function(value) {
+  jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+proto.account.AccessToken.prototype.clearClient = function() {
+  this.setClient(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.account.AccessToken.prototype.hasClient = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional User user = 7;
+ * @return {?proto.account.User}
+ */
+proto.account.AccessToken.prototype.getUser = function() {
+  return /** @type{?proto.account.User} */ (
+    jspb.Message.getWrapperField(this, proto.account.User, 7));
+};
+
+
+/** @param {?proto.account.User|undefined} value */
+proto.account.AccessToken.prototype.setUser = function(value) {
+  jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+proto.account.AccessToken.prototype.clearUser = function() {
+  this.setUser(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.account.AccessToken.prototype.hasUser = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * optional string created_at = 8;
  * @return {string}
  */
 proto.account.AccessToken.prototype.getCreatedAt = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
 /** @param {string} value */
 proto.account.AccessToken.prototype.setCreatedAt = function(value) {
-  jspb.Message.setProto3StringField(this, 6, value);
+  jspb.Message.setProto3StringField(this, 8, value);
 };
 
 
 /**
- * optional string updated_at = 7;
+ * optional string updated_at = 9;
  * @return {string}
  */
 proto.account.AccessToken.prototype.getUpdatedAt = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
 
 /** @param {string} value */
 proto.account.AccessToken.prototype.setUpdatedAt = function(value) {
-  jspb.Message.setProto3StringField(this, 7, value);
+  jspb.Message.setProto3StringField(this, 9, value);
 };
 
 

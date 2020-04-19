@@ -12,6 +12,8 @@ class AccessToken extends Model {
   userId!: string
   token?: string
   scope?: string
+  Client!: Client
+  User!: User
   readonly createdAt!: Date
   readonly updatedAt!: Date
 }

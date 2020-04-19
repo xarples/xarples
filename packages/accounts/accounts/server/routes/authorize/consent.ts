@@ -36,16 +36,22 @@ router.get('/', async (req, res, next) => {
 
     message.setClientId(clientId)
 
-    const foundClient = await findClient(message)
+    let foundClient: Client | undefined
 
-    if (foundClient.getRedirectUri() !== redirectUri) {
+    try {
+      foundClient = await findClient(message)
+
+      if (foundClient.getRedirectUri() !== redirectUri) {
+        return res.send('Invalid client')
+      }
+    } catch (error) {
       return res.send('Invalid client')
     }
 
     if (!req.isAuthenticated()) {
       const queryParams = querystring.stringify(req.query)
 
-      return res.redirect(`/signin?redirect=/authorize?${queryParams}`)
+      return res.redirect(`/signin?redirect=/authorize&${queryParams}`)
     }
 
     // @ts-ignore
@@ -53,11 +59,7 @@ router.get('/', async (req, res, next) => {
 
     next()
   } catch (error) {
-    if (error.message.match(/not found/)) {
-      return res.send('Invalid client')
-    }
-
-    res.send(error.message)
+    res.status(500).send(error.message)
   }
 })
 

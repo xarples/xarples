@@ -9,12 +9,16 @@ import { messages } from '@xarples/accounts-protos'
 
 export function getAccessTokenMessage(payload: AccessToken) {
   const message = new messages.AccessToken()
+  const client = getClientMessage(payload.Client)
+  const user = getUserMessage(payload.User)
 
   message.setId(payload.id)
   message.setClientId(payload.clientId)
   message.setUserId(payload.userId)
   message.setToken(payload.token!)
   message.setScope(payload.scope!)
+  message.setUser(user)
+  message.setClient(client)
   message.setCreatedAt(payload.createdAt.toString())
   message.setUpdatedAt(payload.updatedAt.toString())
 

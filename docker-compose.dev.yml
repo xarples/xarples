@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   web:
@@ -53,6 +53,7 @@ services:
       - ./packages/utils:/usr/src/console/packages/utils/
       - /usr/src/console/packages/config/node_modules
       - /usr/src/console/packages/utils/node_modules
+      - /usr/src/console/node_modules
 
   accounts-api:
     container_name: xarples-accounts-api
@@ -77,6 +78,7 @@ services:
       - /usr/src/console/packages/accounts/accounts-db/node_modules
       - /usr/src/console/packages/config/node_modules
       - /usr/src/console/packages/utils/node_modules
+      - /usr/src/console/node_modules
 
   postgres:
     container_name: postgres

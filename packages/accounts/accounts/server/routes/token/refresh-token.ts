@@ -39,7 +39,22 @@ router.post('/', async (req, res, next) => {
     findRefreshTokenMessage.setToken(refreshToken)
 
     const foundRefreshToken = await findRefreshToken(findRefreshTokenMessage)
+
+    if (!foundRefreshToken) {
+      return res.status(400).send({
+        error: 'invalid_grant',
+        error_description: 'Invalid refresh token'
+      })
+    }
+
     const foundClient = foundRefreshToken.getClient()
+
+    if (!foundClient) {
+      return res.status(400).send({
+        error: 'invalid_request',
+        error_description: 'Invalid client'
+      })
+    }
 
     if (foundClient!.getType() === 'confidential') {
       if (!req.headers.authorization) {
@@ -99,20 +114,6 @@ router.post('/', async (req, res, next) => {
       expires_in: 3600
     })
   } catch (error) {
-    if (error.message.match(/client not found/)) {
-      return res.status(400).send({
-        error: 'invalid_request',
-        error_description: 'Invalid client'
-      })
-    }
-
-    if (error.message.match(/refresh token not found/)) {
-      return res.status(400).send({
-        error: 'invalid_grant',
-        error_description: 'Invalid refresh token'
-      })
-    }
-
     res.status(500).send({
       error: 'server_error',
       error_description: error.message

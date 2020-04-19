@@ -56,7 +56,16 @@ router.post('/', async (req, res, next) => {
 
     findClientMessage.setClientId(credentials!.username)
 
-    const foundClient = await findClient(findClientMessage)
+    let foundClient: Client | undefined
+
+    try {
+      foundClient = await findClient(findClientMessage)
+    } catch (error) {
+      return res.status(400).send({
+        error: 'invalid_request',
+        error_description: 'Invalid client'
+      })
+    }
 
     const createAccessTokenMessage = new accounts.messages.AccessToken()
 
@@ -72,13 +81,6 @@ router.post('/', async (req, res, next) => {
       expires_in: 3600
     })
   } catch (error) {
-    if (error.message.match(/client not found/)) {
-      return res.status(400).send({
-        error: 'invalid_request',
-        error_description: 'Invalid client'
-      })
-    }
-
     res.status(500).send({
       error: 'server_error',
       error_description: error.message

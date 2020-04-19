@@ -55,7 +55,16 @@ router.post('/', async (req, res, next) => {
 
     findClientMessage.setClientId(clientId)
 
-    const foundClient = await findClient(findClientMessage)
+    let foundClient: Client | undefined
+
+    try {
+      foundClient = await findClient(findClientMessage)
+    } catch (error) {
+      return res.status(400).send({
+        error: 'invalid_request',
+        error_description: 'Invalid client'
+      })
+    }
 
     if (foundClient.getType() === 'confidential') {
       if (!req.headers.authorization) {
@@ -152,13 +161,6 @@ router.post('/', async (req, res, next) => {
       refresh_token: refreshToken.getToken()
     })
   } catch (error) {
-    if (error.message.match(/client not found/)) {
-      return res.status(400).send({
-        error: 'invalid_request',
-        error_description: 'Invalid client'
-      })
-    }
-
     if (error.message.match(/authorization code not found/)) {
       return res.status(400).send({
         error: 'invalid_request',

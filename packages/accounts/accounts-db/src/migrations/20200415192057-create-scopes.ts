@@ -8,7 +8,7 @@ const queryInterface = sequelize.getQueryInterface()
 
 export default {
   up: () => {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('scopes', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,

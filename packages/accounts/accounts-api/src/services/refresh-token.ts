@@ -74,6 +74,8 @@ export async function findOneRefreshToken(
         return
       }
 
+      await found.reload()
+
       logger.info(`Creating refresh token with token ${token} in the cache`)
 
       cache.set(found.token!, found)
@@ -131,7 +133,10 @@ export async function destroyRefreshToken(
 
     logger.info(`Fetching refresh token with token ${token} from the database`)
 
-    const found = await RefreshToken.findOne({ where: { token } })
+    const found = await RefreshToken.findOne({
+      where: { token },
+      include: [User, Client]
+    })
 
     if (!found) {
       const error: grpc.ServiceError = {
