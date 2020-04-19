@@ -4,6 +4,8 @@ import accounts from '@xarples/accounts-client'
 import { AccessToken } from '@xarples/accounts-protos/generated/account_pb'
 import { isExpired } from '@xarples/utils'
 
+import auth from '../auth'
+
 const client = accounts.createClient()
 const router = express.Router()
 
@@ -17,22 +19,49 @@ const destroyAccessToken = promisify<AccessToken, AccessToken>(
 
 router.post('/introspect', async (req, res) => {
   try {
+    if (!req.body.token) {
+      return res.status(400).send({
+        error: 'invalid_request',
+        error_description: 'Missing required parameter'
+      })
+    }
+
     const authorizationHeader = req.headers.authorization
 
-    if (!authorizationHeader || !authorizationHeader.includes('Bearer')) {
+    if (!authorizationHeader || !authorizationHeader.includes('Basic')) {
       return res.status(401).send({
         error: 'invalid_request',
         error_description: 'Missing required Authorization Header'
       })
     }
 
-    const token = authorizationHeader.split(' ')[1]
+    const isAuthenticated = await auth.authenticateClient(authorizationHeader)
+
+    if (!isAuthenticated) {
+      return res
+        .status(401)
+        .set('WWW-Authenticate', 'Basic')
+        .send({
+          error: 'invalid_client',
+          error_description: 'Invalid client credentials'
+        })
+    }
+
+    const token = req.body.token
 
     const message = new accounts.messages.AccessToken()
 
     message.setToken(token)
 
-    const accessToken = await findAccessToken(message)
+    let accessToken: AccessToken | undefined
+
+    try {
+      accessToken = await findAccessToken(message)
+    } catch (error) {
+      return res.status(200).send({
+        active: false
+      })
+    }
 
     const isAccessTokenExpired = isExpired({
       entityCreatedAt: accessToken.getCreatedAt(),
@@ -56,7 +85,7 @@ router.post('/introspect', async (req, res) => {
       scope: accessToken.getScope(),
       client_id: accessToken.getClientId(),
       // @ts-ignore
-      username: req.user.username,
+      username: accessToken.getUser()!.getUsername(),
       token_type: 'Bearer',
       // exp: getUnixTime(add(accessToken.createdAt, { seconds: 3600 })),
       // iat: getUnixTime(accessToken.createdAt),
